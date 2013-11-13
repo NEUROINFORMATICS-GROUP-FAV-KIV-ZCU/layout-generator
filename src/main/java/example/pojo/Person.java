@@ -20,6 +20,10 @@ public class Person {
     
     private Date birth;
     
+    @FormItem
+    private Address address;
+    
+    
     public Person(int id, String name, int age, Date birth) {
         this.id = id;
         this.name = name;
@@ -66,6 +70,14 @@ public class Person {
     
     public void setBirth(Date birth) {
         this.birth = birth;
+    }
+    
+    public Address getAddress() {
+        return address;
+    }
+    
+    public void setAddress(Address address) {
+        this.address = address;
     }
     
 
