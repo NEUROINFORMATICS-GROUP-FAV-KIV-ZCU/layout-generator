@@ -1,6 +1,5 @@
 package example;
 
-import odml.core.Section;
 import cz.zcu.kiv.formgen.FormGenerator;
 import cz.zcu.kiv.formgen.impl.FormGeneratorImpl;
 
@@ -15,9 +14,6 @@ public class Main {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        
-        Section s = new Section();
         
     }
 
