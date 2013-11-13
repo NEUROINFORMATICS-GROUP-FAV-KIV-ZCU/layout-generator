@@ -1,8 +1,49 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>cz.zcu.kiv.odml-form-generator</groupId>
-  <artifactId>odml-form-generator</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>odML Form Generator</name>
-  <description>Tool for automatic generation of graphical layout fromobject-oriented data model.</description>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cz.zcu.kiv.odml-form-generator</groupId>
+    <artifactId>odml-form-generator</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>odML Form Generator</name>
+    <description>Tool for automatic generation of graphical layout fromobject-oriented data model.</description>
+  
+  
+    <dependencies>
+        <dependency>
+            <groupId>org.gnode</groupId>
+            <artifactId>odml-java-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        
+        <!-- =============== slf4j =============== -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        
+        <!-- =============== jdom =============== -->
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        
+    </dependencies>
+  
+  
+    <repositories>
+  
+	    <!-- Local repository for in-house libs and jars not available in public repos -->
+	    <repository>
+		    <id>cz.zcu.kiv.formgen.repo.local</id>
+		    <url>file://${basedir}/repo</url>
+	    </repository>
+    
+    </repositories>
+  
 </project>

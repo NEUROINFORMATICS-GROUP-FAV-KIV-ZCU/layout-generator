@@ -3,4 +3,4 @@
  * 
  * @author Jakub Krauz
  */
-package cz.zcu.kiv.formgen.annotations;
+package cz.zcu.kiv.formgen.annotation;
