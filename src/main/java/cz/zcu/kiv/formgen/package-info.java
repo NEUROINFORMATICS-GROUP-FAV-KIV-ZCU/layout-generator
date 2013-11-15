@@ -19,24 +19,13 @@
  *
  ***********************************************************************************************************************
  *
- * Form.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * package-info.java, 15. 11. 2013 17:36:16 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-
 /**
- *
+ * Aplikacni rozhrani.
+ * 
  * @author Jakub Krauz
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Form {
-    String value();
-}
+package cz.zcu.kiv.formgen;
