@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * This file is part of the odml-form-generator project
+ * This file is part of the form-generator project
  *
  * ==========================================
  *
@@ -19,25 +19,28 @@
  *
  ***********************************************************************************************************************
  *
- * FormGeneratorImpl.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * OdmlFormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.impl;
+package cz.zcu.kiv.formgen.odml;
 
-import java.io.OutputStream;
+import java.util.List;
 import odml.core.Section;
 import odml.core.Writer;
 import cz.zcu.kiv.formgen.FormGenerator;
+import cz.zcu.kiv.formgen.FormModel;
+import cz.zcu.kiv.formgen.FormNotFoundException;
 
 
-public class FormGeneratorImpl implements FormGenerator {
+public class OdmlFormGenerator implements FormGenerator {
     
     private ClassParser parser = new ClassParser();
     
     private Section loadedForm;
-
-    public void loadClass(String name) throws ClassNotFoundException {
+    
+    @Override
+    public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException {
         Class<?> cls = Class.forName(name);
         loadedForm = parser.parse(cls);
         
@@ -46,16 +49,25 @@ public class FormGeneratorImpl implements FormGenerator {
         writer.write();
     }
 
-
+    
+    @Override
     public void loadPackage(String name) {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void writeLayout(OutputStream out) {
+    @Override
+    public FormModel getModel(String name) {
         // TODO Auto-generated method stub
+        return null;
+    }
 
+
+    @Override
+    public List<FormModel> getModels() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -19,24 +19,34 @@
  *
  ***********************************************************************************************************************
  *
- * FormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * SectionType.java, 15. 11. 2013 19:14:06 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.odml;
 
 
-import java.util.List;
-
-
-public interface FormGenerator {
+/**
+ *
+ * @author Jakub Krauz
+ */
+public enum SectionType {
     
-    public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
+    FORM       ("form"), 
+    TEXTBOX    ("textbox"), 
+    CHECKBOX   ("checkbox"), 
+    COMBOBOX   ("combobox"), 
+    IMAGE      ("image");
     
-    public void loadPackage(String name);
     
-    public FormModel getModel(String name);
     
-    public List<FormModel> getModels();
+    private String value;
     
+    private SectionType(String value) {
+        this.value = value;
+    }
+    
+    public String getValue() {
+        return value;
+    }
 }

@@ -23,9 +23,10 @@
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.impl;
+package cz.zcu.kiv.formgen.odml;
 
 import java.lang.reflect.Field;
+import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 import odml.core.Section;
@@ -38,9 +39,9 @@ import odml.core.Section;
 public class ClassParser {
     
     
-    public Section parse(Class<?> cls) {
+    public Section parse(Class<?> cls) throws FormNotFoundException {
         if (!cls.isAnnotationPresent(Form.class))
-            return null;  // TODO exception?
+            throw new FormNotFoundException();
         
         return _parse(cls);
     }

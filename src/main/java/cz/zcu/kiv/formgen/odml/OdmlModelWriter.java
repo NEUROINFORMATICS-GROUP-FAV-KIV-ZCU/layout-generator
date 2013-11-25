@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * This file is part of the odml-form-generator project
+ * This file is part of the form-generator project
  *
  * ==========================================
  *
@@ -19,24 +19,19 @@
  *
  ***********************************************************************************************************************
  *
- * FormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * OdmlModelWriter.java, 25. 11. 2013 19:01:38 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.odml;
+
+import cz.zcu.kiv.formgen.ModelWriter;
 
 
-import java.util.List;
+/**
+ *
+ * @author Jakub Krauz
+ */
+public class OdmlModelWriter implements ModelWriter {
 
-
-public interface FormGenerator {
-    
-    public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
-    
-    public void loadPackage(String name);
-    
-    public FormModel getModel(String name);
-    
-    public List<FormModel> getModels();
-    
 }

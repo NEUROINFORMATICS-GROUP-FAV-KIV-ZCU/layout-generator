@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * This file is part of the odml-form-generator project
+ * This file is part of the form-generator project
  *
  * ==========================================
  *
@@ -19,24 +19,19 @@
  *
  ***********************************************************************************************************************
  *
- * FormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * OdmlFormModel.java, 25. 11. 2013 18:59:58 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.odml;
+
+import cz.zcu.kiv.formgen.FormModel;
 
 
-import java.util.List;
+/**
+ *
+ * @author Jakub Krauz
+ */
+public class OdmlFormModel implements FormModel {
 
-
-public interface FormGenerator {
-    
-    public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
-    
-    public void loadPackage(String name);
-    
-    public FormModel getModel(String name);
-    
-    public List<FormModel> getModels();
-    
 }

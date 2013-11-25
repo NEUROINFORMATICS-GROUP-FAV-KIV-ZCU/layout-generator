@@ -19,13 +19,23 @@
  *
  ***********************************************************************************************************************
  *
- * package-info.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * FormNotFoundException.java, 15. 11. 2013 18:58:18 Jakub Krauz
  *
  **********************************************************************************************************************/
 
+package cz.zcu.kiv.formgen;
+
+
 /**
- * Zakladni implementace rozhrani.
- * 
+ *
  * @author Jakub Krauz
  */
-package cz.zcu.kiv.formgen.impl;
+public class FormNotFoundException extends Exception {
+
+    private static final long serialVersionUID = 1L;
+    
+    public FormNotFoundException() {
+        super("The @Form annotation was not found in the given class(es).");
+    }
+
+}

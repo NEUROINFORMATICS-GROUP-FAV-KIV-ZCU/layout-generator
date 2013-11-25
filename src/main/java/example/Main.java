@@ -26,16 +26,17 @@
 package example;
 
 import cz.zcu.kiv.formgen.FormGenerator;
-import cz.zcu.kiv.formgen.impl.FormGeneratorImpl;
+import cz.zcu.kiv.formgen.FormNotFoundException;
+import cz.zcu.kiv.formgen.odml.OdmlFormGenerator;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        FormGenerator gen = new FormGeneratorImpl();
+        FormGenerator gen = new OdmlFormGenerator();
         try {
             gen.loadClass("example.pojo.Person");
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | FormNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
