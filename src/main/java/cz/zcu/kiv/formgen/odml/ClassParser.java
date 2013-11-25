@@ -26,6 +26,7 @@
 package cz.zcu.kiv.formgen.odml;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormItem;
@@ -65,13 +66,20 @@ public class ClassParser {
     private Section createFormSection(Class<?> cls) {        
         Section section = null;
         
-        try {
-            section = new Section(cls.getSimpleName(), "form");
+        String name;
+        if (cls.isAnnotationPresent(Form.class)) {
             Form form = cls.getAnnotation(Form.class);
-            String label = form.value();
-            section.addProperty("label", label.isEmpty() ? cls.getSimpleName() : label);
+            name = form.value();
+        } else {
+            name = cls.getSimpleName();
+        }
+        
+        try {
+            section = new Section(name, SectionType.FORM.getValue());
+            section.addProperty("label", name);
         } catch (Exception e) {
             // exception is thrown only in case of null or empty type argument in new Section()
+            e.printStackTrace();
         }
         
         return section;
@@ -85,13 +93,14 @@ public class ClassParser {
         if (!isSimpleType(field.getType())) {
             section = _parse(field.getType());
         } else try {
-            section = new Section(field.getName(), "item"); // TODO argument type podle datoveho typu
+            section = new Section(field.getName(), mapType(field.getType()));
             FormItem formItem = field.getAnnotation(FormItem.class);
             String label = formItem.label();
             section.addProperty("label", label.isEmpty() ? field.getName() : label);
             section.addProperty("required", formItem.required());
         } catch (Exception e) {
             // exception is thrown only in case of null or empty type argument in new Section()
+            e.printStackTrace();
         }
         
         return section;
@@ -99,14 +108,27 @@ public class ClassParser {
     
     
     
-    // TODO vice jednoduchych typu (napr. Date)
+    // TODO vice jednoduchych typu
     private boolean isSimpleType(Class<?> type) {
         if (type.isPrimitive())
             return true;
         else if (type.equals(String.class))
             return true;
+        else if (type.equals(Date.class))
+            return true;
         else
             return false;
+    }
+    
+    
+    
+    private String mapType(Class<?> type) {        
+        if (!isSimpleType(type))
+            return SectionType.FORM.getValue();
+        else if (type.equals(boolean.class) || type.equals(Boolean.class))
+            return SectionType.CHECKBOX.getValue();
+        else
+            return SectionType.TEXTBOX.getValue();
     }
     
     

@@ -25,9 +25,11 @@
 
 package example;
 
+import odml.core.Writer;
 import cz.zcu.kiv.formgen.FormGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.odml.OdmlFormGenerator;
+import cz.zcu.kiv.formgen.odml.OdmlFormModel;
 
 
 public class Main {
@@ -36,6 +38,15 @@ public class Main {
         FormGenerator gen = new OdmlFormGenerator();
         try {
             gen.loadClass("example.pojo.Person");
+            OdmlFormModel model = (OdmlFormModel) gen.getModel("Osoba");
+            
+            // testovaci vypis
+            if (model != null) {
+                Writer writer = new Writer("pokus.odml", model.getRootSection());
+                writer.write();
+            } else {
+                System.out.println("null model");
+            }
         } catch (ClassNotFoundException | FormNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

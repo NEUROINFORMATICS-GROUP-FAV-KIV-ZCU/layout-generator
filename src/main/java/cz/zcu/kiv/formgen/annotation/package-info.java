@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * This file is part of the odml-form-generator project
+ * This file is part of the form-generator project
  *
  * ==========================================
  *

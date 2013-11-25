@@ -31,5 +31,7 @@ package cz.zcu.kiv.formgen;
  * @author Jakub Krauz
  */
 public interface FormModel {
+    
+    public String getName();
 
 }

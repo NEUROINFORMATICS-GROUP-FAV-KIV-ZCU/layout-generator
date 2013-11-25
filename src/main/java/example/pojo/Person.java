@@ -43,6 +43,9 @@ public class Person {
     @FormItem
     private int age;
     
+    @FormItem
+    private boolean clever;
+    
     private Date birth;
     
     @FormItem

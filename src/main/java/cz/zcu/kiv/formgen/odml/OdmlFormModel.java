@@ -25,6 +25,7 @@
 
 package cz.zcu.kiv.formgen.odml;
 
+import odml.core.Section;
 import cz.zcu.kiv.formgen.FormModel;
 
 
@@ -33,5 +34,24 @@ import cz.zcu.kiv.formgen.FormModel;
  * @author Jakub Krauz
  */
 public class OdmlFormModel implements FormModel {
+    
+    private String name;
+    
+    private Section rootSection;
+    
+    
+    public OdmlFormModel(String name, Section rootSection) {
+        this.name = name;
+        this.rootSection = rootSection;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    public Section getRootSection() {
+        return rootSection;
+    }
 
 }

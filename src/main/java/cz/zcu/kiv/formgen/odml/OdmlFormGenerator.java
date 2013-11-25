@@ -25,9 +25,9 @@
 
 package cz.zcu.kiv.formgen.odml;
 
+import java.util.LinkedList;
 import java.util.List;
 import odml.core.Section;
-import odml.core.Writer;
 import cz.zcu.kiv.formgen.FormGenerator;
 import cz.zcu.kiv.formgen.FormModel;
 import cz.zcu.kiv.formgen.FormNotFoundException;
@@ -37,16 +37,16 @@ public class OdmlFormGenerator implements FormGenerator {
     
     private ClassParser parser = new ClassParser();
     
-    private Section loadedForm;
+    private List<FormModel> models = new LinkedList<>();
+    
     
     @Override
     public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException {
         Class<?> cls = Class.forName(name);
-        loadedForm = parser.parse(cls);
+        Section rootSection = parser.parse(cls);
+        models.add(new OdmlFormModel(rootSection.getName(), rootSection));
         
-        // testovaci vypis
-        Writer writer = new Writer("pokus.odml", loadedForm);
-        writer.write();
+        System.out.println("loaded OdmlFormModel: " + rootSection.getName());
     }
 
     
@@ -59,15 +59,16 @@ public class OdmlFormGenerator implements FormGenerator {
 
     @Override
     public FormModel getModel(String name) {
-        // TODO Auto-generated method stub
+        for (FormModel model : models)
+            if (model.getName().equals(name))
+                return model;
         return null;
     }
 
 
     @Override
     public List<FormModel> getModels() {
-        // TODO Auto-generated method stub
-        return null;
+        return models;
     }
 
 }
