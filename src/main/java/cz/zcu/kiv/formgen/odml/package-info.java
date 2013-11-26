@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  * 
- * This file is part of the form-generator project
+ * This file is part of the layout-generator project
  * 
  * ==========================================
  * 
@@ -24,7 +24,7 @@
  **********************************************************************************************************************/
 
 /**
- * Implements form-generator interfaces using odML form templates.
+ * Implements layout-generator interfaces using odML form templates.
  * 
  * @author Jakub Krauz
  */
