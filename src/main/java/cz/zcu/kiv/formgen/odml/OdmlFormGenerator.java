@@ -27,10 +27,13 @@ package cz.zcu.kiv.formgen.odml;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import org.reflections.Reflections;
 import odml.core.Section;
 import cz.zcu.kiv.formgen.FormGenerator;
 import cz.zcu.kiv.formgen.FormModel;
 import cz.zcu.kiv.formgen.FormNotFoundException;
+import cz.zcu.kiv.formgen.annotation.Form;
 
 
 public class OdmlFormGenerator implements FormGenerator {
@@ -43,6 +46,12 @@ public class OdmlFormGenerator implements FormGenerator {
     @Override
     public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException {
         Class<?> cls = Class.forName(name);
+        loadClass(cls);
+    }
+    
+    
+    @Override
+    public void loadClass(Class<?> cls) throws FormNotFoundException {
         Section rootSection = parser.parse(cls);
         models.add(new OdmlFormModel(rootSection.getName(), rootSection));
         
@@ -51,12 +60,33 @@ public class OdmlFormGenerator implements FormGenerator {
 
     
     @Override
-    public void loadPackage(String name) {
-        // TODO Auto-generated method stub
+    public void loadPackage(String name) throws FormNotFoundException {
+        /*List<ClassLoader> classLoadersList = new LinkedList<ClassLoader>();
+        classLoadersList.add(ClasspathHelper.contextClassLoader());
+        classLoadersList.add(ClasspathHelper.staticClassLoader());
 
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+            .setScanners(new SubTypesScanner(false), new ResourcesScanner())
+            .setUrls(ClasspathHelper.forClassLoader(classLoadersList.toArray(new ClassLoader[0])))
+            .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(name))));
+        
+        //Set<Class<? extends Object>> classes = reflections.getSubTypesOf(Object.class);  */
+        
+        loadPackage(Package.getPackage(name));
     }
 
 
+    @Override
+    public void loadPackage(Package pack) throws FormNotFoundException {
+        Reflections reflections = new Reflections(pack);
+        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(Form.class);
+        for (Class<?> cls : classes) {
+            System.out.println(cls.getName());
+            loadClass(cls);
+        }
+    }
+    
+    
     @Override
     public FormModel getModel(String name) {
         for (FormModel model : models)
@@ -70,5 +100,6 @@ public class OdmlFormGenerator implements FormGenerator {
     public List<FormModel> getModels() {
         return models;
     }
+
 
 }

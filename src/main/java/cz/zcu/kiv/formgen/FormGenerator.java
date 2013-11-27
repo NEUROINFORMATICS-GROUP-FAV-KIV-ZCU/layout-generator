@@ -33,7 +33,11 @@ public interface FormGenerator {
     
     public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
     
-    public void loadPackage(String name);
+    public void loadClass(Class<?> cls) throws FormNotFoundException;
+    
+    public void loadPackage(String name) throws FormNotFoundException;
+    
+    public void loadPackage(Package pack) throws FormNotFoundException;
     
     public FormModel getModel(String name);
     

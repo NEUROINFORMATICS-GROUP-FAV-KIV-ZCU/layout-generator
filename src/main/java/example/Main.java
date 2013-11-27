@@ -25,8 +25,10 @@
 
 package example;
 
+import java.io.File;
 import odml.core.Writer;
 import cz.zcu.kiv.formgen.FormGenerator;
+import cz.zcu.kiv.formgen.FormModel;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.odml.OdmlFormGenerator;
 import cz.zcu.kiv.formgen.odml.OdmlFormModel;
@@ -35,6 +37,25 @@ import cz.zcu.kiv.formgen.odml.OdmlFormModel;
 public class Main {
 
     public static void main(String[] args) {
+        
+        //loadPerson();
+        
+        FormGenerator gen = new OdmlFormGenerator();
+        try {
+            Package pack = Package.getPackage("example.pojo");
+            gen.loadPackage(pack);
+            for (FormModel model : gen.getModels()) {
+                Writer writer = new Writer(model.getName() + ".odml", ((OdmlFormModel) model).getRootSection());
+                writer.write();
+            }
+        } catch (FormNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    
+    private static void loadPerson() {
         FormGenerator gen = new OdmlFormGenerator();
         try {
             gen.loadClass("example.pojo.Person");
@@ -42,7 +63,8 @@ public class Main {
             
             // testovaci vypis
             if (model != null) {
-                Writer writer = new Writer("pokus.odml", model.getRootSection());
+                File file = new File("pokus.odml");
+                Writer writer = new Writer(file, model.getRootSection(), false);
                 writer.write();
             } else {
                 System.out.println("null model");
@@ -51,7 +73,6 @@ public class Main {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
     }
 
 }
