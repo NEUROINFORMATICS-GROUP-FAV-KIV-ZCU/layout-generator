@@ -27,11 +27,13 @@ package example.pojo;
 
 import java.util.Date;
 import cz.zcu.kiv.formgen.annotation.Form;
+import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 
 
 @Form("Osoba")
+@FormDescription(form="Osoba", text="Formular pro zadavani osob.")
 public class Person {
     
     @FormId

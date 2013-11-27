@@ -29,6 +29,7 @@ import java.lang.reflect.Field;
 import java.util.Date;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.annotation.Form;
+import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 import odml.core.Section;
 
@@ -74,9 +75,17 @@ public class ClassParser {
             name = cls.getSimpleName();
         }
         
+        String definition = null;
+        if (cls.isAnnotationPresent(FormDescription.class)) {
+            FormDescription description = cls.getAnnotation(FormDescription.class);
+            if (name.equals(description.form()))
+                definition = description.text();
+        }
+        
         try {
             section = new Section(name, SectionType.FORM.getValue());
             section.addProperty("label", name);
+            section.setDefinition(definition);
         } catch (Exception e) {
             // exception is thrown only in case of null or empty type argument in new Section()
             e.printStackTrace();
