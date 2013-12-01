@@ -23,15 +23,16 @@
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml;
+package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
 import java.util.Date;
+import cz.zcu.kiv.formgen.Form;
+import cz.zcu.kiv.formgen.FormItem;
 import cz.zcu.kiv.formgen.FormNotFoundException;
-import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
-import cz.zcu.kiv.formgen.annotation.FormItem;
-import odml.core.Section;
+import cz.zcu.kiv.formgen.odml.OdmlForm;
+import cz.zcu.kiv.formgen.odml.OdmlFormItem;
 
 
 /**
@@ -41,8 +42,8 @@ import odml.core.Section;
 public class ClassParser {
     
     
-    public Section parse(Class<?> cls) throws FormNotFoundException {
-        if (!cls.isAnnotationPresent(Form.class))
+    public Form parse(Class<?> cls) throws FormNotFoundException {
+        if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
             throw new FormNotFoundException();
         
         return _parse(cls);
@@ -50,27 +51,30 @@ public class ClassParser {
     
     
     
-    private Section _parse(Class<?> cls) {
-        Section formSection = createFormSection(cls);
+    private Form _parse(Class<?> cls) {
+        Form form = createForm(cls);
         
         for (Field f : cls.getDeclaredFields()) {
-            if (f.isAnnotationPresent(FormItem.class)) {
-                formSection.add(createItemSection(f));
+            if (f.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.FormItem.class)) {
+                if (!isSimpleType(f.getType()))
+                    form.addSubform(_parse(f.getType()));
+                else 
+                    form.addItem(createItem(f));
             }
         }
         
-        return formSection;
+        return form;
     }
     
     
     
-    private Section createFormSection(Class<?> cls) {        
-        Section section = null;
+    private Form createForm(Class<?> cls) {        
+        Form form = null;
         
         String name;
-        if (cls.isAnnotationPresent(Form.class)) {
-            Form form = cls.getAnnotation(Form.class);
-            name = form.value();
+        if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
+            cz.zcu.kiv.formgen.annotation.Form formAnnot = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class);
+            name = formAnnot.value();
         } else {
             name = cls.getSimpleName();
         }
@@ -83,36 +87,37 @@ public class ClassParser {
         }
         
         try {
-            section = new Section(name, SectionType.FORM.getValue());
-            section.addProperty("label", name);
-            section.setDefinition(definition);
+            // TODO nezavisle na implementaci Form
+            form = new OdmlForm(name);
+            
+            form.setDescription(definition);
         } catch (Exception e) {
             // exception is thrown only in case of null or empty type argument in new Section()
             e.printStackTrace();
         }
         
-        return section;
+        return form;
     }
     
     
     
-    private Section createItemSection(Field field) {
-        Section section = null;
+    private FormItem createItem(Field field) {
+        FormItem formItem = null;
         
-        if (!isSimpleType(field.getType())) {
-            section = _parse(field.getType());
-        } else try {
-            section = new Section(field.getName(), mapType(field.getType()));
-            FormItem formItem = field.getAnnotation(FormItem.class);
-            String label = formItem.label();
-            section.addProperty("label", label.isEmpty() ? field.getName() : label);
-            section.addProperty("required", formItem.required());
+        try {
+            // TODO nezavisle na implementaci FormItem
+            formItem = new OdmlFormItem(field.getName(), field.getType());
+            
+            cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
+            String label = formItemAnnot.label();
+            formItem.setLabel(label.isEmpty() ? field.getName() : label);
+            formItem.setRequired(formItemAnnot.required());
         } catch (Exception e) {
             // exception is thrown only in case of null or empty type argument in new Section()
             e.printStackTrace();
         }
         
-        return section;
+        return formItem;
     }
     
     
@@ -128,18 +133,6 @@ public class ClassParser {
         else
             return false;
     }
-    
-    
-    
-    private String mapType(Class<?> type) {        
-        if (!isSimpleType(type))
-            return SectionType.FORM.getValue();
-        else if (type.equals(boolean.class) || type.equals(Boolean.class))
-            return SectionType.CHECKBOX.getValue();
-        else
-            return SectionType.TEXTBOX.getValue();
-    }
-    
     
 
 }

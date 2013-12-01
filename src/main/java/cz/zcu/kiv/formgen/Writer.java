@@ -19,39 +19,21 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlFormModel.java, 25. 11. 2013 18:59:58 Jakub Krauz
+ * Writer.java, 25. 11. 2013 18:53:13 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml;
+package cz.zcu.kiv.formgen;
 
-import odml.core.Section;
-import cz.zcu.kiv.formgen.FormModel;
+import java.io.OutputStream;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class OdmlFormModel implements FormModel {
+public interface Writer {
     
-    private String name;
+    public void write(Form form, OutputStream outputStream);
     
-    private Section rootSection;
-    
-    
-    public OdmlFormModel(String name, Section rootSection) {
-        this.name = name;
-        this.rootSection = rootSection;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    public Section getRootSection() {
-        return rootSection;
-    }
-
 }

@@ -19,28 +19,30 @@
  *
  ***********************************************************************************************************************
  *
- * FormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * OdmlWriter.java, 25. 11. 2013 19:01:38 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.odml;
+
+import java.io.OutputStream;
+import odml.core.Section;
+import cz.zcu.kiv.formgen.Form;
+import cz.zcu.kiv.formgen.Writer;
 
 
-import java.util.List;
+/**
+ *
+ * @author Jakub Krauz
+ */
+public class OdmlWriter implements Writer {
 
+    @Override
+    public void write(Form form, OutputStream outputStream) {
+        Section rootSection = new Section();
+        rootSection.add((Section) form);
+        odml.core.OdmlWriter writer = new odml.core.OdmlWriter(rootSection);
+        writer.write(outputStream);
+    }
 
-public interface FormGenerator {
-    
-    public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
-    
-    public void loadClass(Class<?> cls) throws FormNotFoundException;
-    
-    public void loadPackage(String name) throws FormNotFoundException;
-    
-    public void loadPackage(Package pack) throws FormNotFoundException;
-    
-    public Form getForm(String name);
-    
-    public List<Form> getForms();
-    
 }

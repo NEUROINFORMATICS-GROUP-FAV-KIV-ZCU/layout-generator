@@ -19,28 +19,22 @@
  *
  ***********************************************************************************************************************
  *
- * FormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * FormItem.java, 1. 12. 2013 19:10:07 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen;
 
 
-import java.util.List;
+/**
+ *
+ * @author Jakub Krauz
+ */
+public interface FormItem {
+    
+    
+    public void setLabel(String label);
+    
+    public void setRequired(boolean required);
 
-
-public interface FormGenerator {
-    
-    public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
-    
-    public void loadClass(Class<?> cls) throws FormNotFoundException;
-    
-    public void loadPackage(String name) throws FormNotFoundException;
-    
-    public void loadPackage(Package pack) throws FormNotFoundException;
-    
-    public Form getForm(String name);
-    
-    public List<Form> getForms();
-    
 }

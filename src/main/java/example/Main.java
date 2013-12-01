@@ -25,13 +25,15 @@
 
 package example;
 
-import java.io.File;
-import odml.core.Writer;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormGenerator;
-import cz.zcu.kiv.formgen.FormModel;
 import cz.zcu.kiv.formgen.FormNotFoundException;
-import cz.zcu.kiv.formgen.odml.OdmlFormGenerator;
-import cz.zcu.kiv.formgen.odml.OdmlFormModel;
+import cz.zcu.kiv.formgen.Writer;
+import cz.zcu.kiv.formgen.core.SimpleFormGenerator;
+import cz.zcu.kiv.formgen.odml.OdmlWriter;
 
 
 public class Main {
@@ -40,36 +42,40 @@ public class Main {
         
         //loadPerson();
         
-        FormGenerator gen = new OdmlFormGenerator();
+        FormGenerator gen = new SimpleFormGenerator();
+        Package pack = Package.getPackage("example.pojo");
         try {
-            Package pack = Package.getPackage("example.pojo");
             gen.loadPackage(pack);
-            for (FormModel model : gen.getModels()) {
-                Writer writer = new Writer(model.getName() + ".odml", ((OdmlFormModel) model).getRootSection());
-                writer.write();
+            for (Form form : gen.getForms()) {
+                Writer writer = new OdmlWriter();
+                OutputStream stream = new FileOutputStream(form.getName() + ".odml");
+                writer.write(form, stream);
+                stream.close();
             }
-        } catch (FormNotFoundException e) {
+        } catch (FormNotFoundException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
     }
     
     
     private static void loadPerson() {
-        FormGenerator gen = new OdmlFormGenerator();
+        FormGenerator gen = new SimpleFormGenerator();
         try {
             gen.loadClass("example.pojo.Person");
-            OdmlFormModel model = (OdmlFormModel) gen.getModel("Osoba");
+            Form model = gen.getForm("Osoba");
             
             // testovaci vypis
             if (model != null) {
-                File file = new File("pokus.odml");
-                Writer writer = new Writer(file, model.getRootSection(), false);
-                writer.write();
+                OutputStream stream = new FileOutputStream("pokus.odml");
+                Writer writer = new OdmlWriter();
+                writer.write(model, stream);
+                stream.close();
             } else {
                 System.out.println("null model");
             }
-        } catch (ClassNotFoundException | FormNotFoundException e) {
+        } catch (ClassNotFoundException | FormNotFoundException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

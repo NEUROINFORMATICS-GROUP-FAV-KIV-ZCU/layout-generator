@@ -19,19 +19,45 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlModelWriter.java, 25. 11. 2013 19:01:38 Jakub Krauz
+ * OdmlFormItem.java, 1. 12. 2013 19:12:50 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.odml;
 
-import cz.zcu.kiv.formgen.ModelWriter;
+import odml.core.Section;
+import cz.zcu.kiv.formgen.FormItem;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class OdmlModelWriter implements ModelWriter {
+public class OdmlFormItem extends Section implements FormItem {
+    
+    
+    public OdmlFormItem(String name, Class<?> type) throws Exception {
+        super(name, mapType(type));
+    }
+    
+    
+    private static String mapType(Class<?> type) {        
+        if (type.equals(boolean.class) || type.equals(Boolean.class))
+            return SectionType.CHECKBOX.getValue();
+        else
+            return SectionType.TEXTBOX.getValue();
+    }
+
+
+    @Override
+    public void setLabel(String label) {
+        addProperty("label", label);
+    }
+
+
+    @Override
+    public void setRequired(boolean required) {
+        addProperty("required", required);
+    }
 
 }

@@ -19,19 +19,44 @@
  *
  ***********************************************************************************************************************
  *
- * FormModel.java, 25. 11. 2013 18:51:57 Jakub Krauz
+ * OdmlForm.java, 1. 12. 2013 19:11:18 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.odml;
+
+import odml.core.Section;
+import cz.zcu.kiv.formgen.Form;
+import cz.zcu.kiv.formgen.FormItem;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public interface FormModel {
+public class OdmlForm extends Section implements Form {
     
-    public String getName();
+    private static final long serialVersionUID = 1L;
+    
+    public static final String TYPE = SectionType.FORM.getValue();
+    
+    public OdmlForm(String name) throws Exception {
+        super(name, TYPE);
+    }
+
+    @Override
+    public void addItem(FormItem item) {
+        add((Section) item);
+    }
+
+    @Override
+    public void addSubform(Form subform) {
+        add((Section) subform);
+    }
+
+    @Override
+    public void setDescription(String description) {
+        setDefinition(description);
+    }
 
 }
