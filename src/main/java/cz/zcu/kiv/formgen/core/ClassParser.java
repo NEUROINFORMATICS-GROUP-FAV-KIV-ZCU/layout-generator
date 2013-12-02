@@ -31,8 +31,6 @@ import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormItem;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
-import cz.zcu.kiv.formgen.odml.OdmlForm;
-import cz.zcu.kiv.formgen.odml.OdmlFormItem;
 
 
 /**
@@ -40,6 +38,13 @@ import cz.zcu.kiv.formgen.odml.OdmlFormItem;
  * @author Jakub Krauz
  */
 public class ClassParser {
+    
+    private FormProvider formProvider;
+    
+    
+    public ClassParser(FormProvider formProvider) {
+        this.formProvider = formProvider;
+    }
     
     
     public Form parse(Class<?> cls) throws FormNotFoundException {
@@ -69,8 +74,6 @@ public class ClassParser {
     
     
     private Form createForm(Class<?> cls) {        
-        Form form = null;
-        
         String name;
         if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
             cz.zcu.kiv.formgen.annotation.Form formAnnot = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class);
@@ -86,15 +89,8 @@ public class ClassParser {
                 definition = description.text();
         }
         
-        try {
-            // TODO nezavisle na implementaci Form
-            form = new OdmlForm(name);
-            
-            form.setDescription(definition);
-        } catch (Exception e) {
-            // exception is thrown only in case of null or empty type argument in new Section()
-            e.printStackTrace();
-        }
+        Form form = formProvider.newForm(name);
+        form.setDescription(definition);
         
         return form;
     }
@@ -102,20 +98,11 @@ public class ClassParser {
     
     
     private FormItem createItem(Field field) {
-        FormItem formItem = null;
-        
-        try {
-            // TODO nezavisle na implementaci FormItem
-            formItem = new OdmlFormItem(field.getName(), field.getType());
-            
-            cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
-            String label = formItemAnnot.label();
-            formItem.setLabel(label.isEmpty() ? field.getName() : label);
-            formItem.setRequired(formItemAnnot.required());
-        } catch (Exception e) {
-            // exception is thrown only in case of null or empty type argument in new Section()
-            e.printStackTrace();
-        }
+        FormItem formItem = formProvider.newFormItem(field.getName(), field.getType());            
+        cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
+        String label = formItemAnnot.label();
+        formItem.setLabel(label.isEmpty() ? field.getName() : label);
+        formItem.setRequired(formItemAnnot.required());
         
         return formItem;
     }

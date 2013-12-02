@@ -19,13 +19,13 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlFormItem.java, 1. 12. 2013 19:12:50 Jakub Krauz
+ * FormProvider.java, 2. 12. 2013 17:18:54 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml;
+package cz.zcu.kiv.formgen.core;
 
-import odml.core.Section;
+import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormItem;
 
 
@@ -33,34 +33,10 @@ import cz.zcu.kiv.formgen.FormItem;
  *
  * @author Jakub Krauz
  */
-public class OdmlFormItem extends Section implements FormItem {
+public interface FormProvider {
     
+    public Form newForm(String name);
     
-    private static final long serialVersionUID = 1L;
-
-
-    public OdmlFormItem(String name, Class<?> type) throws Exception {
-        super(name, mapType(type));
-    }
-    
-    
-    private static String mapType(Class<?> type) {        
-        if (type.equals(boolean.class) || type.equals(Boolean.class))
-            return SectionType.CHECKBOX.getValue();
-        else
-            return SectionType.TEXTBOX.getValue();
-    }
-
-
-    @Override
-    public void setLabel(String label) {
-        addProperty("label", label);
-    }
-
-
-    @Override
-    public void setRequired(boolean required) {
-        addProperty("required", required);
-    }
+    public FormItem newFormItem(String name, Class<?> type);
 
 }

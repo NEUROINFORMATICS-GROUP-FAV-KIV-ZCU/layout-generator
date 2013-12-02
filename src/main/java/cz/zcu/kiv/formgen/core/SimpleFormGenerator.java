@@ -36,9 +36,14 @@ import cz.zcu.kiv.formgen.FormNotFoundException;
 
 public class SimpleFormGenerator implements FormGenerator {
     
-    private ClassParser parser = new ClassParser();
+    private ClassParser parser;
     
     private List<Form> forms = new LinkedList<>();
+    
+    
+    public SimpleFormGenerator(FormProvider formProvider) {
+        parser = new ClassParser(formProvider);
+    }
     
     
     @Override

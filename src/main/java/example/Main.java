@@ -33,6 +33,7 @@ import cz.zcu.kiv.formgen.FormGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.core.SimpleFormGenerator;
+import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
 import cz.zcu.kiv.formgen.odml.OdmlWriter;
 
 
@@ -42,7 +43,7 @@ public class Main {
         
         //loadPerson();
         
-        FormGenerator gen = new SimpleFormGenerator();
+        FormGenerator gen = new SimpleFormGenerator(new OdmlFormProvider());
         Package pack = Package.getPackage("example.pojo");
         try {
             gen.loadPackage(pack);
@@ -61,7 +62,7 @@ public class Main {
     
     
     private static void loadPerson() {
-        FormGenerator gen = new SimpleFormGenerator();
+        FormGenerator gen = new SimpleFormGenerator(new OdmlFormProvider());
         try {
             gen.loadClass("example.pojo.Person");
             Form model = gen.getForm("Osoba");

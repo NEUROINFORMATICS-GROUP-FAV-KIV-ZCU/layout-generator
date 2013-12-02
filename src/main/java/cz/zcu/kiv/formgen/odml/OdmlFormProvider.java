@@ -19,48 +19,56 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlFormItem.java, 1. 12. 2013 19:12:50 Jakub Krauz
+ * OdmlFormProvider.java, 2. 12. 2013 17:22:18 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.odml;
 
-import odml.core.Section;
+import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.core.FormProvider;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class OdmlFormItem extends Section implements FormItem {
-    
-    
-    private static final long serialVersionUID = 1L;
+public class OdmlFormProvider implements FormProvider {
 
-
-    public OdmlFormItem(String name, Class<?> type) throws Exception {
-        super(name, mapType(type));
-    }
-    
-    
-    private static String mapType(Class<?> type) {        
-        if (type.equals(boolean.class) || type.equals(Boolean.class))
-            return SectionType.CHECKBOX.getValue();
-        else
-            return SectionType.TEXTBOX.getValue();
-    }
-
-
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.core.FormProvider#newForm(java.lang.String)
+     */
     @Override
-    public void setLabel(String label) {
-        addProperty("label", label);
+    public Form newForm(String name) {
+        Form form = null;
+        
+        try {
+            form = new OdmlForm(name);
+        } catch (Exception e) {
+            // exception is never thrown
+            e.printStackTrace();
+        }
+        
+        return form;
     }
 
 
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.core.FormProvider#newFormItem(java.lang.String, java.lang.Class)
+     */
     @Override
-    public void setRequired(boolean required) {
-        addProperty("required", required);
+    public FormItem newFormItem(String name, Class<?> type) {
+        FormItem formItem = null;
+        
+        try {
+            formItem = new OdmlFormItem(name, type);
+        } catch (Exception e) {
+            // exception is never thrown
+            e.printStackTrace();
+        }
+        
+        return formItem;
     }
 
 }
