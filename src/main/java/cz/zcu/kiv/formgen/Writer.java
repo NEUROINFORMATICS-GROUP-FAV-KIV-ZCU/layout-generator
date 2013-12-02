@@ -34,6 +34,6 @@ import java.io.OutputStream;
  */
 public interface Writer {
     
-    public void write(Form form, OutputStream outputStream);
+    void write(Form form, OutputStream outputStream);
     
 }

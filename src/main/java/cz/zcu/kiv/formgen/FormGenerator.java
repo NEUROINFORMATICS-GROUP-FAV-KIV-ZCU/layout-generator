@@ -31,16 +31,16 @@ import java.util.List;
 
 public interface FormGenerator {
     
-    public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
+    void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
     
-    public void loadClass(Class<?> cls) throws FormNotFoundException;
+    void loadClass(Class<?> cls) throws FormNotFoundException;
     
-    public void loadPackage(String name) throws FormNotFoundException;
+    void loadPackage(String name) throws FormNotFoundException;
     
-    public void loadPackage(Package pack) throws FormNotFoundException;
+    void loadPackage(Package pack) throws FormNotFoundException;
     
-    public Form getForm(String name);
+    Form getForm(String name);
     
-    public List<Form> getForms();
+    List<Form> getForms();
     
 }

@@ -39,8 +39,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface FormDescription {
     
-    String form();
-    
-    String text();
+    String value();
     
 }

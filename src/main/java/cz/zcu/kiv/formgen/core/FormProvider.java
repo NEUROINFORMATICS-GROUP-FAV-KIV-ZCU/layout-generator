@@ -35,8 +35,8 @@ import cz.zcu.kiv.formgen.FormItem;
  */
 public interface FormProvider {
     
-    public Form newForm(String name);
+    Form newForm(String name);
     
-    public FormItem newFormItem(String name, Class<?> type);
+    FormItem newFormItem(String name, Class<?> type);
 
 }

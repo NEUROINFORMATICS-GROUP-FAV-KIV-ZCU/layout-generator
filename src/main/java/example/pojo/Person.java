@@ -33,7 +33,7 @@ import cz.zcu.kiv.formgen.annotation.FormItem;
 
 
 @Form("Osoba")
-@FormDescription(form="Osoba", text="Formular pro zadavani osob.")
+@FormDescription("Formular pro zadavani osob.")
 public class Person {
     
     @FormId

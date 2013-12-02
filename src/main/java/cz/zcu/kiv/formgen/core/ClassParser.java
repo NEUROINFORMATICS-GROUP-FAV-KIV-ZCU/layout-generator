@@ -85,8 +85,7 @@ public class ClassParser {
         String definition = null;
         if (cls.isAnnotationPresent(FormDescription.class)) {
             FormDescription description = cls.getAnnotation(FormDescription.class);
-            if (name.equals(description.form()))
-                definition = description.text();
+            definition = description.value();
         }
         
         Form form = formProvider.newForm(name);
