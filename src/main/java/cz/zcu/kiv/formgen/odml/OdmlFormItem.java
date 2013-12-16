@@ -40,15 +40,7 @@ public class OdmlFormItem extends Section implements FormItem {
 
 
     public OdmlFormItem(String name, Class<?> type) throws Exception {
-        super(name, mapType(type));
-    }
-    
-    
-    private static String mapType(Class<?> type) {        
-        if (type.equals(boolean.class) || type.equals(Boolean.class))
-            return SectionType.CHECKBOX.getValue();
-        else
-            return SectionType.TEXTBOX.getValue();
+        super(name, OdmlTypeMapper.instance().mapType(type));
     }
 
 

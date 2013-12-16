@@ -19,28 +19,21 @@
  *
  ***********************************************************************************************************************
  *
- * FormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * TypeMapper.java, 16. 12. 2013 13:34:34 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen;
 
 
-import java.util.Collection;
+/**
+ *
+ * @author Jakub Krauz
+ */
+public interface TypeMapper {
+    
+    boolean isSimpleType(Class<?> type);
+    
+    String mapType(Class<?> type);
 
-
-public interface FormGenerator {
-    
-    void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
-    
-    void loadClass(Class<?> cls) throws FormNotFoundException;
-    
-    void loadPackage(String name) throws FormNotFoundException;
-    
-    void loadPackage(Package pack) throws FormNotFoundException;
-    
-    Form getForm(String name);
-    
-    Collection<Form> getForms();
-    
 }

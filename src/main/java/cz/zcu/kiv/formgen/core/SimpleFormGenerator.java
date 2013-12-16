@@ -25,8 +25,9 @@
 
 package cz.zcu.kiv.formgen.core;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import org.reflections.Reflections;
 import cz.zcu.kiv.formgen.Form;
@@ -38,7 +39,7 @@ public class SimpleFormGenerator implements FormGenerator {
     
     private ClassParser parser;
     
-    private List<Form> forms = new LinkedList<>();
+    private Map<String, Form> forms = new HashMap<>();
     
     
     public SimpleFormGenerator(FormProvider formProvider) {
@@ -55,8 +56,13 @@ public class SimpleFormGenerator implements FormGenerator {
     
     @Override
     public void loadClass(Class<?> cls) throws FormNotFoundException {
-        Form form = parser.parse(cls);
-        forms.add(form);
+        String formName = formName(cls);
+        if (forms.containsKey(formName)) {
+            parser.parse(cls, forms.get(formName));
+        } else {
+            Form form = parser.parse(cls);
+            forms.put(form.getName(), form);
+        }
     }
 
     
@@ -82,7 +88,6 @@ public class SimpleFormGenerator implements FormGenerator {
         Reflections reflections = new Reflections(pack);
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.Form.class);
         for (Class<?> cls : classes) {
-            System.out.println(cls.getName());
             loadClass(cls);
         }
     }
@@ -90,16 +95,25 @@ public class SimpleFormGenerator implements FormGenerator {
     
     @Override
     public Form getForm(String name) {
-        for (Form form : forms)
+        /*for (Form form : forms)
             if (form.getName().equals(name))
                 return form;
-        return null;
+        return null;*/
+        return forms.get(name);
     }
 
 
     @Override
-    public List<Form> getForms() {
-        return forms;
+    public Collection<Form> getForms() {
+        //return forms;
+        return forms.values();
+    }
+    
+    
+    private String formName(Class<?> cls) throws FormNotFoundException {
+        if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
+            throw new FormNotFoundException();
+        return cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
     }
 
 

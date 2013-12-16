@@ -26,7 +26,6 @@
 package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
-import java.util.Date;
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormItem;
 import cz.zcu.kiv.formgen.FormNotFoundException;
@@ -51,18 +50,23 @@ public class ClassParser {
         if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
             throw new FormNotFoundException();
         
-        return _parse(cls);
+        return _parse(cls, createForm(cls));
     }
     
     
-    
-    private Form _parse(Class<?> cls) {
-        Form form = createForm(cls);
+    public Form parse(Class<?> cls, Form form) throws FormNotFoundException {
+        if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
+            throw new FormNotFoundException();
         
+        return _parse(cls, form);
+    }
+    
+    
+    private Form _parse(Class<?> cls, Form form) {
         for (Field f : cls.getDeclaredFields()) {
             if (f.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.FormItem.class)) {
                 if (!isSimpleType(f.getType()))
-                    form.addSubform(_parse(f.getType()));
+                    form.addSubform(_parse(f.getType(), createForm(f.getType())));
                 else 
                     form.addItem(createItem(f));
             }
@@ -108,16 +112,8 @@ public class ClassParser {
     
     
     
-    // TODO vice jednoduchych typu
     private boolean isSimpleType(Class<?> type) {
-        if (type.isPrimitive())
-            return true;
-        else if (type.equals(String.class))
-            return true;
-        else if (type.equals(Date.class))
-            return true;
-        else
-            return false;
+        return formProvider.typeMapper().isSimpleType(type);
     }
     
 

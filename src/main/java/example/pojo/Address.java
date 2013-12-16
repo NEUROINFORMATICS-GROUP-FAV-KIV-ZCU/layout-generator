@@ -26,10 +26,12 @@
 package example.pojo;
 
 import cz.zcu.kiv.formgen.annotation.Form;
+import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 
 
 @Form("Adresa")
+@FormDescription("formular pro zadavani adresy")
 public class Address {
     
     @FormItem(label = "mesto", required = true)

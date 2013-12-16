@@ -19,28 +19,25 @@
  *
  ***********************************************************************************************************************
  *
- * FormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * Pokus.java, 16. 12. 2013 13:24:52 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package example.pojo;
+
+import cz.zcu.kiv.formgen.annotation.Form;
+import cz.zcu.kiv.formgen.annotation.FormDescription;
+import cz.zcu.kiv.formgen.annotation.FormItem;
 
 
-import java.util.Collection;
+@Form("Pokus")
+@FormDescription("testovaci formular")
+public class Pokus {
+    
+    @FormItem
+    java.sql.Timestamp neco;
+    
+    //@FormItem
+    String necoJinakeho;
 
-
-public interface FormGenerator {
-    
-    void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
-    
-    void loadClass(Class<?> cls) throws FormNotFoundException;
-    
-    void loadPackage(String name) throws FormNotFoundException;
-    
-    void loadPackage(Package pack) throws FormNotFoundException;
-    
-    Form getForm(String name);
-    
-    Collection<Form> getForms();
-    
 }

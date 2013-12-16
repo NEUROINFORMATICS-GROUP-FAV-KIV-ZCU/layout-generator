@@ -27,6 +27,7 @@ package cz.zcu.kiv.formgen.odml;
 
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.TypeMapper;
 import cz.zcu.kiv.formgen.core.FormProvider;
 
 
@@ -69,6 +70,15 @@ public class OdmlFormProvider implements FormProvider {
         }
         
         return formItem;
+    }
+
+
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.core.FormProvider#typeMapper()
+     */
+    @Override
+    public TypeMapper typeMapper() {
+        return OdmlTypeMapper.instance();
     }
 
 }
