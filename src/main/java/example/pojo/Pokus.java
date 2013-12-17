@@ -35,7 +35,7 @@ import cz.zcu.kiv.formgen.annotation.FormItem;
 public class Pokus {
     
     @FormItem
-    java.sql.Timestamp neco;
+    Boolean neco;
     
     //@FormItem
     String necoJinakeho;

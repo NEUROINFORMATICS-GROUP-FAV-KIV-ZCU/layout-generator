@@ -38,31 +38,36 @@ public class OdmlTypeMapper implements TypeMapper {
         
     private static final Map<Class<?>, SectionType> TYPES = new HashMap<>();
     
+    private static final Map<Class<?>, Class<?>> WRAPPER_TYPES = new HashMap<>();
+    
     private static OdmlTypeMapper instance;
     
     
     // TODO podpora dalsich typu (napr. kolekce)
     static {
         TYPES.put(Boolean.TYPE, SectionType.CHECKBOX);
-        TYPES.put(Boolean.class, SectionType.CHECKBOX);
         TYPES.put(Byte.TYPE, SectionType.TEXTBOX);
-        TYPES.put(Byte.class, SectionType.TEXTBOX);
         TYPES.put(Character.TYPE, SectionType.TEXTBOX);
-        TYPES.put(Character.class, SectionType.TEXTBOX);
         TYPES.put(Short.TYPE, SectionType.TEXTBOX);
-        TYPES.put(Short.class, SectionType.TEXTBOX);
         TYPES.put(Integer.TYPE, SectionType.TEXTBOX);
-        TYPES.put(Integer.class, SectionType.TEXTBOX);
         TYPES.put(Long.TYPE, SectionType.TEXTBOX);
-        TYPES.put(Long.class, SectionType.TEXTBOX);
         TYPES.put(Float.TYPE, SectionType.TEXTBOX);
-        TYPES.put(Float.class, SectionType.TEXTBOX);
         TYPES.put(Double.TYPE, SectionType.TEXTBOX);
-        TYPES.put(Double.class, SectionType.TEXTBOX);
-        
         TYPES.put(String.class, SectionType.TEXTBOX);
         TYPES.put(java.util.Date.class, SectionType.DATE);
         TYPES.put(java.sql.Date.class, SectionType.DATE);
+    }
+    
+    
+    static {
+        WRAPPER_TYPES.put(Boolean.class, Boolean.TYPE);
+        WRAPPER_TYPES.put(Byte.class, Byte.TYPE);
+        WRAPPER_TYPES.put(Character.class, Character.TYPE);
+        WRAPPER_TYPES.put(Short.class, Short.TYPE);
+        WRAPPER_TYPES.put(Integer.class, Integer.TYPE);
+        WRAPPER_TYPES.put(Long.class, Long.TYPE);
+        WRAPPER_TYPES.put(Float.class, Float.TYPE);
+        WRAPPER_TYPES.put(Double.class, Double.TYPE);
     }
     
     
@@ -83,7 +88,7 @@ public class OdmlTypeMapper implements TypeMapper {
      */
     @Override
     public boolean isSimpleType(Class<?> type) {        
-        return type.isPrimitive() || TYPES.containsKey(type) || TYPES.containsKey(type.getSuperclass());
+        return type.isPrimitive() || isWrapperType(type) || TYPES.containsKey(type) || TYPES.containsKey(type.getSuperclass());
     }
 
 
@@ -92,12 +97,20 @@ public class OdmlTypeMapper implements TypeMapper {
      */
     @Override
     public String mapType(Class<?> type) {
+        if (isWrapperType(type))
+            type = WRAPPER_TYPES.get(type);
+        
         if (TYPES.containsKey(type))
             return TYPES.get(type).getValue();
         else if (TYPES.containsKey(type.getSuperclass()))
             return TYPES.get(type.getSuperclass()).getValue();
         else
-            return SectionType.TEXTBOX.getValue();
+            return SectionType.TEXTBOX.getValue();  // default
+    }
+    
+    
+    private boolean isWrapperType(Class<?> cls) {
+        return WRAPPER_TYPES.containsKey(cls);
     }
 
 
