@@ -19,50 +19,34 @@
  *
  ***********************************************************************************************************************
  *
- * FormItem.java, 1. 12. 2013 19:10:07 Jakub Krauz
+ * FormItemDatatype.java, 18. 12. 2013 16:11:45 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.odml;
 
 
 /**
- * Represents a form item.
- * 
- * <p>
- * Every {@link Form} consists of items and/or subforms. This class represents
- * an item that can be added to a form. An item can be set a label and a required-flag.
- * Label is a text that should appear in the form right in front of the field
- * that allows user to set the value of the item. If the required-flag is true then
- * the item must be set in every form (cannot be left blank).
- * </p>
- * 
+ *
  * @author Jakub Krauz
  */
-public interface FormItem {
+public enum FormItemDatatype {
+    
+    STRING      ("string"),
+    INTEGER     ("integer"),
+    NUMBER      ("number"),
+    DATE        ("date"),
+    EMAIL       ("email");
     
     
-    /**
-     * Sets the label to this form item.
-     * 
-     * @param label - label to be set
-     */
-    void setLabel(String label);
+    private String value;
     
+    private FormItemDatatype(String value) {
+        this.value = value;
+    }
     
-    /**
-     * Sets the required-flag for this form item.
-     * 
-     * @param required - value to be assigned to the requierd-flag
-     */
-    void setRequired(boolean required);
-    
-    
-    /**
-     * Sets the datatype property to this form item.
-     * 
-     * @param datatype - the datatype name
-     */
-    void setDatatype(String datatype);
+    public String getValue() {
+        return value;
+    }
 
 }

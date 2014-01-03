@@ -79,17 +79,18 @@ public class SimpleFormGenerator implements FormGenerator {
         
         //Set<Class<? extends Object>> classes = reflections.getSubTypesOf(Object.class);  */
         
-        loadPackage(Package.getPackage(name));
+        Reflections reflections = new Reflections(name);
+        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.Form.class);
+        for (Class<?> cls : classes) {
+            loadClass(cls);
+        }
     }
 
 
     @Override
     public void loadPackage(Package pack) throws FormNotFoundException {
-        Reflections reflections = new Reflections(pack);
-        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.Form.class);
-        for (Class<?> cls : classes) {
-            loadClass(cls);
-        }
+        // calling "new Reflections(Package);" can lead to "ReflectionsException: could not use param package ..."
+        loadPackage(pack.getName());
     }
     
     

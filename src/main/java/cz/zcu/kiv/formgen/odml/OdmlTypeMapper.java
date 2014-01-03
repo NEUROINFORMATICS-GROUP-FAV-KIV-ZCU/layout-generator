@@ -40,6 +40,8 @@ public class OdmlTypeMapper implements TypeMapper {
     
     private static final Map<Class<?>, Class<?>> WRAPPER_TYPES = new HashMap<>();
     
+    private static final Map<Class<?>, FormItemDatatype> DATATYPES = new HashMap<>();
+    
     private static OdmlTypeMapper instance;
     
     
@@ -54,8 +56,8 @@ public class OdmlTypeMapper implements TypeMapper {
         TYPES.put(Float.TYPE, SectionType.TEXTBOX);
         TYPES.put(Double.TYPE, SectionType.TEXTBOX);
         TYPES.put(String.class, SectionType.TEXTBOX);
-        TYPES.put(java.util.Date.class, SectionType.DATE);
-        TYPES.put(java.sql.Date.class, SectionType.DATE);
+        TYPES.put(java.util.Date.class, SectionType.TEXTBOX);
+        TYPES.put(java.sql.Date.class, SectionType.TEXTBOX);
     }
     
     
@@ -68,6 +70,20 @@ public class OdmlTypeMapper implements TypeMapper {
         WRAPPER_TYPES.put(Long.class, Long.TYPE);
         WRAPPER_TYPES.put(Float.class, Float.TYPE);
         WRAPPER_TYPES.put(Double.class, Double.TYPE);
+    }
+    
+    
+    static {
+        DATATYPES.put(Byte.TYPE, FormItemDatatype.INTEGER);
+        DATATYPES.put(Character.TYPE, FormItemDatatype.STRING);
+        DATATYPES.put(Short.TYPE, FormItemDatatype.INTEGER);
+        DATATYPES.put(Integer.TYPE, FormItemDatatype.INTEGER);
+        DATATYPES.put(Long.TYPE, FormItemDatatype.INTEGER);
+        DATATYPES.put(Float.TYPE, FormItemDatatype.NUMBER);
+        DATATYPES.put(Double.TYPE, FormItemDatatype.NUMBER);
+        DATATYPES.put(String.class, FormItemDatatype.STRING);
+        DATATYPES.put(java.util.Date.class, FormItemDatatype.DATE);
+        DATATYPES.put(java.sql.Date.class, FormItemDatatype.DATE);
     }
     
     
@@ -106,6 +122,19 @@ public class OdmlTypeMapper implements TypeMapper {
             return TYPES.get(type.getSuperclass()).getValue();
         else
             return SectionType.TEXTBOX.getValue();  // default
+    }
+    
+    
+    public String mapDatatype(Class<?> type) {
+        if (isWrapperType(type))
+            type = WRAPPER_TYPES.get(type);
+        
+        if (DATATYPES.containsKey(type))
+            return DATATYPES.get(type).getValue();
+        else if (DATATYPES.containsKey(type.getSuperclass()))
+            return DATATYPES.get(type.getSuperclass()).getValue();
+        else
+            return FormItemDatatype.STRING.getValue();  // default
     }
     
     

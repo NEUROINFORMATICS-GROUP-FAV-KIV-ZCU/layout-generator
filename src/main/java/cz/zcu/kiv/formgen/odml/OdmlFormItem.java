@@ -41,6 +41,7 @@ public class OdmlFormItem extends Section implements FormItem {
 
     public OdmlFormItem(String name, Class<?> type) throws Exception {
         super(name, OdmlTypeMapper.instance().mapType(type));
+        setDatatype(OdmlTypeMapper.instance().mapDatatype(type));
     }
 
 
@@ -53,6 +54,12 @@ public class OdmlFormItem extends Section implements FormItem {
     @Override
     public void setRequired(boolean required) {
         addProperty("required", required);
+    }
+
+
+    @Override
+    public void setDatatype(String datatype) {
+        addProperty("datatype", datatype);
     }
 
 }

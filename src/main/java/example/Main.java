@@ -46,15 +46,15 @@ public class Main {
         FormGenerator gen = new SimpleFormGenerator(new OdmlFormProvider());
         Package pack = Package.getPackage("example.pojo");
         try {
-            //gen.loadPackage(pack);
-            gen.loadClass("example.pojo.Pokus");
+            gen.loadPackage(pack);
+            //gen.loadClass("example.pojo.Pokus");
             for (Form form : gen.getForms()) {
                 Writer writer = new OdmlWriter();
                 OutputStream stream = new FileOutputStream(form.getName() + ".odml");
                 writer.write(form, stream);
                 stream.close();
             }
-        } catch (FormNotFoundException | ClassNotFoundException | IOException e) {
+        } catch (FormNotFoundException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
