@@ -96,17 +96,12 @@ public class SimpleFormGenerator implements FormGenerator {
     
     @Override
     public Form getForm(String name) {
-        /*for (Form form : forms)
-            if (form.getName().equals(name))
-                return form;
-        return null;*/
         return forms.get(name);
     }
 
 
     @Override
     public Collection<Form> getForms() {
-        //return forms;
         return forms.values();
     }
     

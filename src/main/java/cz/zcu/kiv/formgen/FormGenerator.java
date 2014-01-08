@@ -29,18 +29,59 @@ package cz.zcu.kiv.formgen;
 import java.util.Collection;
 
 
+/**
+ * Interface that enables user to control the layout-generator tool.
+ *
+ * @author Jakub Krauz
+ */
 public interface FormGenerator {
     
+    /**
+     * Parses the class with given name and creates appropriate model.
+     * 
+     * @param name - name of the class
+     * @throws ClassNotFoundException if the class with the given name cannot be found
+     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on the given class
+     */
     void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
     
+    /**
+     * Parses the given class and creates appropriate model.
+     * 
+     * @param cls - class to be parsed
+     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on the given class
+     */
     void loadClass(Class<?> cls) throws FormNotFoundException;
     
+    /**
+     * Parses all classes in the given package.
+     * 
+     * @param name - name of the package to be parsed
+     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on any class in the package
+     */
     void loadPackage(String name) throws FormNotFoundException;
     
+    /**
+     * Parses all classes in the given package.
+     * 
+     * @param pack - the package to be parsed
+     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on any class in the package
+     */
     void loadPackage(Package pack) throws FormNotFoundException;
     
+    /**
+     * Gets the form model with the given name.
+     * 
+     * @param name - name of the form model
+     * @return requested form model
+     */
     Form getForm(String name);
     
+    /**
+     * Gets all form models.
+     * 
+     * @return all form models
+     */
     Collection<Form> getForms();
     
 }
