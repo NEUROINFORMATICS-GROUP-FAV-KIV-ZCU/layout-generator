@@ -42,6 +42,8 @@ public class OdmlFormProvider implements FormProvider {
      */
     @Override
     public Form newForm(String name) {
+        if (name == null)
+            return null;
         Form form = null;
         
         try {
@@ -60,6 +62,8 @@ public class OdmlFormProvider implements FormProvider {
      */
     @Override
     public FormItem newFormItem(String name, Class<?> type) {
+        if (name == null || type == null)
+            return null;
         FormItem formItem = null;
         
         try {

@@ -29,11 +29,17 @@ import java.io.OutputStream;
 
 
 /**
- *
+ * Enables serialization of the given form model to the output stream.
+ * 
  * @author Jakub Krauz
  */
 public interface Writer {
     
+    /**
+     * Writes the serialization of the form model to the output stream.
+     * @param form - the form model
+     * @param outputStream - the stream to which the model will be written
+     */
     void write(Form form, OutputStream outputStream);
     
 }
