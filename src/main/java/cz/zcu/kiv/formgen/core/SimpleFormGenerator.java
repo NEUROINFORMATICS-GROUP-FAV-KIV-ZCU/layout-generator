@@ -39,7 +39,7 @@ public class SimpleFormGenerator implements FormGenerator {
     
     private ClassParser parser;
     
-    private Map<String, Form> forms = new HashMap<>();
+    private Map<String, Form> forms = new HashMap<String, Form>();
     
     
     public SimpleFormGenerator(FormProvider formProvider) {
@@ -89,6 +89,9 @@ public class SimpleFormGenerator implements FormGenerator {
 
     @Override
     public void loadPackage(Package pack) throws FormNotFoundException {
+        if (pack == null)
+            return;
+        
         // calling "new Reflections(Package);" can lead to "ReflectionsException: could not use param package ..."
         loadPackage(pack.getName());
     }

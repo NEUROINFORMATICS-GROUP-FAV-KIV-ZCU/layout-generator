@@ -44,9 +44,9 @@ public class Main {
         //loadPerson();
         
         FormGenerator gen = new SimpleFormGenerator(new OdmlFormProvider());
-        Package pack = Package.getPackage("example.pojo");
+        //Package pack = Package.getPackage("example.pojo");
         try {
-            gen.loadPackage(pack);
+            gen.loadPackage("example.pojo");
             //gen.loadClass("example.pojo.Pokus");
             for (Form form : gen.getForms()) {
                 Writer writer = new OdmlWriter();
@@ -54,7 +54,7 @@ public class Main {
                 writer.write(form, stream);
                 stream.close();
             }
-        } catch (FormNotFoundException | IOException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class Main {
             } else {
                 System.out.println("null model");
             }
-        } catch (ClassNotFoundException | FormNotFoundException | IOException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

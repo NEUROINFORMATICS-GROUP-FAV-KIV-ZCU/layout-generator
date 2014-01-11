@@ -36,11 +36,11 @@ import cz.zcu.kiv.formgen.TypeMapper;
  */
 public class OdmlTypeMapper implements TypeMapper {
         
-    private static final Map<Class<?>, SectionType> TYPES = new HashMap<>();
+    private static final Map<Class<?>, SectionType> TYPES = new HashMap<Class<?>, SectionType>();
     
-    private static final Map<Class<?>, Class<?>> WRAPPER_TYPES = new HashMap<>();
+    private static final Map<Class<?>, Class<?>> WRAPPER_TYPES = new HashMap<Class<?>, Class<?>>();
     
-    private static final Map<Class<?>, FormItemDatatype> DATATYPES = new HashMap<>();
+    private static final Map<Class<?>, FormItemDatatype> DATATYPES = new HashMap<Class<?>, FormItemDatatype>();
     
     private static OdmlTypeMapper instance;
     
