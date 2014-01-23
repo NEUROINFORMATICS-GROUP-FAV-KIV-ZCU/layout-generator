@@ -54,6 +54,9 @@ public interface Form {
      * @param subform - the form to be added as a subform
      */
     void addSubform(Form subform);
+    
+    
+    void addSet(FormSet set);
 
 
     /**

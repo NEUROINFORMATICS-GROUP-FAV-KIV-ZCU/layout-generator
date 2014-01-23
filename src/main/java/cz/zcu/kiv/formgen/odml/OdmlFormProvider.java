@@ -27,6 +27,7 @@ package cz.zcu.kiv.formgen.odml;
 
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormSet;
 import cz.zcu.kiv.formgen.TypeMapper;
 import cz.zcu.kiv.formgen.core.FormProvider;
 
@@ -36,6 +37,16 @@ import cz.zcu.kiv.formgen.core.FormProvider;
  * @author Jakub Krauz
  */
 public class OdmlFormProvider implements FormProvider {
+    
+    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.core.FormProvider#typeMapper()
+     */
+    @Override
+    public TypeMapper typeMapper() {
+        return OdmlTypeMapper.instance();
+    }
+    
 
     /* (non-Javadoc)
      * @see cz.zcu.kiv.formgen.core.FormProvider#newForm(java.lang.String)
@@ -77,12 +88,24 @@ public class OdmlFormProvider implements FormProvider {
     }
 
 
+
     /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.core.FormProvider#typeMapper()
+     * @see cz.zcu.kiv.formgen.core.FormProvider#newFormSet(java.lang.String, java.lang.Class)
      */
     @Override
-    public TypeMapper typeMapper() {
-        return OdmlTypeMapper.instance();
+    public FormSet newFormSet(String name, Class<?> type) {
+        if (name == null || type == null)
+            return null;
+        FormSet formSet = null;
+        
+        try {
+            formSet = new OdmlFormSet(name, type);            
+        } catch (Exception e) {
+            // exception is never thrown
+            e.printStackTrace();
+        }
+        
+        return formSet;
     }
 
 }

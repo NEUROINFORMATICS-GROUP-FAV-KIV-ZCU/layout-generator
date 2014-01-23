@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,36 +19,62 @@
  *
  ***********************************************************************************************************************
  *
- * SectionType.java, 15. 11. 2013 19:14:06 Jakub Krauz
+ * OdmlFormSet.java, 23. 1. 2014 14:45:22 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.odml;
+
+import odml.core.Section;
+import cz.zcu.kiv.formgen.Form;
+import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormSet;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public enum SectionType {
-    
-    FORM       ("form"), 
-    TEXTBOX    ("textbox"), 
-    CHECKBOX   ("checkbox"),
-    DATE       ("date"),
-    COMBOBOX   ("combobox"), 
-    IMAGE      ("image"),
-    SET        ("set");
+public class OdmlFormSet extends Section implements FormSet {
+
+    private static final long serialVersionUID = 1L;
     
     
-    
-    private String value;
-    
-    private SectionType(String value) {
-        this.value = value;
+    public OdmlFormSet(String name, Class<?> type) throws Exception {
+        super(name, OdmlTypeMapper.instance().mapType(type));
+    }
+
+
+    @Override
+    public void setContent(Form form) {
+        subsections.removeAllElements();
+        add((Section) form);
+    }
+
+
+    @Override
+    public void setContent(FormItem item) {
+        subsections.removeAllElements();
+        add((Section) item);
     }
     
-    public String getValue() {
-        return value;
+    
+    @Override
+    public void setLabel(String label) {
+        addProperty("label", label);
     }
+
+
+    @Override
+    public void setRequired(boolean required) {
+        addProperty("required", required);
+    }
+
+
+    @Override
+    public void setDatatype(String datatype) {
+        // TODO setdatatype u formset nema vyznam
+        addProperty("datatype", datatype);
+    }
+
 }

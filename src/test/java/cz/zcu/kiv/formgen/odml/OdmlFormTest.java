@@ -26,7 +26,6 @@
 package cz.zcu.kiv.formgen.odml;
 
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -37,16 +36,19 @@ import org.junit.Test;
  */
 public class OdmlFormTest {
     
+    private final String formName = "someFormName";
+    
     private OdmlForm odmlForm;
     
-    @BeforeClass
-    public void init() {
+    
+    public OdmlFormTest() {
         try {
-            odmlForm = new OdmlForm("formName");
+            odmlForm = new OdmlForm(formName);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
     
     
     @Test

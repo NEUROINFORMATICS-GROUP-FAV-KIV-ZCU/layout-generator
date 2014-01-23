@@ -30,7 +30,7 @@ import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 
 
-@Form("Pokus")
+//@Form("Pokus")
 @FormDescription("testovaci formular")
 public class Pokus {
     

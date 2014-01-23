@@ -25,10 +25,10 @@
 
 package cz.zcu.kiv.formgen.odml;
 
-import odml.core.Property;
 import odml.core.Section;
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormSet;
 
 
 /**
@@ -44,6 +44,8 @@ public class OdmlForm extends Section implements Form {
     
     public OdmlForm(String name) throws Exception {
         super(name, TYPE);
+        if (name == null)
+            throw new Exception("Name must not me null.");
     }
 
     @Override
@@ -55,6 +57,11 @@ public class OdmlForm extends Section implements Form {
     public void addSubform(Form subform) {
         add((Section) subform);
     }
+    
+    @Override
+    public void addSet(FormSet set) {
+        add((Section) set);
+    }
 
     @Override
     public void setDescription(String description) {
@@ -62,11 +69,7 @@ public class OdmlForm extends Section implements Form {
     }
     
     public String getDescription() {
-        Property desc = getProperty("description");
-        if (desc != null)
-            return desc.getValue().toString();
-        else
-            return null;
+        return getDefinition();
     }
 
 }

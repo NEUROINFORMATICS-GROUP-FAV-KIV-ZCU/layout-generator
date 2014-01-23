@@ -26,6 +26,7 @@
 package example.pojo;
 
 import java.util.Date;
+import java.util.Set;
 import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormId;
@@ -52,6 +53,9 @@ public class Person {
     private Date birth;
     
     @FormItem
+    private Set<Address> addresses;
+    
+    //@FormItem
     private Address address;
     
     

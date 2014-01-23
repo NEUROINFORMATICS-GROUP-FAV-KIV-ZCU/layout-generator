@@ -45,7 +45,6 @@ public class OdmlTypeMapper implements TypeMapper {
     private static OdmlTypeMapper instance;
     
     
-    // TODO podpora dalsich typu (napr. kolekce)
     static {
         TYPES.put(Boolean.TYPE, SectionType.CHECKBOX);
         TYPES.put(Byte.TYPE, SectionType.TEXTBOX);
@@ -58,6 +57,7 @@ public class OdmlTypeMapper implements TypeMapper {
         TYPES.put(String.class, SectionType.TEXTBOX);
         TYPES.put(java.util.Date.class, SectionType.TEXTBOX);
         TYPES.put(java.sql.Date.class, SectionType.TEXTBOX);
+        TYPES.put(java.util.Collection.class, SectionType.SET);
     }
     
     
@@ -95,7 +95,7 @@ public class OdmlTypeMapper implements TypeMapper {
     
     
     private OdmlTypeMapper() {
-        
+        // private ctor
     }
 
     
@@ -118,10 +118,14 @@ public class OdmlTypeMapper implements TypeMapper {
         
         if (TYPES.containsKey(type))
             return TYPES.get(type).getValue();
-        else if (TYPES.containsKey(type.getSuperclass()))
-            return TYPES.get(type.getSuperclass()).getValue();
-        else
-            return SectionType.TEXTBOX.getValue();  // default
+        
+        for (Class<?> cls : TYPES.keySet()) {
+            if (cls.isAssignableFrom(type))
+                return TYPES.get(cls).getValue();
+        }
+            
+        // default
+        return SectionType.TEXTBOX.getValue();
     }
     
     
@@ -131,10 +135,15 @@ public class OdmlTypeMapper implements TypeMapper {
         
         if (DATATYPES.containsKey(type))
             return DATATYPES.get(type).getValue();
-        else if (DATATYPES.containsKey(type.getSuperclass()))
-            return DATATYPES.get(type.getSuperclass()).getValue();
-        else
-            return FormItemDatatype.STRING.getValue();  // default
+
+        // check if the type is a subclass of mapped types
+        for (Class<?> cls : DATATYPES.keySet()) {
+            if (cls.isAssignableFrom(type))
+                return DATATYPES.get(cls).getValue();
+        }
+        
+        // default
+        return FormItemDatatype.STRING.getValue();
     }
     
     
