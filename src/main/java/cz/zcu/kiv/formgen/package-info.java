@@ -24,7 +24,8 @@
  **********************************************************************************************************************/
 
 /**
- * Aplikacni rozhrani.
+ * This package contains mainly interfaces that define control of the tool.
+ * Subpackages contain implementations.
  * 
  * @author Jakub Krauz
  */

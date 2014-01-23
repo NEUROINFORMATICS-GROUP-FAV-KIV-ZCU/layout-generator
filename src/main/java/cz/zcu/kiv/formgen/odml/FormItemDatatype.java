@@ -27,6 +27,7 @@ package cz.zcu.kiv.formgen.odml;
 
 
 /**
+ * Enumeration of data types used in odML form layouts.
  *
  * @author Jakub Krauz
  */

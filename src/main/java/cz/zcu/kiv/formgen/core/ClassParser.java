@@ -33,6 +33,7 @@ import cz.zcu.kiv.formgen.annotation.FormDescription;
 
 
 /**
+ * Parses Java classes using reflection and creates appropriate model.
  *
  * @author Jakub Krauz
  */

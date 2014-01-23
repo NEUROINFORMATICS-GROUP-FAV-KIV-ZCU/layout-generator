@@ -33,6 +33,7 @@ import cz.zcu.kiv.formgen.TypeMapper;
 
 
 /**
+ * Contains JUnit tests for the {@link OdmlFormProvider} class.
  *
  * @author Jakub Krauz
  */

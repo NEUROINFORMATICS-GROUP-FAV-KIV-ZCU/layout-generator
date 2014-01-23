@@ -27,13 +27,27 @@ package cz.zcu.kiv.formgen;
 
 
 /**
+ * This class is used to map types from Java to those used in form layouts.
  *
  * @author Jakub Krauz
  */
 public interface TypeMapper {
     
+    /**
+     * Determines whether given Java type is considered a simple type in the terms
+     * of form layout.
+     * 
+     * @param type the Java type
+     * @return true if the given type is considered simple, false otherwise
+     */
     boolean isSimpleType(Class<?> type);
     
+    
+    /**
+     * Maps the given Java type to an appropriate type used in form layouts.
+     * @param type the Java type
+     * @return type name used in form layout
+     */
     String mapType(Class<?> type);
 
 }

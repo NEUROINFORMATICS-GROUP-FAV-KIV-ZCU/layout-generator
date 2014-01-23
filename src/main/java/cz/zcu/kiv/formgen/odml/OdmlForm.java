@@ -25,12 +25,14 @@
 
 package cz.zcu.kiv.formgen.odml;
 
+import odml.core.Property;
 import odml.core.Section;
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormItem;
 
 
 /**
+ * Form in odML layout.
  *
  * @author Jakub Krauz
  */
@@ -57,6 +59,14 @@ public class OdmlForm extends Section implements Form {
     @Override
     public void setDescription(String description) {
         setDefinition(description);
+    }
+    
+    public String getDescription() {
+        Property desc = getProperty("description");
+        if (desc != null)
+            return desc.getValue().toString();
+        else
+            return null;
     }
 
 }
