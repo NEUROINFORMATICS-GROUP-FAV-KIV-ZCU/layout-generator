@@ -31,6 +31,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 
+/**
+ * This annotation marks the POJO class member that is used as an ID of its instances.
+ *
+ * @author Jakub Krauz
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FormId {

@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * FormItem.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * FormItemRestriction.java, 25. 11. 2013 20:10:49 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -32,18 +32,18 @@ import java.lang.annotation.Target;
 
 
 /**
- * This annotations marks POJO members that should be transformed to form items.
+ * This annotation is used to add restrictions to form items.
  *
  * @author Jakub Krauz
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FormItem {
+public @interface FormItemRestriction {
     
-    /** Label of the form item. */
-    String label() default "";
+    /** The minimum length of the field. */
+    int minLength() default -1;
     
-    /** True marks the form item requierd, i.e. it must be filled. */
-    boolean required() default false;
-
+    /** The maximum length of the field. */
+    int maxLength() default -1;
+    
 }

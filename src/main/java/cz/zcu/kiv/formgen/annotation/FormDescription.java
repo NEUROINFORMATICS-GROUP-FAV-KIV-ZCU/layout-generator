@@ -32,6 +32,8 @@ import java.lang.annotation.Target;
 
 
 /**
+ * This annotation is used to add a description to a form defined by the annotated
+ * POJO class.
  *
  * @author Jakub Krauz
  */
@@ -39,6 +41,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface FormDescription {
     
+    /** Description of the form. */
     String value();
     
 }

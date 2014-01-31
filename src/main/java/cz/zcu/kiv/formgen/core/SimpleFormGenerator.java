@@ -112,7 +112,9 @@ public class SimpleFormGenerator implements FormGenerator {
     private String formName(Class<?> cls) throws FormNotFoundException {
         if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
             throw new FormNotFoundException();
-        return cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
+        
+        String name = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
+        return (!name.isEmpty()) ? name : cls.getSimpleName();
     }
 
 

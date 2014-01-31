@@ -32,11 +32,16 @@ import java.lang.annotation.Target;
 
 
 /**
+ * This annotation is used to mark Java POJO classes that should be transformed
+ * to a form.
  *
  * @author Jakub Krauz
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Form {
-    String value();
+    
+    /** Name of the form. */
+    String value() default "";
+    
 }

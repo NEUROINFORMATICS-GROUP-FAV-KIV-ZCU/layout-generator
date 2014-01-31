@@ -131,8 +131,9 @@ public class ClassParser {
     private Form createForm(Class<?> cls) {        
         String name;
         if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
-            cz.zcu.kiv.formgen.annotation.Form formAnnot = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class);
-            name = formAnnot.value();
+            name = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
+            if (name.isEmpty())
+                name = cls.getSimpleName();
         } else {
             name = cls.getSimpleName();
         }

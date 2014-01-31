@@ -24,7 +24,7 @@
  **********************************************************************************************************************/
 
 /**
- * Anotace pro oznaceni datoveho modelu.
+ * Contains annotations used to mark POJO objects that should be processed.
  * 
  * @author Jakub Krauz
  */
