@@ -34,6 +34,7 @@ import cz.zcu.kiv.formgen.FormItem;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.FormSet;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
+import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 
 
 /**
@@ -166,6 +167,14 @@ public class ClassParser {
         String label = formItemAnnot.label();
         formItem.setLabel(label.isEmpty() ? field.getName() : label);
         formItem.setRequired(formItemAnnot.required());
+        
+        if (field.isAnnotationPresent(FormItemRestriction.class)) {
+            FormItemRestriction restriction = field.getAnnotation(FormItemRestriction.class);
+            if (restriction.minLength() != -1)
+                formItem.setMinLength(restriction.minLength());
+            if (restriction.maxLength() != -1)
+                formItem.setMaxLength(restriction.maxLength());
+        }
         
         return formItem;
     }

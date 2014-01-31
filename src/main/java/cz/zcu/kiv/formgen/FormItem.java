@@ -51,6 +51,14 @@ public interface FormItem {
     
     
     /**
+     * Gets the label of this form item.
+     * 
+     * @return the label
+     */
+    String getLabel();
+    
+    
+    /**
      * Sets the required-flag for this form item.
      * 
      * @param required - value to be assigned to the requierd-flag
@@ -59,10 +67,57 @@ public interface FormItem {
     
     
     /**
+     * Returns the value of the required-flag.
+     * @return the required-flag
+     */
+    boolean isRequired();
+    
+    
+    /**
      * Sets the datatype property to this form item.
      * 
      * @param datatype - the datatype name
      */
     void setDatatype(String datatype);
+    
+    
+    /**
+     * Gets the datatype of this form item.
+     * 
+     * @return the datatype
+     */
+    String getDatatype();
+    
+    
+    /**
+     * Sets the minimum length of this form item.
+     * 
+     * @param value the minimum length
+     */
+    void setMinLength(int value);
+    
+    
+    /**
+     * Gets the minimum length of this form item.
+     * 
+     * @return the minimum length
+     */
+    int getMinLength();
+    
+    
+    /**
+     * Sets the maximum length of this form item.
+     * 
+     * @param value the maximum length
+     */
+    void setMaxLength(int value);
+    
+    
+    /**
+     * Gets the maximum length of this form item.
+     * 
+     * @return the maximum length
+     */
+    int getMaxLength();
 
 }

@@ -35,7 +35,7 @@ import cz.zcu.kiv.formgen.FormSet;
  *
  * @author Jakub Krauz
  */
-public class OdmlFormSet extends Section implements FormSet {
+public class OdmlFormSet extends OdmlFormItem implements FormSet {
 
     private static final long serialVersionUID = 1L;
     
@@ -56,18 +56,6 @@ public class OdmlFormSet extends Section implements FormSet {
     public void setContent(FormItem item) {
         subsections.removeAllElements();
         add((Section) item);
-    }
-    
-    
-    @Override
-    public void setLabel(String label) {
-        addProperty("label", label);
-    }
-
-
-    @Override
-    public void setRequired(boolean required) {
-        addProperty("required", required);
     }
 
 
