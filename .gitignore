@@ -3,3 +3,6 @@ target
 .settings
 .classpath
 .project
+/Adresa.odml
+/Osoba.odml
+/install-odml-java-lib.sh

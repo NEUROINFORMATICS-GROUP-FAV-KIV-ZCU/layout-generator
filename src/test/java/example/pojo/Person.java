@@ -34,8 +34,8 @@ import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 
 
-@Form("Osoba")
-@FormDescription("Formular pro zadavani osob.")
+@Form
+@FormDescription("Form used to add persons.")
 public class Person {
     
     @FormId

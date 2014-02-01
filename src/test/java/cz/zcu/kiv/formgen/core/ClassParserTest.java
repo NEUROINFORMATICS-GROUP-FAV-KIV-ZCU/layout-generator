@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,25 +19,40 @@
  *
  ***********************************************************************************************************************
  *
- * Pokus.java, 16. 12. 2013 13:24:52 Jakub Krauz
+ * ClassParserTest.java, 1. 2. 2014 12:05:27 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package example.pojo;
+package cz.zcu.kiv.formgen.core;
 
-import cz.zcu.kiv.formgen.annotation.Form;
-import cz.zcu.kiv.formgen.annotation.FormDescription;
-import cz.zcu.kiv.formgen.annotation.FormItem;
+import static org.junit.Assert.*;
+import org.junit.Test;
+import cz.zcu.kiv.formgen.Form;
+import cz.zcu.kiv.formgen.FormNotFoundException;
+import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
 
 
-//@Form("Pokus")
-@FormDescription("testovaci formular")
-public class Pokus {
+/**
+ *
+ * @author Jakub Krauz
+ */
+public class ClassParserTest {
     
-    @FormItem
-    Boolean neco;
+    private ClassParser parser = new ClassParser(new OdmlFormProvider());
     
-    //@FormItem
-    String necoJinakeho;
+    
+    // TODO test cases
+    
+    @Test
+    public void parseTest() throws FormNotFoundException {
+        Class<?> cls;
+        try {
+            cls = Class.forName("example.pojo.Person");
+            Form form = parser.parse(cls);
+            assertNotNull(form);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -35,13 +35,24 @@ import cz.zcu.kiv.formgen.FormGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 
 
+/**
+ * Generates form layout from a POJO data model.
+ *
+ * @author Jakub Krauz
+ */
 public class SimpleFormGenerator implements FormGenerator {
     
+    /** Class parser instance. */
     private ClassParser parser;
     
+    /** Map of created forms by their name. */
     private Map<String, Form> forms = new HashMap<String, Form>();
     
     
+    /**
+     * Constructs new generator using the given {@link FormProvider} object.
+     * @param formProvider
+     */
     public SimpleFormGenerator(FormProvider formProvider) {
         parser = new ClassParser(formProvider);
     }
@@ -109,6 +120,15 @@ public class SimpleFormGenerator implements FormGenerator {
     }
     
     
+    
+    
+    /**
+     * Determines name of the form defined by the given POJO class.
+     * 
+     * @param cls the POJO class
+     * @return name of the form
+     * @throws FormNotFoundException if the {@link cz.zcu.kiv.formgen.annotation.Form Form} annotation is not present
+     */
     private String formName(Class<?> cls) throws FormNotFoundException {
         if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
             throw new FormNotFoundException();
