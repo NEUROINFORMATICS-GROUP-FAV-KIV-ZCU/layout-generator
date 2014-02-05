@@ -119,5 +119,13 @@ public interface FormItem {
      * @return the maximum length
      */
     int getMaxLength();
+    
+    
+    /**
+     * Sets the ID of this form item.
+     * 
+     * @param id the ID to be set
+     */
+    void setId(int id);
 
 }

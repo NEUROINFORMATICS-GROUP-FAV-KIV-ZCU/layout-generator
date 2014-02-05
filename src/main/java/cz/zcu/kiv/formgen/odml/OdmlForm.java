@@ -72,4 +72,9 @@ public class OdmlForm extends Section implements Form {
         return getDefinition();
     }
 
+    @Override
+    public void setId(int id) {
+        addProperty("id", id);
+    }
+
 }

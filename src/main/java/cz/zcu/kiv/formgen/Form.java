@@ -56,6 +56,11 @@ public interface Form {
     void addSubform(Form subform);
     
     
+    /**
+     * Adds the given set as an item to this form.
+     * 
+     * @param set - the set to be added
+     */
     void addSet(FormSet set);
 
 
@@ -73,5 +78,13 @@ public interface Form {
      * @param description - the description for this form
      */
     void setDescription(String description);
+    
+    
+    /**
+     * Sets the form ID.
+     * 
+     * @param id - the ID to be set
+     */
+    void setId(int id);
 
 }

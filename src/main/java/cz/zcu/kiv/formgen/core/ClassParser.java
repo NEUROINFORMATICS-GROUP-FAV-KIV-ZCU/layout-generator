@@ -48,6 +48,9 @@ public class ClassParser {
     /** Object used to create new {@link Form} and {@link FormItem} objects. */
     private FormProvider formProvider;
     
+    /** Last ID assigned to a form or its item. */
+    private int lastId = 0;
+    
     
     
     /**
@@ -147,6 +150,7 @@ public class ClassParser {
         
         Form form = formProvider.newForm(name);
         form.setDescription(definition);
+        form.setId(++lastId);
         
         return form;
     }
@@ -161,7 +165,8 @@ public class ClassParser {
      * @return the newly created form item object
      */
     private FormItem createItem(Field field) {
-        FormItem formItem = formProvider.newFormItem(field.getName(), field.getType()); 
+        FormItem formItem = formProvider.newFormItem(field.getName(), field.getType());
+        formItem.setId(++lastId);
         
         cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
         String label = formItemAnnot.label();
@@ -206,6 +211,7 @@ public class ClassParser {
                 String label = formItemAnnot.label();
                 formSet.setLabel(label.isEmpty() ? field.getName() : label);
                 formSet.setRequired(formItemAnnot.required());
+                formSet.setId(++lastId);
 
                 Class<?> clazz = (Class<?>) parameters[0];
                 if (isSimpleType(clazz)) {

@@ -129,4 +129,9 @@ public class OdmlFormItem extends Section implements FormItem {
             return -1;
     }
 
+    @Override
+    public void setId(int id) {
+        addProperty("id", id);
+    }
+
 }
