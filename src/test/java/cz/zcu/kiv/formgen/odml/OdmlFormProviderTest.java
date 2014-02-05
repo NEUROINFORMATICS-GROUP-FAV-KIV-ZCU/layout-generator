@@ -28,7 +28,7 @@ package cz.zcu.kiv.formgen.odml;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormField;
 import cz.zcu.kiv.formgen.TypeMapper;
 
 
@@ -59,10 +59,10 @@ public class OdmlFormProviderTest {
         assertNull(provider.newFormItem(null, String.class));
         assertNull(provider.newFormItem("name", null));
         
-        FormItem formItem = provider.newFormItem("name", String.class);
+        FormField formItem = provider.newFormItem("name", String.class);
         assertNotNull(formItem);
-        assertEquals(OdmlFormItem.class, formItem.getClass());
-        assertEquals("name", ((OdmlFormItem) formItem).getName());
+        assertEquals(OdmlFormField.class, formItem.getClass());
+        assertEquals("name", ((OdmlFormField) formItem).getName());
     }
     
     

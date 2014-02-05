@@ -27,25 +27,25 @@ package cz.zcu.kiv.formgen.odml;
 
 import odml.core.Property;
 import odml.core.Section;
-import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormField;
 
 
 /**
  * 
  * @author Jakub Krauz
  */
-public class OdmlFormItem extends Section implements FormItem {
+public class OdmlFormField extends Section implements FormField {
 
 
     private static final long serialVersionUID = 1L;
 
 
-    public OdmlFormItem(String name, Class<?> type) throws Exception {
+    public OdmlFormField(String name, Class<?> type) throws Exception {
         super(name, OdmlTypeMapper.instance().mapType(type));
         setDatatype(OdmlTypeMapper.instance().mapDatatype(type));
     }
     
-    protected OdmlFormItem(String name, String type) throws Exception {
+    protected OdmlFormField(String name, String type) throws Exception {
         super(name, type);
     }
 

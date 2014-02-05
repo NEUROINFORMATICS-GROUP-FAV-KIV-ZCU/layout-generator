@@ -58,7 +58,7 @@ public class OdmlFormTest {
         assertFalse(odmlForm.containsSection(sectionName));
         
         try {
-            OdmlFormItem item = new OdmlFormItem(sectionName, String.class);
+            OdmlFormField item = new OdmlFormField(sectionName, String.class);
             odmlForm.addItem(item);
             assertTrue(odmlForm.containsSection(sectionName));
             assertEquals(item, odmlForm.getSection(sectionName));

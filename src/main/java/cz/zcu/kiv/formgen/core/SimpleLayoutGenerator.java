@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import org.reflections.Reflections;
 import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormGenerator;
+import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 
 
@@ -40,7 +40,7 @@ import cz.zcu.kiv.formgen.FormNotFoundException;
  *
  * @author Jakub Krauz
  */
-public class SimpleFormGenerator implements FormGenerator {
+public class SimpleLayoutGenerator implements LayoutGenerator {
     
     /** Class parser instance. */
     private ClassParser parser;
@@ -53,7 +53,7 @@ public class SimpleFormGenerator implements FormGenerator {
      * Constructs new generator using the given {@link FormProvider} object.
      * @param formProvider
      */
-    public SimpleFormGenerator(FormProvider formProvider) {
+    public SimpleLayoutGenerator(FormProvider formProvider) {
         parser = new ClassParser(formProvider);
     }
     

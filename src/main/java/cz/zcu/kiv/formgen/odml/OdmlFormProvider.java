@@ -26,7 +26,7 @@
 package cz.zcu.kiv.formgen.odml;
 
 import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormField;
 import cz.zcu.kiv.formgen.FormSet;
 import cz.zcu.kiv.formgen.TypeMapper;
 import cz.zcu.kiv.formgen.core.FormProvider;
@@ -72,13 +72,13 @@ public class OdmlFormProvider implements FormProvider {
      * @see cz.zcu.kiv.formgen.core.FormProvider#newFormItem(java.lang.String, java.lang.Class)
      */
     @Override
-    public FormItem newFormItem(String name, Class<?> type) {
+    public FormField newFormItem(String name, Class<?> type) {
         if (name == null || type == null)
             return null;
-        FormItem formItem = null;
+        FormField formItem = null;
         
         try {
-            formItem = new OdmlFormItem(name, type);
+            formItem = new OdmlFormField(name, type);
         } catch (Exception e) {
             // exception is never thrown
             e.printStackTrace();

@@ -46,7 +46,7 @@ package cz.zcu.kiv.formgen;
  *
  * @author Jakub Krauz
  */
-public interface FormSet extends FormItem {
+public interface FormSet extends FormField {
     
     
     /**
@@ -62,7 +62,7 @@ public interface FormSet extends FormItem {
      *  
      * @param item the item contained in the collection
      */
-    void setContent(FormItem item);
+    void setContent(FormField item);
     
 
 }

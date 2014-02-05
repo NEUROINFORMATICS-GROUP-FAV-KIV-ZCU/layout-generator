@@ -27,7 +27,7 @@ package cz.zcu.kiv.formgen.odml;
 
 import odml.core.Section;
 import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormField;
 import cz.zcu.kiv.formgen.FormSet;
 
 
@@ -49,7 +49,7 @@ public class OdmlForm extends Section implements Form {
     }
 
     @Override
-    public void addItem(FormItem item) {
+    public void addItem(FormField item) {
         add((Section) item);
     }
 

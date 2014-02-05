@@ -27,7 +27,7 @@ package cz.zcu.kiv.formgen.odml;
 
 import odml.core.Section;
 import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormField;
 import cz.zcu.kiv.formgen.FormSet;
 
 
@@ -35,7 +35,7 @@ import cz.zcu.kiv.formgen.FormSet;
  *
  * @author Jakub Krauz
  */
-public class OdmlFormSet extends OdmlFormItem implements FormSet {
+public class OdmlFormSet extends OdmlFormField implements FormSet {
 
     private static final long serialVersionUID = 1L;
     
@@ -53,7 +53,7 @@ public class OdmlFormSet extends OdmlFormItem implements FormSet {
 
 
     @Override
-    public void setContent(FormItem item) {
+    public void setContent(FormField item) {
         subsections.removeAllElements();
         add((Section) item);
     }

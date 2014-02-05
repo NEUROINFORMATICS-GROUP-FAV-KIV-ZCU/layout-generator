@@ -26,7 +26,7 @@
 package cz.zcu.kiv.formgen.core;
 
 import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormField;
 import cz.zcu.kiv.formgen.FormSet;
 import cz.zcu.kiv.formgen.TypeMapper;
 
@@ -39,7 +39,7 @@ public interface FormProvider {
     
     Form newForm(String name);
     
-    FormItem newFormItem(String name, Class<?> type);
+    FormField newFormItem(String name, Class<?> type);
     
     FormSet newFormSet(String name, Class<?> type);
     

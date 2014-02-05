@@ -39,7 +39,7 @@ package cz.zcu.kiv.formgen;
  * 
  * @author Jakub Krauz
  */
-public interface FormItem {
+public interface FormField {
     
     
     /**

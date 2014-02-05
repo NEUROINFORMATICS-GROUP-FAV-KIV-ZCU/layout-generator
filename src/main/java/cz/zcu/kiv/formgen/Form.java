@@ -30,8 +30,8 @@ package cz.zcu.kiv.formgen;
  * Represents a form.
  * 
  * <p>
- * Form consists of items (type {@link FormItem}) and subforms of the same type. Items and subforms can be added to the
- * form using {@link #addItem(FormItem)} or {@link #addSubform(Form)} respectively. Every form has its name, which
+ * Form consists of items (type {@link FormField}) and subforms of the same type. Items and subforms can be added to the
+ * form using {@link #addItem(FormField)} or {@link #addSubform(Form)} respectively. Every form has its name, which
  * should be assigned during construction. A form can be assigned a description which is not compulsory.
  * </p>
  * 
@@ -45,7 +45,7 @@ public interface Form {
      * 
      * @param item - the item to be added
      */
-    void addItem(FormItem item);
+    void addItem(FormField item);
 
 
     /**

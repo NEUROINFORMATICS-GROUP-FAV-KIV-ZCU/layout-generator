@@ -38,12 +38,12 @@ import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
  */
 public class SimpleFormGeneratorTest {
     
-    SimpleFormGenerator generator;
+    SimpleLayoutGenerator generator;
     
     
     @Test
     public void loadClassTest() throws ClassNotFoundException, FormNotFoundException {
-        generator = new SimpleFormGenerator(new OdmlFormProvider());
+        generator = new SimpleLayoutGenerator(new OdmlFormProvider());
         generator.loadClass("example.pojo.Person");
         
         assertNull(generator.getForm("xx"));
@@ -56,7 +56,7 @@ public class SimpleFormGeneratorTest {
     
     @Test
     public void loadPackageTest() throws FormNotFoundException {
-        generator = new SimpleFormGenerator(new OdmlFormProvider());
+        generator = new SimpleLayoutGenerator(new OdmlFormProvider());
         generator.loadPackage("example.pojo");
         
         assertEquals(2, generator.getForms().size());

@@ -30,7 +30,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.FormField;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.FormSet;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
@@ -45,7 +45,7 @@ import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 public class ClassParser {
     
     
-    /** Object used to create new {@link Form} and {@link FormItem} objects. */
+    /** Object used to create new {@link Form} and {@link FormField} objects. */
     private FormProvider formProvider;
     
     /** Last ID assigned to a form or its item. */
@@ -158,14 +158,14 @@ public class ClassParser {
     
     
     /**
-     * Creates a new {@link FormItem} representing the given field using the {@link FormProvider} object. 
+     * Creates a new {@link FormField} representing the given field using the {@link FormProvider} object. 
      * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
      * 
      * @param field the Java field representing the form item to be created
      * @return the newly created form item object
      */
-    private FormItem createItem(Field field) {
-        FormItem formItem = formProvider.newFormItem(field.getName(), field.getType());
+    private FormField createItem(Field field) {
+        FormField formItem = formProvider.newFormItem(field.getName(), field.getType());
         formItem.setId(++lastId);
         
         cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);

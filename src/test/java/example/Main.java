@@ -28,9 +28,9 @@ package example;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormGenerator;
+import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.Writer;
-import cz.zcu.kiv.formgen.core.SimpleFormGenerator;
+import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
 import cz.zcu.kiv.formgen.odml.OdmlWriter;
 
@@ -41,7 +41,7 @@ public class Main {
         
         //loadPerson();
         
-        FormGenerator gen = new SimpleFormGenerator(new OdmlFormProvider());
+        LayoutGenerator gen = new SimpleLayoutGenerator(new OdmlFormProvider());
         //Package pack = Package.getPackage("example.pojo");
         try {
             gen.loadPackage("example.pojo");
@@ -63,7 +63,7 @@ public class Main {
     
     
     private static void loadPerson() {
-        FormGenerator gen = new SimpleFormGenerator(new OdmlFormProvider());
+        LayoutGenerator gen = new SimpleLayoutGenerator(new OdmlFormProvider());
         try {
             gen.loadClass("example.pojo.Person");
             Form model = gen.getForm("Osoba");

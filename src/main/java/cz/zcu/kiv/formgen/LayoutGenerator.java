@@ -34,7 +34,7 @@ import java.util.Collection;
  *
  * @author Jakub Krauz
  */
-public interface FormGenerator {
+public interface LayoutGenerator {
     
     /**
      * Parses the class with given name and creates appropriate model.
