@@ -113,9 +113,9 @@ public class ClassParser {
                 if (isSimpleType(f.getType()))
                     form.addItem(createItem(f));
                 else if (Collection.class.isAssignableFrom(f.getType()))
-                    form.addSet(createSet(f));
+                    form.addItem(createSet(f));
                 else 
-                    form.addSubform(_parse(f.getType(), createForm(f.getType())));
+                    form.addItem(_parse(f.getType(), createForm(f.getType())));
             }
         }
         

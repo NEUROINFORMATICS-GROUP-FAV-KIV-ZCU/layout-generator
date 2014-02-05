@@ -129,9 +129,20 @@ public class OdmlFormField extends Section implements FormField {
             return -1;
     }
 
+    
     @Override
     public void setId(int id) {
         addProperty("id", id);
+    }
+
+    
+    @Override
+    public int getId() {
+        Property prop = getProperty("id");
+        if (prop != null)
+            return (Integer) prop.getValue();
+        else
+            return -1;
     }
 
 }

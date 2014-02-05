@@ -76,7 +76,7 @@ public class OdmlFormTest {
         
         try {
             OdmlForm subform = new OdmlForm(subformName);
-            odmlForm.addSubform(subform);
+            odmlForm.addItem(subform);
             assertTrue(odmlForm.containsSection(subformName));
             assertEquals(subform, odmlForm.getSection(subformName));
         } catch (Exception e) {

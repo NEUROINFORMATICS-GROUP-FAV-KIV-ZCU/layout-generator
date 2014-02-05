@@ -27,8 +27,7 @@ package cz.zcu.kiv.formgen.odml;
 
 import odml.core.Section;
 import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormField;
-import cz.zcu.kiv.formgen.FormSet;
+import cz.zcu.kiv.formgen.FormItem;
 
 
 /**
@@ -49,18 +48,8 @@ public class OdmlForm extends Section implements Form {
     }
 
     @Override
-    public void addItem(FormField item) {
+    public void addItem(FormItem item) {
         add((Section) item);
-    }
-
-    @Override
-    public void addSubform(Form subform) {
-        add((Section) subform);
-    }
-    
-    @Override
-    public void addSet(FormSet set) {
-        add((Section) set);
     }
 
     @Override
@@ -75,6 +64,24 @@ public class OdmlForm extends Section implements Form {
     @Override
     public void setId(int id) {
         addProperty("id", id);
+    }
+
+    @Override
+    public int getId() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void setLabel(String label) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public String getLabel() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

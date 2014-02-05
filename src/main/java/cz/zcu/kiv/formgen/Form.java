@@ -37,7 +37,7 @@ package cz.zcu.kiv.formgen;
  * 
  * @author Jakub Krauz
  */
-public interface Form {
+public interface Form extends FormItem {
 
 
     /**
@@ -45,23 +45,7 @@ public interface Form {
      * 
      * @param item - the item to be added
      */
-    void addItem(FormField item);
-
-
-    /**
-     * Adds the given form as a subform to this form.
-     * 
-     * @param subform - the form to be added as a subform
-     */
-    void addSubform(Form subform);
-    
-    
-    /**
-     * Adds the given set as an item to this form.
-     * 
-     * @param set - the set to be added
-     */
-    void addSet(FormSet set);
+    void addItem(FormItem item);
 
 
     /**
@@ -78,13 +62,5 @@ public interface Form {
      * @param description - the description for this form
      */
     void setDescription(String description);
-    
-    
-    /**
-     * Sets the form ID.
-     * 
-     * @param id - the ID to be set
-     */
-    void setId(int id);
 
 }

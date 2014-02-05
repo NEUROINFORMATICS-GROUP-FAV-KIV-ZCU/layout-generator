@@ -39,23 +39,7 @@ package cz.zcu.kiv.formgen;
  * 
  * @author Jakub Krauz
  */
-public interface FormField {
-    
-    
-    /**
-     * Sets the label to this form item.
-     * 
-     * @param label - label to be set
-     */
-    void setLabel(String label);
-    
-    
-    /**
-     * Gets the label of this form item.
-     * 
-     * @return the label
-     */
-    String getLabel();
+public interface FormField extends FormItem {
     
     
     /**
@@ -120,12 +104,5 @@ public interface FormField {
      */
     int getMaxLength();
     
-    
-    /**
-     * Sets the ID of this form item.
-     * 
-     * @param id the ID to be set
-     */
-    void setId(int id);
 
 }
