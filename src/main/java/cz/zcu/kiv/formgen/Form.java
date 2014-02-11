@@ -41,7 +41,7 @@ public interface Form extends FormItem {
 
 
     /**
-     * Adds the given item to this form.
+     * Adds the given item to the end of this form.
      * 
      * @param item - the item to be added
      */

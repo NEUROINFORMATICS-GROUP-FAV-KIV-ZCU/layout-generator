@@ -42,6 +42,8 @@ public class OdmlForm extends OdmlFormItem implements Form {
     private static final long serialVersionUID = 1L;
 
     private int highestItemId = 0;
+    
+    private int lastItemId = 0;
 
 
     public OdmlForm(String name) throws Exception {
@@ -57,6 +59,10 @@ public class OdmlForm extends OdmlFormItem implements Form {
             highestItemId = Math.max(highestItemId, ((OdmlForm) item).highestItemId());
         else
             highestItemId = Math.max(highestItemId, item.getId());
+        
+        if (lastItemId != 0)
+            ((OdmlFormItem) item).addProperty("layoutAbove", lastItemId);
+        lastItemId = item.getId();
             
         add((Section) item);
     }
