@@ -41,7 +41,7 @@ public class OdmlForm extends OdmlFormItem implements Form {
 
     private static final long serialVersionUID = 1L;
 
-    private static int highestItemId = 0;
+    private int highestItemId = 0;
 
 
     public OdmlForm(String name) throws Exception {
@@ -53,6 +53,11 @@ public class OdmlForm extends OdmlFormItem implements Form {
 
     @Override
     public void addItem(FormItem item) {
+        if (item instanceof OdmlForm)
+            highestItemId = Math.max(highestItemId, ((OdmlForm) item).highestItemId());
+        else
+            highestItemId = Math.max(highestItemId, item.getId());
+            
         add((Section) item);
     }
 
@@ -66,6 +71,14 @@ public class OdmlForm extends OdmlFormItem implements Form {
     @Override
     public String getDescription() {
         return getDefinition();
+    }
+    
+    
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        if (id > highestItemId)
+            highestItemId = id;
     }
 
 

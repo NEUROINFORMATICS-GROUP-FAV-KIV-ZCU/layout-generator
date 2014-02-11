@@ -55,11 +55,11 @@ public class OdmlFormProviderTest {
     
     @Test
     public void newFormItemTest() {
-        assertNull(provider.newFormItem(null, null));
-        assertNull(provider.newFormItem(null, String.class));
-        assertNull(provider.newFormItem("name", null));
+        assertNull(provider.newFormField(null, null));
+        assertNull(provider.newFormField(null, String.class));
+        assertNull(provider.newFormField("name", null));
         
-        FormField formItem = provider.newFormItem("name", String.class);
+        FormField formItem = provider.newFormField("name", String.class);
         assertNotNull(formItem);
         assertEquals(OdmlFormField.class, formItem.getClass());
         assertEquals("name", ((OdmlFormField) formItem).getName());

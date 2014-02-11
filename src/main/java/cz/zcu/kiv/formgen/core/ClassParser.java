@@ -48,9 +48,6 @@ public class ClassParser {
     /** Object used to create new {@link Form} and {@link FormField} objects. */
     private FormProvider formProvider;
     
-    /** Last ID assigned to a form or its item. */
-    private int lastId = 0;
-    
     
     
     /**
@@ -76,7 +73,7 @@ public class ClassParser {
         if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
             throw new FormNotFoundException();
         
-        return _parse(cls, createForm(cls));
+        return _parse(cls, createForm(cls, 0));
     }
     
     
@@ -107,15 +104,16 @@ public class ClassParser {
      * @return the updated form model
      */
     private Form _parse(Class<?> cls, Form form) {
+        int id = form.highestItemId() + 1;
         
         for (Field f : cls.getDeclaredFields()) {
             if (f.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.FormItem.class)) {
                 if (isSimpleType(f.getType()))
-                    form.addItem(createItem(f));
+                    form.addItem(createFormField(f, id++));
                 else if (Collection.class.isAssignableFrom(f.getType()))
-                    form.addItem(createSet(f));
+                    form.addItem(createFormSet(f, id++));
                 else 
-                    form.addItem(_parse(f.getType(), createForm(f.getType())));
+                    form.addItem(_parse(f.getType(), createForm(f.getType(), id++)));
             }
         }
         
@@ -130,9 +128,10 @@ public class ClassParser {
      * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
      * 
      * @param cls the Java class representing the form to be created
+     * @param id the ID assigned to the new form
      * @return the newly created form
      */
-    private Form createForm(Class<?> cls) {        
+    private Form createForm(Class<?> cls, int id) {        
         String name;
         if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
             name = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
@@ -150,7 +149,7 @@ public class ClassParser {
         
         Form form = formProvider.newForm(name);
         form.setDescription(definition);
-        form.setId(++lastId);
+        form.setId(id);
         
         return form;
     }
@@ -162,26 +161,27 @@ public class ClassParser {
      * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
      * 
      * @param field the Java field representing the form item to be created
+     * @param id the ID assigned to the new form field
      * @return the newly created form item object
      */
-    private FormField createItem(Field field) {
-        FormField formItem = formProvider.newFormItem(field.getName(), field.getType());
-        formItem.setId(++lastId);
+    private FormField createFormField(Field field, int id) {
+        FormField formField = formProvider.newFormField(field.getName(), field.getType());
+        formField.setId(id);
         
         cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
         String label = formItemAnnot.label();
-        formItem.setLabel(label.isEmpty() ? field.getName() : label);
-        formItem.setRequired(formItemAnnot.required());
+        formField.setLabel(label.isEmpty() ? field.getName() : label);
+        formField.setRequired(formItemAnnot.required());
         
         if (field.isAnnotationPresent(FormItemRestriction.class)) {
             FormItemRestriction restriction = field.getAnnotation(FormItemRestriction.class);
             if (restriction.minLength() != -1)
-                formItem.setMinLength(restriction.minLength());
+                formField.setMinLength(restriction.minLength());
             if (restriction.maxLength() != -1)
-                formItem.setMaxLength(restriction.maxLength());
+                formField.setMaxLength(restriction.maxLength());
         }
         
-        return formItem;
+        return formField;
     }
     
     
@@ -194,10 +194,11 @@ public class ClassParser {
      * <p>Note that the Collection should be parameterized so as the method can determine items
      * of the collection. Otherwise null is returned.</p>
      * 
-     * @param field the Java filed (of Collection type) representing the set to be created
+     * @param field the Java field (of Collection type) representing the set to be created
+     * @param id the ID assigned to the new form set
      * @return the newly created set object, or null if the collection is not parameterized
      */
-    private FormSet createSet(Field field) {
+    private FormSet createFormSet(Field field, int id) {
         FormSet formSet = null;
         
         if (field.getGenericType() instanceof ParameterizedType) {
@@ -211,13 +212,17 @@ public class ClassParser {
                 String label = formItemAnnot.label();
                 formSet.setLabel(label.isEmpty() ? field.getName() : label);
                 formSet.setRequired(formItemAnnot.required());
-                formSet.setId(++lastId);
 
                 Class<?> clazz = (Class<?>) parameters[0];
                 if (isSimpleType(clazz)) {
-                    formSet.setContent(formProvider.newFormItem(clazz.getSimpleName(), clazz));
+                    FormField formField = formProvider.newFormField(clazz.getSimpleName(), clazz);
+                    formField.setId(id);
+                    formSet.setContent(formField);
+                    formSet.setId(id + 1);
                 } else {
-                    formSet.setContent(_parse(clazz, createForm(clazz)));
+                    Form form = createForm(clazz, id);
+                    formSet.setContent(_parse(clazz, form));
+                    formSet.setId(form.highestItemId() + 1);
                 }
             }
             

@@ -39,7 +39,7 @@ public interface FormProvider {
     
     Form newForm(String name);
     
-    FormField newFormItem(String name, Class<?> type);
+    FormField newFormField(String name, Class<?> type);
     
     FormSet newFormSet(String name, Class<?> type);
     

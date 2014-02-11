@@ -72,7 +72,7 @@ public class OdmlFormProvider implements FormProvider {
      * @see cz.zcu.kiv.formgen.core.FormProvider#newFormItem(java.lang.String, java.lang.Class)
      */
     @Override
-    public FormField newFormItem(String name, Class<?> type) {
+    public FormField newFormField(String name, Class<?> type) {
         if (name == null || type == null)
             return null;
         FormField formItem = null;
@@ -107,5 +107,8 @@ public class OdmlFormProvider implements FormProvider {
         
         return formSet;
     }
+
+
+
 
 }
