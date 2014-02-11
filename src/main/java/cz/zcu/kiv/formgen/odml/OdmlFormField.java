@@ -43,7 +43,8 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
         super(name, OdmlTypeMapper.instance().mapType(type));
         setDatatype(OdmlTypeMapper.instance().mapDatatype(type));
     }
-    
+
+
     protected OdmlFormField(String name, String type) throws Exception {
         super(name, type);
     }
@@ -111,6 +112,78 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
         else
             return -1;
     }
-    
+
+
+    @Override
+    public void setMinValue(Number value) {
+        addProperty("min-value", value);
+    }
+
+
+    @Override
+    public Number getMinValue() {
+        Property prop = getProperty("min-value");
+        if (prop != null)
+            return (Number) prop.getValue();
+        else
+            return null;
+    }
+
+
+    @Override
+    public void setMaxValue(Number value) {
+        addProperty("max-value", value);
+    }
+
+
+    @Override
+    public Number getMaxValue() {
+        Property prop = getProperty("max-value");
+        if (prop != null)
+            return (Number) prop.getValue();
+        else
+            return null;
+    }
+
+
+    @Override
+    public void setDefaultValue(Object value) {
+        addProperty("default-value", value);
+    }
+
+
+    @Override
+    public Object getDefaultValue() {
+        Property prop = getProperty("default-value");
+        if (prop != null)
+            return (Object) prop.getValue();
+        else
+            return null;
+    }
+
+
+    @Override
+    public void setPossibleValues(Object[] values) {
+        try {
+            Property prop = new Property("values");
+            for (Object o : values)
+                prop.addValue(o);
+            add(prop);
+        } catch (Exception e) {
+            // exception is never thrown
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public Object[] getPossibleValues() {
+        Property prop = getProperty("values");
+        if (prop != null)
+            return prop.getValues().toArray();
+        else
+            return null;
+    }
+
 
 }

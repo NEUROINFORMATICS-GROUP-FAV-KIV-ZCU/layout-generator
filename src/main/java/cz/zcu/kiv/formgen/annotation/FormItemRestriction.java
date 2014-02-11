@@ -46,4 +46,16 @@ public @interface FormItemRestriction {
     /** The maximum length of the field. */
     int maxLength() default -1;
     
+    /** The minimum value (for numbers only). */
+    double minValue() default Double.NaN;
+    
+    /** The maximum value (for numbers only). */
+    double maxValue() default Double.NaN;
+    
+    /** Default value (for text items only). */
+    String defaultValue() default "";
+    
+    /** Enumeration of possible values (text). */
+    String[] values() default "";
+    
 }

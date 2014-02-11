@@ -131,7 +131,7 @@ public class ClassParser {
      * @param id the ID assigned to the new form
      * @return the newly created form
      */
-    private Form createForm(Class<?> cls, int id) {        
+    private Form createForm(Class<?> cls, int id) {
         String name;
         if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
             name = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
@@ -179,6 +179,14 @@ public class ClassParser {
                 formField.setMinLength(restriction.minLength());
             if (restriction.maxLength() != -1)
                 formField.setMaxLength(restriction.maxLength());
+            if (!Double.isNaN(restriction.minValue()))  
+                formField.setMinValue(restriction.minValue());   // TODO prevest na celociselny typ pro celociselne polozky
+            if (!Double.isNaN(restriction.maxValue()))
+                formField.setMaxValue(restriction.maxValue());   // TODO prevest na celociselny typ pro celociselne polozky
+            if (!restriction.defaultValue().isEmpty())
+                formField.setDefaultValue(restriction.defaultValue());
+            if (restriction.values().length > 1)
+                formField.setPossibleValues(restriction.values());
         }
         
         return formField;
