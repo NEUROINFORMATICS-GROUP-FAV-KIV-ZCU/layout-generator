@@ -26,7 +26,6 @@
 package cz.zcu.kiv.formgen.odml;
 
 import odml.core.Property;
-import odml.core.Section;
 import cz.zcu.kiv.formgen.FormField;
 
 
@@ -34,7 +33,7 @@ import cz.zcu.kiv.formgen.FormField;
  * 
  * @author Jakub Krauz
  */
-public class OdmlFormField extends Section implements FormField {
+public class OdmlFormField extends OdmlFormItem implements FormField {
 
 
     private static final long serialVersionUID = 1L;
@@ -47,22 +46,6 @@ public class OdmlFormField extends Section implements FormField {
     
     protected OdmlFormField(String name, String type) throws Exception {
         super(name, type);
-    }
-
-
-    @Override
-    public void setLabel(String label) {
-        addProperty("label", label);
-    }
-
-
-    @Override
-    public String getLabel() {
-        Property prop = getProperty("label");
-        if (prop != null)
-            return (String) prop.getValue();
-        else
-            return null;
     }
 
 
@@ -128,21 +111,6 @@ public class OdmlFormField extends Section implements FormField {
         else
             return -1;
     }
-
     
-    @Override
-    public void setId(int id) {
-        addProperty("id", id);
-    }
-
-    
-    @Override
-    public int getId() {
-        Property prop = getProperty("id");
-        if (prop != null)
-            return (Integer) prop.getValue();
-        else
-            return -1;
-    }
 
 }

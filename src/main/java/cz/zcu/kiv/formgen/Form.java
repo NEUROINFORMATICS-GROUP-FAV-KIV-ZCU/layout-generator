@@ -46,12 +46,20 @@ public interface Form extends FormItem {
      * @param item - the item to be added
      */
     void addItem(FormItem item);
+    
+    
+    /**
+     * Returns the highest ID of contained form items.
+     * 
+     * @return the highest ID
+     */
+    int highestItemId();
 
 
     /**
      * Returns the name of this form.
      * 
-     * @return name of this form
+     * @return the name
      */
     String getName();
 
@@ -62,5 +70,13 @@ public interface Form extends FormItem {
      * @param description - the description for this form
      */
     void setDescription(String description);
+    
+    
+    /**
+     * Gets the form's description.
+     * 
+     * @return the description
+     */
+    String getDescription();
 
 }
