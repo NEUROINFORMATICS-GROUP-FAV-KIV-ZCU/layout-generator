@@ -84,13 +84,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
 
     @Override
     public void setMinLength(int value) {
-        addProperty("min-length", value);
+        addProperty("minLength", value);
     }
 
 
     @Override
     public int getMinLength() {
-        Property prop = getProperty("min-length");
+        Property prop = getProperty("minLength");
         if (prop != null)
             return (Integer) prop.getValue();
         else
@@ -100,13 +100,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
 
     @Override
     public void setMaxLength(int value) {
-        addProperty("max-length", value);
+        addProperty("maxLength", value);
     }
 
 
     @Override
     public int getMaxLength() {
-        Property prop = getProperty("max-length");
+        Property prop = getProperty("maxLength");
         if (prop != null)
             return (Integer) prop.getValue();
         else
@@ -116,13 +116,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
 
     @Override
     public void setMinValue(Number value) {
-        addProperty("min-value", value);
+        addProperty("minValue", value);
     }
 
 
     @Override
     public Number getMinValue() {
-        Property prop = getProperty("min-value");
+        Property prop = getProperty("minValue");
         if (prop != null)
             return (Number) prop.getValue();
         else
@@ -132,13 +132,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
 
     @Override
     public void setMaxValue(Number value) {
-        addProperty("max-value", value);
+        addProperty("maxValue", value);
     }
 
 
     @Override
     public Number getMaxValue() {
-        Property prop = getProperty("max-value");
+        Property prop = getProperty("maxValue");
         if (prop != null)
             return (Number) prop.getValue();
         else
@@ -148,13 +148,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
 
     @Override
     public void setDefaultValue(Object value) {
-        addProperty("default-value", value);
+        addProperty("defaultValue", value);
     }
 
 
     @Override
     public Object getDefaultValue() {
-        Property prop = getProperty("default-value");
+        Property prop = getProperty("defaultValue");
         if (prop != null)
             return (Object) prop.getValue();
         else
