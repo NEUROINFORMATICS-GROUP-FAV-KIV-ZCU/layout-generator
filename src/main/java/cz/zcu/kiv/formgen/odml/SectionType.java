@@ -35,8 +35,8 @@ public enum SectionType {
     FORM       ("form"), 
     TEXTBOX    ("textbox"), 
     CHECKBOX   ("checkbox"),
-    DATE       ("date"),
-    COMBOBOX   ("combobox"), 
+    COMBOBOX   ("combobox"),
+    CHOICE     ("choice"),
     IMAGE      ("image"),
     SET        ("set");
     

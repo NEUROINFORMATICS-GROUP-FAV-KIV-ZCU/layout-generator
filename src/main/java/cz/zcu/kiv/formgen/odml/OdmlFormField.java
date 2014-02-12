@@ -34,7 +34,8 @@ import cz.zcu.kiv.formgen.FormField;
  * @author Jakub Krauz
  */
 public class OdmlFormField extends OdmlFormItem implements FormField {
-
+    
+    private static final int COMBOBOX_MAX_ITEMS = 5;
 
     private static final long serialVersionUID = 1L;
 
@@ -164,6 +165,11 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
 
     @Override
     public void setPossibleValues(Object[] values) {
+        if (values.length <= COMBOBOX_MAX_ITEMS)
+            setType(SectionType.COMBOBOX.getValue());
+        else
+            setType(SectionType.CHOICE.getValue());
+        
         try {
             Property prop = new Property("values");
             for (Object o : values)
