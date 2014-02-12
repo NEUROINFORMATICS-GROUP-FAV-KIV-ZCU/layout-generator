@@ -41,7 +41,7 @@ public class OdmlWriter implements Writer {
     public void write(Form form, OutputStream outputStream) {
         Section rootSection = new Section();
         rootSection.add((Section) form);
-        odml.core.OdmlWriter writer = new odml.core.OdmlWriter(rootSection);
+        odml.core.Writer writer = new odml.core.Writer(rootSection);
         writer.write(outputStream);
     }
 
