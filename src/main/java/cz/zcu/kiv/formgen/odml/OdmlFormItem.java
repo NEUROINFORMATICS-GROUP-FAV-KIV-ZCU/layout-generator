@@ -38,6 +38,8 @@ public class OdmlFormItem extends Section implements FormItem {
 
     private static final long serialVersionUID = 1L;
     
+    private int id = -1;
+    
     
     public OdmlFormItem(String name, String type) throws Exception {
         super(name, type);
@@ -46,17 +48,21 @@ public class OdmlFormItem extends Section implements FormItem {
 
     @Override
     public void setId(int id) {
+        this.id = id;
         addProperty("id", id);
     }
 
     
     @Override
     public int getId() {
-        Property prop = getProperty("id");
+        // BUG v odml-java-lib??
+        // pokud neni property predtim nastaveno, pada na stack overflow
+        /*Property prop = getProperty("id");
         if (prop != null)
             return (Integer) prop.getValue();
         else
-            return -1;
+            return -1;*/
+        return id;
     }
 
 
