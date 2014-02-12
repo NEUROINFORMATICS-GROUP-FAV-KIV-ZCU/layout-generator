@@ -28,6 +28,7 @@ package example.pojo;
 import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItem;
+import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 
 
 @Form("Adresa")
@@ -41,6 +42,7 @@ public class Address {
     private String street;
     
     @FormItem(required = true)
+    @FormItemRestriction(minValue = 1)
     private int number;
     
     

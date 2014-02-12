@@ -28,17 +28,16 @@ package cz.zcu.kiv.formgen.odml;
 import java.util.HashMap;
 import java.util.Map;
 import cz.zcu.kiv.formgen.TypeMapper;
+import cz.zcu.kiv.formgen.core.AbstractTypeMapper;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class OdmlTypeMapper implements TypeMapper {
+public class OdmlTypeMapper extends AbstractTypeMapper implements TypeMapper {
         
     private static final Map<Class<?>, SectionType> TYPES = new HashMap<Class<?>, SectionType>();
-    
-    private static final Map<Class<?>, Class<?>> WRAPPER_TYPES = new HashMap<Class<?>, Class<?>>();
     
     private static final Map<Class<?>, FormItemDatatype> DATATYPES = new HashMap<Class<?>, FormItemDatatype>();
     
@@ -58,18 +57,6 @@ public class OdmlTypeMapper implements TypeMapper {
         TYPES.put(java.util.Date.class, SectionType.TEXTBOX);
         TYPES.put(java.sql.Date.class, SectionType.TEXTBOX);
         TYPES.put(java.util.Collection.class, SectionType.SET);
-    }
-    
-    
-    static {
-        WRAPPER_TYPES.put(Boolean.class, Boolean.TYPE);
-        WRAPPER_TYPES.put(Byte.class, Byte.TYPE);
-        WRAPPER_TYPES.put(Character.class, Character.TYPE);
-        WRAPPER_TYPES.put(Short.class, Short.TYPE);
-        WRAPPER_TYPES.put(Integer.class, Integer.TYPE);
-        WRAPPER_TYPES.put(Long.class, Long.TYPE);
-        WRAPPER_TYPES.put(Float.class, Float.TYPE);
-        WRAPPER_TYPES.put(Double.class, Double.TYPE);
     }
     
     
@@ -114,7 +101,7 @@ public class OdmlTypeMapper implements TypeMapper {
     @Override
     public String mapType(Class<?> type) {
         if (isWrapperType(type))
-            type = WRAPPER_TYPES.get(type);
+            type = toPrimitiveType(type);
         
         if (TYPES.containsKey(type))
             return TYPES.get(type).getValue();
@@ -129,9 +116,10 @@ public class OdmlTypeMapper implements TypeMapper {
     }
     
     
+    
     public String mapDatatype(Class<?> type) {
         if (isWrapperType(type))
-            type = WRAPPER_TYPES.get(type);
+            type = toPrimitiveType(type);
         
         if (DATATYPES.containsKey(type))
             return DATATYPES.get(type).getValue();
@@ -144,11 +132,6 @@ public class OdmlTypeMapper implements TypeMapper {
         
         // default
         return FormItemDatatype.STRING.getValue();
-    }
-    
-    
-    private boolean isWrapperType(Class<?> cls) {
-        return WRAPPER_TYPES.containsKey(cls);
     }
 
 

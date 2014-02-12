@@ -179,10 +179,18 @@ public class ClassParser {
                 formField.setMinLength(restriction.minLength());
             if (restriction.maxLength() != -1)
                 formField.setMaxLength(restriction.maxLength());
-            if (!Double.isNaN(restriction.minValue()))  
-                formField.setMinValue(restriction.minValue());   // TODO prevest na celociselny typ pro celociselne polozky
-            if (!Double.isNaN(restriction.maxValue()))
-                formField.setMaxValue(restriction.maxValue());   // TODO prevest na celociselny typ pro celociselne polozky
+            if (!Double.isNaN(restriction.minValue())) {
+                if (isIntegerType(field.getType()))
+                    formField.setMinValue((int) restriction.minValue());
+                else
+                    formField.setMinValue(restriction.minValue());
+            }
+            if (!Double.isNaN(restriction.maxValue())) {
+                if (isIntegerType(field.getType()))
+                    formField.setMaxValue((int) restriction.maxValue());
+                else
+                    formField.setMaxValue(restriction.maxValue());
+            }
             if (!restriction.defaultValue().isEmpty())
                 formField.setDefaultValue(restriction.defaultValue());
             if (restriction.values().length > 1)
@@ -253,6 +261,19 @@ public class ClassParser {
      */
     private boolean isSimpleType(Class<?> type) {
         return formProvider.typeMapper().isSimpleType(type);
+    }
+    
+    
+    
+    /**
+     * Determines whether the given type is a whole-number type (i.e. byte, short, int, long or their object wrappers).
+     * 
+     * @param type the Java type
+     * @return true if the type is a whole-number type, false otherwise
+     */
+    private boolean isIntegerType(Class<?> type) {
+        Class<?> cls = type.isPrimitive() ? type : AbstractTypeMapper.toPrimitiveType(type);
+        return (cls == byte.class || cls == short.class || cls == int.class || cls == long.class);
     }
     
 

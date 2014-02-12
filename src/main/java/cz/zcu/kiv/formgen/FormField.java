@@ -110,7 +110,7 @@ public interface FormField extends FormItem {
      * 
      * @param value the minimum value
      */
-    void setMinValue(Number value);
+    void setMinValue(Object value);
 
     
     /**

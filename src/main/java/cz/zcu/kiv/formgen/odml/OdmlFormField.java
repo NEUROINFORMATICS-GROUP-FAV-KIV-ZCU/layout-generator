@@ -115,7 +115,7 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
 
 
     @Override
-    public void setMinValue(Number value) {
+    public void setMinValue(Object value) {
         addProperty("minValue", value);
     }
 
