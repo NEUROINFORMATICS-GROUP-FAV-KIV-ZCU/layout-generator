@@ -110,10 +110,15 @@ public class ClassParser {
             if (f.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.FormItem.class)) {
                 if (isSimpleType(f.getType()))
                     form.addItem(createFormField(f, id++));
-                else if (Collection.class.isAssignableFrom(f.getType()))
-                    form.addItem(createFormSet(f, id++));
-                else 
-                    form.addItem(_parse(f.getType(), createForm(f.getType(), id++)));
+                else if (Collection.class.isAssignableFrom(f.getType())) {
+                    FormSet set = createFormSet(f, id++);
+                    form.addItem(set);
+                    id = set.getId() + 1;
+                } else {
+                    Form subform = _parse(f.getType(), createForm(f.getType(), id++));
+                    form.addItem(subform);
+                    id = subform.highestItemId() + 1;
+                }
             }
         }
         

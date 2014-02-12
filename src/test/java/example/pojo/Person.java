@@ -49,16 +49,18 @@ public class Person {
     private int age;
     
     @FormItem
+    private Set<Address> addresses;
+    
+    @FormItem
     private boolean clever;
+ 
+    //@FormItem
+    private Address address;
     
     @FormItem
     private Date birth;
     
-    @FormItem
-    private Set<Address> addresses;
     
-    //@FormItem
-    private Address address;
     
     
     public Person(int id, String name, int age, Date birth) {
