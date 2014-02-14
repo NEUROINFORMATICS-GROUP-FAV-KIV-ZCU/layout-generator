@@ -38,7 +38,7 @@ import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 
 
 /**
- * Parses Java classes using reflection and creates appropriate model.
+ * Parses Java classes using reflection and creates an appropriate model.
  *
  * @author Jakub Krauz
  */
