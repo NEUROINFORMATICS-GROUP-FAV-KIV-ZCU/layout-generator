@@ -44,6 +44,8 @@ public class OdmlForm extends OdmlFormItem implements Form {
     private int highestItemId = 0;
     
     private int lastItemId = 0;
+    
+    private String layoutName;
 
 
     public OdmlForm(String name) throws Exception {
@@ -61,7 +63,7 @@ public class OdmlForm extends OdmlFormItem implements Form {
             highestItemId = Math.max(highestItemId, item.getId());
         
         if (lastItemId != 0)
-            ((OdmlFormItem) item).addProperty("layoutAbove", lastItemId);
+            ((OdmlFormItem) item).addProperty("idTop", lastItemId);
         lastItemId = item.getId();
             
         add((Section) item);
@@ -91,6 +93,19 @@ public class OdmlForm extends OdmlFormItem implements Form {
     @Override
     public int highestItemId() {
         return highestItemId;
+    }
+
+
+    @Override
+    public void setLayoutName(String name) {
+        this.layoutName = name;
+        addProperty("layoutName", name);
+    }
+    
+    
+    @Override
+    public String getLayoutName() {
+        return layoutName;
     }
 
 }

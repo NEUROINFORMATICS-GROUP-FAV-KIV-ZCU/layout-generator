@@ -73,7 +73,7 @@ public class ClassParser {
         if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
             throw new FormNotFoundException();
         
-        return _parse(cls, createForm(cls, 0));
+        return _parse(cls, createForm(cls, 0, true));
     }
     
     
@@ -127,7 +127,6 @@ public class ClassParser {
     
     
     
-    
     /**
      * Creates a new {@link Form} representing the given class using the {@link FormProvider} object. 
      * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
@@ -137,6 +136,22 @@ public class ClassParser {
      * @return the newly created form
      */
     private Form createForm(Class<?> cls, int id) {
+        return createForm(cls, id, false);
+    }
+    
+    
+    
+    
+    /**
+     * Creates a new {@link Form} representing the given class using the {@link FormProvider} object. 
+     * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
+     * 
+     * @param cls the Java class representing the form to be created
+     * @param id the ID assigned to the new form
+     * @param setLayoutName if true, the layoutName property is added to the form
+     * @return the newly created form
+     */
+    private Form createForm(Class<?> cls, int id, boolean setLayoutName) {
         String name;
         if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
             name = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
@@ -155,6 +170,8 @@ public class ClassParser {
         Form form = formProvider.newForm(name);
         form.setDescription(definition);
         form.setId(id);
+        if (setLayoutName)
+            form.setLayoutName(name + "-generated");
         
         return form;
     }

@@ -78,5 +78,21 @@ public interface Form extends FormItem {
      * @return the description
      */
     String getDescription();
+    
+    
+    /**
+     * Sets the name of the form layout.
+     * 
+     * @param name the name of the layout
+     */
+    void setLayoutName(String name);
+    
+    
+    /**
+     * Gets the name of the form layout.
+     * 
+     * @return the name of the form layout
+     */
+    String getLayoutName();
 
 }
