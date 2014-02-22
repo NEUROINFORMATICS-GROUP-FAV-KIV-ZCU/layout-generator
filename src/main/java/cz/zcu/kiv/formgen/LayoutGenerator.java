@@ -39,19 +39,19 @@ public interface LayoutGenerator {
     /**
      * Parses the class with given name and creates appropriate model.
      * 
-     * @param name - name of the class
+     * @param names - name(s) of the class(es)
      * @throws ClassNotFoundException if the class with the given name cannot be found
      * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on the given class
      */
-    void loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
+    void loadClass(String... names) throws ClassNotFoundException, FormNotFoundException;
     
     /**
      * Parses the given class and creates appropriate model.
      * 
-     * @param cls - class to be parsed
+     * @param cls - class(es) to be parsed
      * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on the given class
      */
-    void loadClass(Class<?> cls) throws FormNotFoundException;
+    void loadClass(Class<?>... cls) throws FormNotFoundException;
     
     /**
      * Parses all classes in the given package.

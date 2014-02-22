@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * Form.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * MultipleForm.java, 22. 2. 2014 17:25:57 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -32,20 +32,21 @@ import java.lang.annotation.Target;
 
 
 /**
- * This annotation is used to mark POJO classes that should be transformed
- * to a form. Every annotated class is transformed to a separate form.
- * If you want to compose a form from several classes see {@link MultiForm}.
+ * This annotation is used to mark several POJO classes that should be transformed
+ * to one (multiple) form. Note the diference from {@link Form} which maps one class
+ * to one form.
  *
  * @author Jakub Krauz
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Form {
+public @interface MultiForm {
     
-    /** Name of the form. Default is the name of the class. */
-    String value() default "";
-
+    /** Name of the form. It identifies the form, i.e. it must have exactly the same
+     * value for all classes that shall be transformed to one form. */
+    String value();
+    
     /** Label of the form. */
     String label() default "";
-    
+
 }

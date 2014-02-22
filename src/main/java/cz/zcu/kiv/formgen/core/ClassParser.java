@@ -31,7 +31,6 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormField;
-import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.FormSet;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
@@ -62,36 +61,43 @@ public class ClassParser {
     
     
     /**
-     * Parses the given class and adds it to a newly created {@link Form} model.
+     * Parses the given class and creates a new {@link Form} model.
      * 
      * @param cls the Java class to be parsed
      * @return the newly created {@link Form} object
-     * @throws FormNotFoundException if the {@link cz.zcu.kiv.formgen.annotation.Form Form} annotation was not 
-     *                                present over the given class object
      */
-    public Form parse(Class<?> cls) throws FormNotFoundException {
-        if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
-            throw new FormNotFoundException();
-        
+    public Form parse(Class<?> cls) {
         return _parse(cls, createForm(cls, 0, true));
     }
     
     
     
     /**
-     * Parses the given class and adds it to an existing {@link Form} model.
+     * Parses the given class and adds it as a subform to an existing {@link Form} model
+     * (used for multiple-class forms).
      * 
      * @param cls the Java class to be parsed
      * @param form the model in which the parsed class is to be added
      * @return the updated form model
-     * @throws FormNotFoundException if the {@link cz.zcu.kiv.formgen.annotation.Form Form} annotation was not 
-     *                                present over the given class object
      */
-    public Form parse(Class<?> cls, Form form) throws FormNotFoundException {
-        if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
-            throw new FormNotFoundException();
-        
-        return _parse(cls, form);
+    public void parse(Class<?> cls, Form form) {
+        Form subform = createForm(cls, form.highestItemId() + 1);
+        form.addItem(_parse(cls, subform));
+    }
+    
+    
+    
+    /**
+     * Creates a multi-form object defined by the annotation.
+     * 
+     * @param annotation the {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation
+     * @return new form defined by the annotation
+     */
+    public Form createMultiform(cz.zcu.kiv.formgen.annotation.MultiForm annotation) {
+        Form form = formProvider.newForm(annotation.value());
+        form.setId(0);
+        form.setLayoutName(annotation.value() + "-generated");
+        return form;
     }
     
     
@@ -138,7 +144,6 @@ public class ClassParser {
     private Form createForm(Class<?> cls, int id) {
         return createForm(cls, id, false);
     }
-    
     
     
     

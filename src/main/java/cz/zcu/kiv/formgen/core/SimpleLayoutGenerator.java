@@ -59,41 +59,42 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     
     
     @Override
-    public void loadClass(String name) throws ClassNotFoundException, FormNotFoundException {
-        Class<?> cls = Class.forName(name);
-        loadClass(cls);
+    public void loadClass(String... names) throws ClassNotFoundException, FormNotFoundException {
+        Class<?>[] classes = new Class<?>[names.length];
+        for (int i = 0; i < classes.length; i++)
+            classes[i] = Class.forName(names[i]);
+        loadClass(classes);
     }
     
     
     @Override
-    public void loadClass(Class<?> cls) throws FormNotFoundException {
-        String formName = formName(cls);
-        if (forms.containsKey(formName)) {
-            parser.parse(cls, forms.get(formName));
-        } else {
-            Form form = parser.parse(cls);
-            forms.put(form.getName(), form);
+    public void loadClass(Class<?>... cls) throws FormNotFoundException {
+        for (Class<?> c : cls) {
+            if (c.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
+                loadClass(c, false);
+            else if (c.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.MultiForm.class))
+                loadClass(c, true);
+            else
+                throw new FormNotFoundException();
         }
     }
 
     
     @Override
     public void loadPackage(String name) throws FormNotFoundException {
-        /*List<ClassLoader> classLoadersList = new LinkedList<ClassLoader>();
-        classLoadersList.add(ClasspathHelper.contextClassLoader());
-        classLoadersList.add(ClasspathHelper.staticClassLoader());
-
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-            .setScanners(new SubTypesScanner(false), new ResourcesScanner())
-            .setUrls(ClasspathHelper.forClassLoader(classLoadersList.toArray(new ClassLoader[0])))
-            .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(name))));
-        
-        //Set<Class<? extends Object>> classes = reflections.getSubTypesOf(Object.class);  */
-        
         Reflections reflections = new Reflections(name);
-        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.Form.class);
+        Set<Class<?>> classes;
+        
+        /* simple forms */
+        classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.Form.class);
         for (Class<?> cls : classes) {
-            loadClass(cls);
+            loadClass(cls, false);
+        }
+        
+        /* multiple (cross-class) forms */
+        classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.MultiForm.class);
+        for (Class<?> cls : classes) {
+            loadClass(cls, true);
         }
     }
 
@@ -103,7 +104,8 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
         if (pack == null)
             return;
         
-        // calling "new Reflections(Package);" can lead to "ReflectionsException: could not use param package ..."
+        // note: calling "new Reflections(Package);" can lead to 
+        // "ReflectionsException: could not use param package ..."
         loadPackage(pack.getName());
     }
     
@@ -121,20 +123,31 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     
     
     
-    
     /**
-     * Determines name of the form defined by the given POJO class.
+     * Loads the given class cls to the model. If the multiForm parameter is false, cls MUST
+     * be annotated with the {@link cz.zcu.kiv.formgen.annotation.Form Form} annotation.
+     * Otherwise (if multiForm is true), cls MUST be annotated with the
+     * {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation.
      * 
-     * @param cls the POJO class
-     * @return name of the form
-     * @throws FormNotFoundException if the {@link cz.zcu.kiv.formgen.annotation.Form Form} annotation is not present
+     * @param cls the class to be loaded
+     * @param multiForm if true, the class is a part of a multi-form
      */
-    private String formName(Class<?> cls) throws FormNotFoundException {
-        if (!cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
-            throw new FormNotFoundException();
-        
-        String name = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
-        return (!name.isEmpty()) ? name : cls.getSimpleName();
+    private void loadClass(Class<?> cls, boolean multiForm) {
+        if (multiForm) {
+            cz.zcu.kiv.formgen.annotation.MultiForm annotation = 
+                    cls.getAnnotation(cz.zcu.kiv.formgen.annotation.MultiForm.class);
+            String name = annotation.value();
+            if (forms.containsKey(name))
+                parser.parse(cls, forms.get(name));
+            else {
+                Form form = parser.createMultiform(annotation);
+                parser.parse(cls, form);
+                forms.put(name, form);
+            }
+        } else {
+            Form form = parser.parse(cls);
+            forms.put(form.getName(), form);
+        }
     }
 
 
