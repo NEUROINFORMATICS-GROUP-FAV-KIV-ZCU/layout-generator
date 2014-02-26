@@ -146,7 +146,7 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
             }
         } else {
             Form form = parser.parse(cls);
-            forms.put(form.getName(), form);
+            forms.put(form.getFormName(), form);
         }
     }
 

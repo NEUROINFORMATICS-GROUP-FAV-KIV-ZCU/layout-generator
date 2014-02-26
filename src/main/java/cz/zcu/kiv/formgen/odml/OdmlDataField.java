@@ -19,59 +19,65 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlFormProviderTest.java, 8. 1. 2014 15:30:30 Jakub Krauz
+ * OdmlDataField.java, 26. 2. 2014 11:20:49 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.odml;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormField;
-import cz.zcu.kiv.formgen.TypeMapper;
+import java.util.Collection;
+import cz.zcu.kiv.formgen.DataField;
+import odml.core.Property;
 
 
 /**
- * Contains JUnit tests for the {@link OdmlFormProvider} class.
  *
  * @author Jakub Krauz
  */
-public class OdmlFormProviderTest {
+public class OdmlDataField extends Property implements DataField {
     
-    private OdmlFormProvider provider = new OdmlFormProvider();
+    private static final long serialVersionUID = -3253266139533736224L;
 
     
-    @Test
-    public void newFormTest() {
-        assertNull(provider.newForm(null));
+    
+    public OdmlDataField(String name, Object value) throws Exception {
+        super(name, value);
+    }
+    
+    
+    @Override
+    public void addValues(Collection<Object> values) {
+        for (Object value : values)
+            addValue(value);
+    }
+    
+    
+    
+    
+    
+
+    @Override
+    public void setId(int id) {
+        // TODO Auto-generated method stub
         
-        Form form = provider.newForm("test");
-        assertNotNull(form);
-        assertEquals(OdmlForm.class, form.getClass());
-        assertEquals("test", form.getFormName());
     }
-    
-    
-    @Test
-    public void newFormItemTest() {
-        assertNull(provider.newFormField(null, null));
-        assertNull(provider.newFormField(null, String.class));
-        assertNull(provider.newFormField("name", null));
+
+    @Override
+    public int getId() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void setLabel(String label) {
+        // TODO Auto-generated method stub
         
-        FormField formItem = provider.newFormField("name", String.class);
-        assertNotNull(formItem);
-        assertEquals(OdmlFormField.class, formItem.getClass());
-        assertEquals("name", ((OdmlFormField) formItem).getName());
     }
-    
-    
-    @Test
-    public void typeMapperTest() {
-        TypeMapper mapper = provider.typeMapper();
-        assertNotNull(mapper);
-        assertEquals(OdmlTypeMapper.class, mapper.getClass());
+
+    @Override
+    public String getLabel() {
+        // TODO Auto-generated method stub
+        return null;
     }
-    
     
 }

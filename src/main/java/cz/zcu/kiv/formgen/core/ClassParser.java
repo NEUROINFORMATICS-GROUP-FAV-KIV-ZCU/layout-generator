@@ -31,6 +31,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormField;
+import cz.zcu.kiv.formgen.FormItem;
 import cz.zcu.kiv.formgen.FormSet;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
@@ -41,12 +42,7 @@ import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
  *
  * @author Jakub Krauz
  */
-public class ClassParser {
-    
-    
-    /** Object used to create new {@link Form} and {@link FormField} objects. */
-    private FormProvider formProvider;
-    
+public class ClassParser extends AbstractParser<Class<?>> {
     
     
     /**
@@ -55,7 +51,7 @@ public class ClassParser {
      * @param formProvider object implementing the FormProvider interface
      */
     public ClassParser(FormProvider formProvider) {
-        this.formProvider = formProvider;
+        super(formProvider);
     }
     
     
@@ -66,8 +62,11 @@ public class ClassParser {
      * @param cls the Java class to be parsed
      * @return the newly created {@link Form} object
      */
+    @Override
     public Form parse(Class<?> cls) {
-        return _parse(cls, createForm(cls, 0, true));
+        Form form = super.parse(cls);
+        form.setLayoutName(form.getFormName() + "-generated");
+        return form;
     }
     
     
@@ -80,9 +79,9 @@ public class ClassParser {
      * @param form the model in which the parsed class is to be added
      * @return the updated form model
      */
+    @Override
     public void parse(Class<?> cls, Form form) {
-        Form subform = createForm(cls, form.highestItemId() + 1);
-        form.addItem(_parse(cls, subform));
+        form.addItem(_parse(cls, form.highestItemId() + 1));
     }
     
     
@@ -93,11 +92,19 @@ public class ClassParser {
      * @param annotation the {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation
      * @return new form defined by the annotation
      */
+    @Override
     public Form createMultiform(cz.zcu.kiv.formgen.annotation.MultiForm annotation) {
-        Form form = formProvider.newForm(annotation.value());
+        Form form = super.createMultiform(annotation);
         form.setId(0);
         form.setLayoutName(annotation.value() + "-generated");
         return form;
+    }
+    
+    
+    
+    @Override
+    protected Form _parse(Class<?> cls) {
+        return _parse(cls, 0);
     }
     
     
@@ -109,22 +116,24 @@ public class ClassParser {
      * @param form the model in which the parsed class is to be added
      * @return the updated form model
      */
-    private Form _parse(Class<?> cls, Form form) {
-        int id = form.highestItemId() + 1;
+    protected Form _parse(Class<?> cls, int id) {
+        Form form = createForm(cls);
+        form.setId(id++);
         
-        for (Field f : cls.getDeclaredFields()) {
-            if (f.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.FormItem.class)) {
-                if (isSimpleType(f.getType()))
-                    form.addItem(createFormField(f, id++));
-                else if (Collection.class.isAssignableFrom(f.getType())) {
-                    FormSet set = createFormSet(f, id++);
-                    form.addItem(set);
-                    id = set.getId() + 1;
-                } else {
-                    Form subform = _parse(f.getType(), createForm(f.getType(), id++));
-                    form.addItem(subform);
-                    id = subform.highestItemId() + 1;
-                }
+        for (Field f : formItemFields(cls)) {
+            if (isSimpleType(f.getType())) {
+                FormItem item = createFormField(f);
+                item.setId(id++);
+                form.addItem(item);
+            }
+            else if (Collection.class.isAssignableFrom(f.getType())) {
+                FormSet set = createFormSet(f, id++);
+                form.addItem(set);
+                id = set.getId() + 1;
+            } else {
+                Form subform = _parse(f.getType(), id++);
+                form.addItem(subform);
+                id = subform.highestItemId() + 1;
             }
         }
         
@@ -138,45 +147,18 @@ public class ClassParser {
      * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
      * 
      * @param cls the Java class representing the form to be created
-     * @param id the ID assigned to the new form
      * @return the newly created form
      */
-    private Form createForm(Class<?> cls, int id) {
-        return createForm(cls, id, false);
-    }
-    
-    
-    
-    /**
-     * Creates a new {@link Form} representing the given class using the {@link FormProvider} object. 
-     * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
-     * 
-     * @param cls the Java class representing the form to be created
-     * @param id the ID assigned to the new form
-     * @param setLayoutName if true, the layoutName property is added to the form
-     * @return the newly created form
-     */
-    private Form createForm(Class<?> cls, int id, boolean setLayoutName) {
-        String name;
-        if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
-            name = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
-            if (name.isEmpty())
-                name = cls.getSimpleName();
-        } else {
-            name = cls.getSimpleName();
-        }
+    @Override
+    protected Form createForm(Class<?> cls) {
+        Form form = super.createForm(cls);
         
         String definition = null;
         if (cls.isAnnotationPresent(FormDescription.class)) {
             FormDescription description = cls.getAnnotation(FormDescription.class);
             definition = description.value();
         }
-        
-        Form form = formProvider.newForm(name);
         form.setDescription(definition);
-        form.setId(id);
-        if (setLayoutName)
-            form.setLayoutName(name + "-generated");
         
         return form;
     }
@@ -188,12 +170,10 @@ public class ClassParser {
      * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
      * 
      * @param field the Java field representing the form item to be created
-     * @param id the ID assigned to the new form field
      * @return the newly created form item object
      */
-    private FormField createFormField(Field field, int id) {
+    protected FormItem createFormField(Field field) {
         FormField formField = formProvider.newFormField(field.getName(), field.getType());
-        formField.setId(id);
         
         cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
         String label = formItemAnnot.label();
@@ -263,8 +243,8 @@ public class ClassParser {
                     formSet.setContent(formField);
                     formSet.setId(id + 1);
                 } else {
-                    Form form = createForm(clazz, id);
-                    formSet.setContent(_parse(clazz, form));
+                    Form form = _parse(clazz, id);
+                    formSet.setContent(form);
                     formSet.setId(form.highestItemId() + 1);
                 }
             }
@@ -274,33 +254,6 @@ public class ClassParser {
         }
         
         return formSet;
-    }
-    
-    
-    
-    /**
-     * Determines whether the given type is considered a simple type in the given model using
-     * the {@link FormProvider} object. The provider object is set in the constructor 
-     * (see {@link #ClassParser(FormProvider)}.
-     * 
-     * @param type the Java type
-     * @return true if the type is considered simple in the given model, false otherwise
-     */
-    private boolean isSimpleType(Class<?> type) {
-        return formProvider.typeMapper().isSimpleType(type);
-    }
-    
-    
-    
-    /**
-     * Determines whether the given type is a whole-number type (i.e. byte, short, int, long or their object wrappers).
-     * 
-     * @param type the Java type
-     * @return true if the type is a whole-number type, false otherwise
-     */
-    private boolean isIntegerType(Class<?> type) {
-        Class<?> cls = type.isPrimitive() ? type : AbstractTypeMapper.toPrimitiveType(type);
-        return (cls == byte.class || cls == short.class || cls == int.class || cls == long.class);
     }
     
 

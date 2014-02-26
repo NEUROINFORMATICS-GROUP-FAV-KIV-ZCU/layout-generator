@@ -55,13 +55,21 @@ public interface Form extends FormItem {
      */
     int highestItemId();
 
+    
+    /**
+     * Sets the name of this form.
+     * 
+     * @param name the name
+     */
+    void setFormName(String name);
+    
 
     /**
      * Returns the name of this form.
      * 
      * @return the name
      */
-    String getName();
+    String getFormName();
 
 
     /**

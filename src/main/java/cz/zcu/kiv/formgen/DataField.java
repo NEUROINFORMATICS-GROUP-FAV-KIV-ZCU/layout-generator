@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,36 +19,21 @@
  *
  ***********************************************************************************************************************
  *
- * FormProvider.java, 2. 12. 2013 17:18:54 Jakub Krauz
+ * DataField.java, 26. 2. 2014 11:16:52 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.core;
+package cz.zcu.kiv.formgen;
 
-import cz.zcu.kiv.formgen.DataField;
-import cz.zcu.kiv.formgen.DataSet;
-import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormField;
-import cz.zcu.kiv.formgen.FormSet;
-import cz.zcu.kiv.formgen.TypeMapper;
+import java.util.Collection;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public interface FormProvider {
+public interface DataField extends FormItem {
     
-    Form newForm(String name);
+    void addValues(Collection<Object> values);
     
-    FormField newFormField(String name, Class<?> type);
-    
-    DataField newDataField(String name, Object value);
-    
-    FormSet newFormSet(String name, Class<?> type);
-    
-    DataSet newDataSet(String name);
-    
-    TypeMapper typeMapper();
-
 }

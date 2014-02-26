@@ -25,7 +25,9 @@
 
 package cz.zcu.kiv.formgen.odml;
 
+import odml.core.Property;
 import odml.core.Section;
+import cz.zcu.kiv.formgen.DataField;
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormItem;
 
@@ -50,23 +52,37 @@ public class OdmlForm extends OdmlFormItem implements Form {
 
     public OdmlForm(String name) throws Exception {
         super(name, TYPE);
-        if (name == null)
-            throw new Exception("Name must not be null.");
     }
 
 
     @Override
     public void addItem(FormItem item) {
-        if (item instanceof OdmlForm)
-            highestItemId = Math.max(highestItemId, ((OdmlForm) item).highestItemId());
-        else
-            highestItemId = Math.max(highestItemId, item.getId());
-        
-        if (lastItemId != 0)
-            ((OdmlFormItem) item).addProperty("idTop", lastItemId);
-        lastItemId = item.getId();
+        if (item instanceof DataField) {
+            addDataField((DataField) item);
+        } else {
+            if (item instanceof OdmlForm)
+                highestItemId = Math.max(highestItemId, ((OdmlForm) item).highestItemId());
+            else
+                highestItemId = Math.max(highestItemId, item.getId());
             
-        add((Section) item);
+            if (lastItemId != 0)
+                ((OdmlFormItem) item).addProperty("idTop", lastItemId);
+            lastItemId = item.getId();
+            
+            add((Section) item);
+        }
+    }
+    
+    
+    @Override
+    public void setFormName(String name) {
+        setName(name);
+    }
+    
+    
+    @Override
+    public String getFormName() {
+        return getName();
     }
 
 
@@ -106,6 +122,12 @@ public class OdmlForm extends OdmlFormItem implements Form {
     @Override
     public String getLayoutName() {
         return layoutName;
+    }
+    
+    
+    
+    private void addDataField(DataField field) {
+        add((Property) field);
     }
 
 }

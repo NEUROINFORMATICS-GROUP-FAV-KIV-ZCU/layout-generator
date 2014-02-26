@@ -25,6 +25,8 @@
 
 package cz.zcu.kiv.formgen.odml;
 
+import cz.zcu.kiv.formgen.DataField;
+import cz.zcu.kiv.formgen.DataSet;
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormField;
 import cz.zcu.kiv.formgen.FormSet;
@@ -106,6 +108,39 @@ public class OdmlFormProvider implements FormProvider {
         }
         
         return formSet;
+    }
+
+
+    @Override
+    public DataField newDataField(String name, Object value) {
+        if (name == null)
+            return null;
+        
+        DataField dataField = null;
+        try {
+            dataField = new OdmlDataField(name, value);
+        } catch (Exception e) {
+            // exception is never thrown
+            e.printStackTrace();
+        }
+        return dataField;
+    }
+
+
+    @Override
+    public DataSet newDataSet(String name) {
+        if (name == null)
+            return null;
+        
+        DataSet dataSet = null;
+        try {
+            dataSet = new OdmlDataSet(name);
+        } catch (Exception e) {
+            // exception is never thrown
+            e.printStackTrace();
+        }
+        
+        return dataSet;
     }
 
 

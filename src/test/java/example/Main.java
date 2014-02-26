@@ -26,6 +26,7 @@
 package example;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.LayoutGenerator;
@@ -37,9 +38,7 @@ import cz.zcu.kiv.formgen.odml.OdmlWriter;
 
 public class Main {
 
-    public static void main(String[] args) {
-        
-        //loadPerson();
+    public static void main(String[] args) throws IOException {
         
         LayoutGenerator gen = new SimpleLayoutGenerator(new OdmlFormProvider());
         //Package pack = Package.getPackage("example.pojo");
@@ -48,7 +47,7 @@ public class Main {
             //gen.loadClass("example.pojo.Pokus");
             for (Form form : gen.getForms()) {
                 Writer writer = new OdmlWriter();
-                OutputStream stream = new FileOutputStream(form.getName() + ".odml");
+                OutputStream stream = new FileOutputStream(form.getFormName() + ".odml");
                 writer.write(form, stream);
                 stream.close();
             }
@@ -61,26 +60,5 @@ public class Main {
 
     }
     
-    
-    private static void loadPerson() {
-        LayoutGenerator gen = new SimpleLayoutGenerator(new OdmlFormProvider());
-        try {
-            gen.loadClass("example.pojo.Person");
-            Form model = gen.getForm("Osoba");
-            
-            // testovaci vypis
-            if (model != null) {
-                OutputStream stream = new FileOutputStream("pokus.odml");
-                Writer writer = new OdmlWriter();
-                writer.write(model, stream);
-                stream.close();
-            } else {
-                System.out.println("null model");
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 
 }
