@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
+import cz.zcu.kiv.formgen.odml.OdmlModelProvider;
 
 
 /**
@@ -38,7 +38,7 @@ import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
  */
 public class ClassParserTest {
     
-    private ClassParser parser = new ClassParser(new OdmlFormProvider());
+    private ClassParser parser = new ClassParser(new OdmlModelProvider());
     
     
     // TODO test cases

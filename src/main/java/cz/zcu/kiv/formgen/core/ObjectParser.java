@@ -27,6 +27,7 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.model.DataField;
 import cz.zcu.kiv.formgen.model.DataSet;
 import cz.zcu.kiv.formgen.model.Form;
@@ -40,7 +41,7 @@ import cz.zcu.kiv.formgen.model.FormItem;
 public class ObjectParser extends AbstractParser<Object> {
     
     
-    public ObjectParser(FormProvider formProvider) {
+    public ObjectParser(ModelProvider formProvider) {
         super(formProvider);
     }
 

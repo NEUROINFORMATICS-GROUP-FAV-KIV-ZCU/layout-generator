@@ -33,7 +33,7 @@ import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.core.ObjectParser;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
+import cz.zcu.kiv.formgen.odml.OdmlModelProvider;
 import cz.zcu.kiv.formgen.odml.OdmlWriter;
 import example.pojo.Address;
 import example.pojo.Person;
@@ -45,7 +45,7 @@ public class Main {
         
         pokus();
         
-        LayoutGenerator gen = new SimpleLayoutGenerator(new OdmlFormProvider());
+        LayoutGenerator gen = new SimpleLayoutGenerator(new OdmlModelProvider());
         //Package pack = Package.getPackage("example.pojo");
         try {
             gen.loadPackage("example.pojo");
@@ -73,7 +73,7 @@ public class Main {
         person.setAddress(address);
         //person.addAddress(address);
         //person.addAddress(new Address("Litice", "Vetrna", 33));
-        ObjectParser parser = new ObjectParser(new OdmlFormProvider());
+        ObjectParser parser = new ObjectParser(new OdmlModelProvider());
         Form form = parser.parse(person);
         
         Writer writer = new OdmlWriter();

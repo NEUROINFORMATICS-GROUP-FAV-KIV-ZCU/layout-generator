@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
+import cz.zcu.kiv.formgen.odml.OdmlModelProvider;
 
 
 /**
@@ -43,7 +43,7 @@ public class SimpleFormGeneratorTest {
     
     @Test
     public void loadClassTest() throws ClassNotFoundException, FormNotFoundException {
-        generator = new SimpleLayoutGenerator(new OdmlFormProvider());
+        generator = new SimpleLayoutGenerator(new OdmlModelProvider());
         generator.loadClass("example.pojo.Person");
         
         assertNull(generator.getForm("xx"));
@@ -56,7 +56,7 @@ public class SimpleFormGeneratorTest {
     
     @Test
     public void loadPackageTest() throws FormNotFoundException {
-        generator = new SimpleLayoutGenerator(new OdmlFormProvider());
+        generator = new SimpleLayoutGenerator(new OdmlModelProvider());
         generator.loadPackage("example.pojo");
         
         assertEquals(2, generator.getForms().size());

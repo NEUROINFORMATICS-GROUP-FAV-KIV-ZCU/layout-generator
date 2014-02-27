@@ -28,6 +28,7 @@ package cz.zcu.kiv.formgen.core;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Vector;
+import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 
@@ -40,10 +41,10 @@ public abstract class AbstractParser<T> {
     
     
     /** Object used to create new {@link Form} and {@link FormField} objects. */
-    protected FormProvider formProvider;
+    protected ModelProvider formProvider;
     
     
-    public AbstractParser(FormProvider formProvider) {
+    public AbstractParser(ModelProvider formProvider) {
         this.formProvider = formProvider;
     }
     
@@ -74,8 +75,8 @@ public abstract class AbstractParser<T> {
     
     
     /**
-     * Creates a new {@link Form} representing the given class using the {@link FormProvider} object. 
-     * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
+     * Creates a new {@link Form} representing the given class using the {@link ModelProvider} object. 
+     * The provider object is set in the constructor (see {@link #ClassParser(ModelProvider)}.
      * 
      * @param cls the Java class representing the form to be created
      * @return the newly created form
@@ -97,8 +98,8 @@ public abstract class AbstractParser<T> {
     
     /**
      * Determines whether the given type is considered a simple type in the given model using
-     * the {@link FormProvider} object. The provider object is set in the constructor 
-     * (see {@link #ClassParser(FormProvider)}.
+     * the {@link ModelProvider} object. The provider object is set in the constructor 
+     * (see {@link #ClassParser(ModelProvider)}.
      * 
      * @param type the Java type
      * @return true if the type is considered simple in the given model, false otherwise

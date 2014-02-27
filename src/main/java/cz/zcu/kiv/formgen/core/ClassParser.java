@@ -29,6 +29,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 import cz.zcu.kiv.formgen.model.Form;
@@ -50,7 +51,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * 
      * @param formProvider object implementing the FormProvider interface
      */
-    public ClassParser(FormProvider formProvider) {
+    public ClassParser(ModelProvider formProvider) {
         super(formProvider);
     }
     
@@ -143,8 +144,8 @@ public class ClassParser extends AbstractParser<Class<?>> {
     
     
     /**
-     * Creates a new {@link Form} representing the given class using the {@link FormProvider} object. 
-     * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
+     * Creates a new {@link Form} representing the given class using the {@link ModelProvider} object. 
+     * The provider object is set in the constructor (see {@link #ClassParser(ModelProvider)}.
      * 
      * @param cls the Java class representing the form to be created
      * @return the newly created form
@@ -166,8 +167,8 @@ public class ClassParser extends AbstractParser<Class<?>> {
     
     
     /**
-     * Creates a new {@link FormField} representing the given field using the {@link FormProvider} object. 
-     * The provider object is set in the constructor (see {@link #ClassParser(FormProvider)}.
+     * Creates a new {@link FormField} representing the given field using the {@link ModelProvider} object. 
+     * The provider object is set in the constructor (see {@link #ClassParser(ModelProvider)}.
      * 
      * @param field the Java field representing the form item to be created
      * @return the newly created form item object
@@ -211,8 +212,8 @@ public class ClassParser extends AbstractParser<Class<?>> {
     
     /**
      * <p>Creates a new {@link FormSet} representing the given field (that must be a collection)
-     * using the {@link FormProvider} object. The provider object is set in the constructor 
-     * (see {@link #ClassParser(FormProvider)}.</p>
+     * using the {@link ModelProvider} object. The provider object is set in the constructor 
+     * (see {@link #ClassParser(ModelProvider)}.</p>
      * 
      * <p>Note that the Collection should be parameterized so as the method can determine items
      * of the collection. Otherwise null is returned.</p>

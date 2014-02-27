@@ -35,13 +35,13 @@ import cz.zcu.kiv.formgen.odml.model.OdmlFormField;
 
 
 /**
- * Contains JUnit tests for the {@link OdmlFormProvider} class.
+ * Contains JUnit tests for the {@link OdmlModelProvider} class.
  *
  * @author Jakub Krauz
  */
 public class OdmlFormProviderTest {
     
-    private OdmlFormProvider provider = new OdmlFormProvider();
+    private OdmlModelProvider provider = new OdmlModelProvider();
 
     
     @Test

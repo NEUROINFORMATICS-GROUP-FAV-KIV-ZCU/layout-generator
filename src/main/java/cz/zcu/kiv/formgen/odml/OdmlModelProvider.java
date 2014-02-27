@@ -25,7 +25,7 @@
 
 package cz.zcu.kiv.formgen.odml;
 
-import cz.zcu.kiv.formgen.core.FormProvider;
+import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.core.TypeMapper;
 import cz.zcu.kiv.formgen.model.DataField;
 import cz.zcu.kiv.formgen.model.DataSet;
@@ -43,7 +43,7 @@ import cz.zcu.kiv.formgen.odml.model.OdmlFormSet;
  *
  * @author Jakub Krauz
  */
-public class OdmlFormProvider implements FormProvider {
+public class OdmlModelProvider implements ModelProvider {
     
     
     /* (non-Javadoc)

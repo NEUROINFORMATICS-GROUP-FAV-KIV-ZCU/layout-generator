@@ -23,8 +23,9 @@
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.core;
+package cz.zcu.kiv.formgen;
 
+import cz.zcu.kiv.formgen.core.TypeMapper;
 import cz.zcu.kiv.formgen.model.DataField;
 import cz.zcu.kiv.formgen.model.DataSet;
 import cz.zcu.kiv.formgen.model.Form;
@@ -36,7 +37,7 @@ import cz.zcu.kiv.formgen.model.FormSet;
  *
  * @author Jakub Krauz
  */
-public interface FormProvider {
+public interface ModelProvider {
     
     Form newForm(String name);
     

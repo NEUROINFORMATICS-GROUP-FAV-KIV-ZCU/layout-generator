@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import org.reflections.Reflections;
+import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.model.Form;
@@ -50,10 +51,10 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     
     
     /**
-     * Constructs new generator using the given {@link FormProvider} object.
+     * Constructs new generator using the given {@link ModelProvider} object.
      * @param formProvider
      */
-    public SimpleLayoutGenerator(FormProvider formProvider) {
+    public SimpleLayoutGenerator(ModelProvider formProvider) {
         parser = new ClassParser(formProvider);
     }
     
