@@ -25,55 +25,30 @@
 
 package cz.zcu.kiv.formgen.core;
 
+import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import cz.zcu.kiv.formgen.FormDataGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.ModelProvider;
-import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
+ * Generates form with data from the given object model.
  *
  * @author Jakub Krauz
  */
-public class SimpleFormDataGenerator implements FormDataGenerator {
-    
-    /** Object parser instance. */
-    private ObjectParser parser;
-    
-    /** Map of created forms by their name. */
-    private Map<String, Form> forms = new HashMap<String, Form>();
-    
-    
+public class SimpleFormDataGenerator extends AbstractGenerator<Object> implements FormDataGenerator {
+
     
     /**
      * Constructs new generator using the given {@link ModelProvider} object.
      * @param modelProvider object that provides a concrete model implementation
      */
     public SimpleFormDataGenerator(ModelProvider modelProvider) {
-        parser = new ObjectParser(modelProvider);
+        super(new ObjectParser(modelProvider));
     }
     
 
-    
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.Generator#load(java.lang.Object[])
-     */
-    @Override
-    public void load(Object... objects) throws FormNotFoundException {
-        for (Object o : objects) {
-            if (o.getClass().isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
-                loadObject(o, false);
-            else if (o.getClass().isAnnotationPresent(cz.zcu.kiv.formgen.annotation.MultiForm.class))
-                loadObject(o, true);
-            else
-                throw new FormNotFoundException();
-        }
-    }
-    
-    
     
     /* (non-Javadoc)
      * @see cz.zcu.kiv.formgen.FormDataGenerator#loadObjects(java.util.Collection<java.lang.Object>)
@@ -85,52 +60,13 @@ public class SimpleFormDataGenerator implements FormDataGenerator {
     }
 
 
-    
+
     /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.Generator#getForm(java.lang.String)
+     * @see cz.zcu.kiv.formgen.core.AbstractGenerator(Object, Class<A extends Annotation>)
      */
     @Override
-    public Form getForm(String name) {
-        return forms.get(name);
-    }
-
-
-    
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.Generator#getForms()
-     */
-    @Override
-    public Collection<Form> getForms() {
-        return forms.values();
-    }
-    
-    
-    
-    /**
-     * Loads the given class cls to the model. If the multiForm parameter is false, cls MUST
-     * be annotated with the {@link cz.zcu.kiv.formgen.annotation.Form Form} annotation.
-     * Otherwise (if multiForm is true), cls MUST be annotated with the
-     * {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation.
-     * 
-     * @param obj the object to be loaded
-     * @param multiForm if true, the object is a part of a multi-form
-     */
-    private void loadObject(Object obj, boolean multiForm) {
-        if (multiForm) {
-            cz.zcu.kiv.formgen.annotation.MultiForm annotation = 
-                    obj.getClass().getAnnotation(cz.zcu.kiv.formgen.annotation.MultiForm.class);
-            String name = annotation.value();
-            if (forms.containsKey(name))
-                parser.parse(obj, forms.get(name));
-            else {
-                Form form = parser.createMultiform(annotation);
-                parser.parse(obj, form);
-                forms.put(name, form);
-            }
-        } else {
-            Form form = parser.parse(obj);
-            forms.put(form.getFormName(), form);
-        }
+    protected <A extends Annotation> A annotation(Object object, Class<A> annotationClass) {
+        return object.getClass().getAnnotation(annotationClass);
     }
     
 

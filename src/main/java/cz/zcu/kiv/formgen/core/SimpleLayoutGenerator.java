@@ -25,15 +25,12 @@
 
 package cz.zcu.kiv.formgen.core;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.annotation.Annotation;
 import java.util.Set;
 import org.reflections.Reflections;
 import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
-import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
@@ -41,21 +38,15 @@ import cz.zcu.kiv.formgen.model.Form;
  *
  * @author Jakub Krauz
  */
-public class SimpleLayoutGenerator implements LayoutGenerator {
-    
-    /** Class parser instance. */
-    private ClassParser parser;
-    
-    /** Map of created forms by their name. */
-    private Map<String, Form> forms = new HashMap<String, Form>();
-    
+public class SimpleLayoutGenerator extends AbstractGenerator<Class<?>> implements LayoutGenerator {
+
     
     /**
      * Constructs new generator using the given {@link ModelProvider} object.
      * @param modelProvider object that provides a concrete model implementation
      */
     public SimpleLayoutGenerator(ModelProvider modelProvider) {
-        parser = new ClassParser(modelProvider);
+        super(new ClassParser(modelProvider));
     }
     
     
@@ -67,18 +58,6 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
         load(classes);
     }
     
-    
-    @Override
-    public void load(Class<?>... cls) throws FormNotFoundException {
-        for (Class<?> c : cls) {
-            if (c.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
-                loadClass(c, false);
-            else if (c.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.MultiForm.class))
-                loadClass(c, true);
-            else
-                throw new FormNotFoundException();
-        }
-    }
 
     
     @Override
@@ -89,13 +68,13 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
         /* simple forms */
         classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.Form.class);
         for (Class<?> cls : classes) {
-            loadClass(cls, false);
+            load(cls, false);
         }
         
         /* multiple (cross-class) forms */
         classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.MultiForm.class);
         for (Class<?> cls : classes) {
-            loadClass(cls, true);
+            load(cls, true);
         }
     }
 
@@ -109,47 +88,12 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
         // "ReflectionsException: could not use param package ..."
         loadPackage(pack.getName());
     }
-    
-    
-    @Override
-    public Form getForm(String name) {
-        return forms.get(name);
-    }
 
 
     @Override
-    public Collection<Form> getForms() {
-        return forms.values();
+    protected <A extends Annotation> A annotation(Class<?> cls, Class<A> annotationClass) {
+        return cls.getAnnotation(annotationClass);
     }
     
-    
-    
-    /**
-     * Loads the given class cls to the model. If the multiForm parameter is false, cls MUST
-     * be annotated with the {@link cz.zcu.kiv.formgen.annotation.Form Form} annotation.
-     * Otherwise (if multiForm is true), cls MUST be annotated with the
-     * {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation.
-     * 
-     * @param cls the class to be loaded
-     * @param multiForm if true, the class is a part of a multi-form
-     */
-    private void loadClass(Class<?> cls, boolean multiForm) {
-        if (multiForm) {
-            cz.zcu.kiv.formgen.annotation.MultiForm annotation = 
-                    cls.getAnnotation(cz.zcu.kiv.formgen.annotation.MultiForm.class);
-            String name = annotation.value();
-            if (forms.containsKey(name))
-                parser.parse(cls, forms.get(name));
-            else {
-                Form form = parser.createMultiform(annotation);
-                parser.parse(cls, form);
-                forms.put(name, form);
-            }
-        } else {
-            Form form = parser.parse(cls);
-            forms.put(form.getFormName(), form);
-        }
-    }
-
 
 }
