@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,35 +19,67 @@
  *
  ***********************************************************************************************************************
  *
- * TypeMapper.java, 16. 12. 2013 13:34:34 Jakub Krauz
+ * OdmlDataSet.java, 26. 2. 2014 18:05:36 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.odml.model;
+
+import odml.core.Section;
+import cz.zcu.kiv.formgen.model.DataSet;
+import cz.zcu.kiv.formgen.model.FormItem;
+import cz.zcu.kiv.formgen.odml.SectionType;
 
 
 /**
- * This class is used to map types from Java to those used in form layouts.
  *
  * @author Jakub Krauz
  */
-public interface TypeMapper {
+public class OdmlDataSet extends Section implements DataSet {
+
     
-    /**
-     * Determines whether given Java type is considered a simple type in the terms
-     * of form layout.
-     * 
-     * @param type the Java type
-     * @return true if the given type is considered simple, false otherwise
-     */
-    boolean isSimpleType(Class<?> type);
+    private static final long serialVersionUID = -1306510134410300099L;
     
     
-    /**
-     * Maps the given Java type to an appropriate type used in form layouts.
-     * @param type the Java type
-     * @return type name used in form layout
-     */
-    String mapType(Class<?> type);
+    public OdmlDataSet(String name) throws Exception {
+        super(name, SectionType.SET.getValue());
+    }
+
+    
+    @Override
+    public void addItem(FormItem item) {
+        add((Section) item);
+    }
+
+
+    
+    
+    
+    @Override
+    public void setId(int id) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    @Override
+    public int getId() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+
+    @Override
+    public void setLabel(String label) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    @Override
+    public String getLabel() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

@@ -28,17 +28,22 @@ package example;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.Writer;
+import cz.zcu.kiv.formgen.core.ObjectParser;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
+import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
 import cz.zcu.kiv.formgen.odml.OdmlWriter;
+import example.pojo.Address;
+import example.pojo.Person;
 
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        
+        pokus();
         
         LayoutGenerator gen = new SimpleLayoutGenerator(new OdmlFormProvider());
         //Package pack = Package.getPackage("example.pojo");
@@ -58,6 +63,23 @@ public class Main {
         
         System.out.println("hotovo");
 
+    }
+    
+    
+    
+    private static void pokus() throws IOException {
+        Address address = new Address("Plzen", "Manesova", 78);
+        Person person = new Person(0, "Jakub", 24, null);
+        person.setAddress(address);
+        //person.addAddress(address);
+        //person.addAddress(new Address("Litice", "Vetrna", 33));
+        ObjectParser parser = new ObjectParser(new OdmlFormProvider());
+        Form form = parser.parse(person);
+        
+        Writer writer = new OdmlWriter();
+        OutputStream stream = new FileOutputStream("pokus.odml");
+        writer.write(form, stream);
+        stream.close();
     }
     
 

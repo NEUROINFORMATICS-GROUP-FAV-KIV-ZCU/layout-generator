@@ -19,40 +19,21 @@
  *
  ***********************************************************************************************************************
  *
- * ClassParserTest.java, 1. 2. 2014 12:05:27 Jakub Krauz
+ * DataField.java, 26. 2. 2014 11:16:52 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.core;
+package cz.zcu.kiv.formgen.model;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import cz.zcu.kiv.formgen.FormNotFoundException;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
+import java.util.Collection;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class ClassParserTest {
+public interface DataField extends FormItem {
     
-    private ClassParser parser = new ClassParser(new OdmlFormProvider());
+    void addValues(Collection<Object> values);
     
-    
-    // TODO test cases
-    
-    @Test
-    public void parseTest() throws FormNotFoundException {
-        Class<?> cls;
-        try {
-            cls = Class.forName("example.pojo.Person");
-            Form form = parser.parse(cls);
-            assertNotNull(form);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

@@ -25,13 +25,18 @@
 
 package cz.zcu.kiv.formgen.odml;
 
-import cz.zcu.kiv.formgen.DataField;
-import cz.zcu.kiv.formgen.DataSet;
-import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormField;
-import cz.zcu.kiv.formgen.FormSet;
-import cz.zcu.kiv.formgen.TypeMapper;
 import cz.zcu.kiv.formgen.core.FormProvider;
+import cz.zcu.kiv.formgen.core.TypeMapper;
+import cz.zcu.kiv.formgen.model.DataField;
+import cz.zcu.kiv.formgen.model.DataSet;
+import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormField;
+import cz.zcu.kiv.formgen.model.FormSet;
+import cz.zcu.kiv.formgen.odml.model.OdmlDataField;
+import cz.zcu.kiv.formgen.odml.model.OdmlDataSet;
+import cz.zcu.kiv.formgen.odml.model.OdmlForm;
+import cz.zcu.kiv.formgen.odml.model.OdmlFormField;
+import cz.zcu.kiv.formgen.odml.model.OdmlFormSet;
 
 
 /**

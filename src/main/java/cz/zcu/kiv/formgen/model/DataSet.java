@@ -19,66 +19,19 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlDataSet.java, 26. 2. 2014 18:05:36 Jakub Krauz
+ * DataSet.java, 26. 2. 2014 18:04:16 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml;
-
-import odml.core.Section;
-import cz.zcu.kiv.formgen.DataSet;
-import cz.zcu.kiv.formgen.FormItem;
+package cz.zcu.kiv.formgen.model;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class OdmlDataSet extends Section implements DataSet {
-
+public interface DataSet extends FormItem {
     
-    private static final long serialVersionUID = -1306510134410300099L;
-    
-    
-    public OdmlDataSet(String name) throws Exception {
-        super(name, SectionType.SET.getValue());
-    }
-
-    
-    @Override
-    public void addItem(FormItem item) {
-        add((Section) item);
-    }
-
-
-    
-    
-    
-    @Override
-    public void setId(int id) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    @Override
-    public int getId() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-
-    @Override
-    public void setLabel(String label) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    @Override
-    public String getLabel() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    void addItem(FormItem item);
 
 }

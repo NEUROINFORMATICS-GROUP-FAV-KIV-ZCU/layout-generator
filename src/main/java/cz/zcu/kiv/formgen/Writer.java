@@ -26,6 +26,7 @@
 package cz.zcu.kiv.formgen;
 
 import java.io.OutputStream;
+import cz.zcu.kiv.formgen.model.Form;
 
 
 /**

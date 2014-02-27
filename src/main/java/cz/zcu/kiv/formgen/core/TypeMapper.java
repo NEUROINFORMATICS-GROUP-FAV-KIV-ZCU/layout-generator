@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,40 +19,35 @@
  *
  ***********************************************************************************************************************
  *
- * ClassParserTest.java, 1. 2. 2014 12:05:27 Jakub Krauz
+ * TypeMapper.java, 16. 12. 2013 13:34:34 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.core;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import cz.zcu.kiv.formgen.FormNotFoundException;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
-
 
 /**
+ * This class is used to map types from Java to those used in form layouts.
  *
  * @author Jakub Krauz
  */
-public class ClassParserTest {
+public interface TypeMapper {
     
-    private ClassParser parser = new ClassParser(new OdmlFormProvider());
+    /**
+     * Determines whether given Java type is considered a simple type in the terms
+     * of form layout.
+     * 
+     * @param type the Java type
+     * @return true if the given type is considered simple, false otherwise
+     */
+    boolean isSimpleType(Class<?> type);
     
     
-    // TODO test cases
-    
-    @Test
-    public void parseTest() throws FormNotFoundException {
-        Class<?> cls;
-        try {
-            cls = Class.forName("example.pojo.Person");
-            Form form = parser.parse(cls);
-            assertNotNull(form);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    /**
+     * Maps the given Java type to an appropriate type used in form layouts.
+     * @param type the Java type
+     * @return type name used in form layout
+     */
+    String mapType(Class<?> type);
 
 }

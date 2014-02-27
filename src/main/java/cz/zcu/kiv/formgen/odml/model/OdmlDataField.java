@@ -23,10 +23,10 @@
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml;
+package cz.zcu.kiv.formgen.odml.model;
 
 import java.util.Collection;
-import cz.zcu.kiv.formgen.DataField;
+import cz.zcu.kiv.formgen.model.DataField;
 import odml.core.Property;
 
 

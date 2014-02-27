@@ -29,12 +29,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormField;
-import cz.zcu.kiv.formgen.FormItem;
-import cz.zcu.kiv.formgen.FormSet;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
+import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormField;
+import cz.zcu.kiv.formgen.model.FormItem;
+import cz.zcu.kiv.formgen.model.FormSet;
 
 
 /**

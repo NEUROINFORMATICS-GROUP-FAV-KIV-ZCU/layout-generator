@@ -27,6 +27,7 @@ package cz.zcu.kiv.formgen;
 
 
 import java.util.Collection;
+import cz.zcu.kiv.formgen.model.Form;
 
 
 /**

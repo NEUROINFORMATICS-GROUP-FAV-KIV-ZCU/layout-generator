@@ -27,8 +27,8 @@ package cz.zcu.kiv.formgen.odml;
 
 import java.io.OutputStream;
 import odml.core.Section;
-import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.Writer;
+import cz.zcu.kiv.formgen.model.Form;
 
 
 /**

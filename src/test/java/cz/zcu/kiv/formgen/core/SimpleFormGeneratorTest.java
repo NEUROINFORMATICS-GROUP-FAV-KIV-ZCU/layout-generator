@@ -27,8 +27,8 @@ package cz.zcu.kiv.formgen.core;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import cz.zcu.kiv.formgen.Form;
 import cz.zcu.kiv.formgen.FormNotFoundException;
+import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.odml.OdmlFormProvider;
 
 

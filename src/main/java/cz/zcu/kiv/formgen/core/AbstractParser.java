@@ -28,8 +28,8 @@ package cz.zcu.kiv.formgen.core;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Vector;
-import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormField;
+import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormField;
 
 
 /**

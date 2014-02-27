@@ -27,7 +27,6 @@ package cz.zcu.kiv.formgen.core;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
-import cz.zcu.kiv.formgen.TypeMapper;
 
 
 /**

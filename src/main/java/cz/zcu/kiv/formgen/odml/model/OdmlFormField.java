@@ -23,10 +23,12 @@
  * 
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml;
+package cz.zcu.kiv.formgen.odml.model;
 
 import odml.core.Property;
-import cz.zcu.kiv.formgen.FormField;
+import cz.zcu.kiv.formgen.model.FormField;
+import cz.zcu.kiv.formgen.odml.OdmlTypeMapper;
+import cz.zcu.kiv.formgen.odml.SectionType;
 
 
 /**

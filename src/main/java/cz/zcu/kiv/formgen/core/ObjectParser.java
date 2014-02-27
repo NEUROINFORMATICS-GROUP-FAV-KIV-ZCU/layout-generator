@@ -27,10 +27,10 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import cz.zcu.kiv.formgen.DataField;
-import cz.zcu.kiv.formgen.DataSet;
-import cz.zcu.kiv.formgen.Form;
-import cz.zcu.kiv.formgen.FormItem;
+import cz.zcu.kiv.formgen.model.DataField;
+import cz.zcu.kiv.formgen.model.DataSet;
+import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormItem;
 
 
 /**
@@ -59,7 +59,7 @@ public class ObjectParser extends AbstractParser<Object> {
                 form.addItem(item);
             } else if (Collection.class.isAssignableFrom(f.getType())) {
                 Collection<?> collection = (Collection<?>) fieldValue(f, obj);
-                if (collection.isEmpty())
+                if (collection == null || collection.isEmpty())
                     continue;
                 if (isSimpleType(collection.iterator().next().getClass()))
                     form.addItem(createDataField(f, obj));

@@ -27,8 +27,8 @@ package cz.zcu.kiv.formgen.odml;
 
 import java.util.HashMap;
 import java.util.Map;
-import cz.zcu.kiv.formgen.TypeMapper;
 import cz.zcu.kiv.formgen.core.AbstractTypeMapper;
+import cz.zcu.kiv.formgen.core.TypeMapper;
 
 
 /**
