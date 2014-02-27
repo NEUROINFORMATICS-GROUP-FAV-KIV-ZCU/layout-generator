@@ -63,12 +63,12 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
         Class<?>[] classes = new Class<?>[names.length];
         for (int i = 0; i < classes.length; i++)
             classes[i] = Class.forName(names[i]);
-        loadClass(classes);
+        load(classes);
     }
     
     
     @Override
-    public void loadClass(Class<?>... cls) throws FormNotFoundException {
+    public void load(Class<?>... cls) throws FormNotFoundException {
         for (Class<?> c : cls) {
             if (c.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
                 loadClass(c, false);
