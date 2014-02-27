@@ -35,7 +35,7 @@ import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
-import cz.zcu.kiv.formgen.model.FormSet;
+import cz.zcu.kiv.formgen.model.FormItemContainer;
 
 
 /**
@@ -128,7 +128,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
                 form.addItem(item);
             }
             else if (Collection.class.isAssignableFrom(f.getType())) {
-                FormSet set = createFormSet(f, id++);
+                FormItemContainer set = createFormSet(f, id++);
                 form.addItem(set);
                 id = set.getId() + 1;
             } else {
@@ -211,7 +211,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
     
     
     /**
-     * <p>Creates a new {@link FormSet} representing the given field (that must be a collection)
+     * <p>Creates a new {@link FormItemContainer} representing the given field (that must be a collection)
      * using the {@link ModelProvider} object. The provider object is set in the constructor 
      * (see {@link #ClassParser(ModelProvider)}.</p>
      * 
@@ -222,8 +222,8 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @param id the ID assigned to the new form set
      * @return the newly created set object, or null if the collection is not parameterized
      */
-    private FormSet createFormSet(Field field, int id) {
-        FormSet formSet = null;
+    private FormItemContainer createFormSet(Field field, int id) {
+        FormItemContainer formSet = null;
         
         if (field.getGenericType() instanceof ParameterizedType) {
             
@@ -241,11 +241,11 @@ public class ClassParser extends AbstractParser<Class<?>> {
                 if (isSimpleType(clazz)) {
                     FormField formField = formProvider.newFormField(clazz.getSimpleName(), clazz);
                     formField.setId(id);
-                    formSet.setContent(formField);
+                    formSet.addItem(formField);
                     formSet.setId(id + 1);
                 } else {
                     Form form = _parse(clazz, id);
-                    formSet.setContent(form);
+                    formSet.addItem(form);
                     formSet.setId(form.highestItemId() + 1);
                 }
             }

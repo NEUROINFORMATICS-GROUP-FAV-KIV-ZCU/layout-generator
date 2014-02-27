@@ -63,5 +63,21 @@ public interface FormItem {
      * @return the label
      */
     String getLabel();
+    
+    
+    /**
+     * Sets the required-flag for this form item.
+     * 
+     * @param required - value to be assigned to the requierd-flag
+     */
+    void setRequired(boolean required);
+
+
+    /**
+     * Returns the value of the required-flag.
+     * 
+     * @return the required-flag
+     */
+    boolean isRequired();
 
 }

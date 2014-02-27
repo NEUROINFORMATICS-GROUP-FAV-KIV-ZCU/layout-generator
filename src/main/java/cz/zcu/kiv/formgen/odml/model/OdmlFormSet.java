@@ -25,10 +25,10 @@
 
 package cz.zcu.kiv.formgen.odml.model;
 
+import odml.core.Property;
 import odml.core.Section;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.model.FormField;
-import cz.zcu.kiv.formgen.model.FormSet;
+import cz.zcu.kiv.formgen.model.FormItem;
+import cz.zcu.kiv.formgen.model.FormItemContainer;
 import cz.zcu.kiv.formgen.odml.OdmlTypeMapper;
 
 
@@ -36,7 +36,7 @@ import cz.zcu.kiv.formgen.odml.OdmlTypeMapper;
  *
  * @author Jakub Krauz
  */
-public class OdmlFormSet extends OdmlFormField implements FormSet {
+public class OdmlFormSet extends OdmlFormField implements FormItemContainer {
 
     private static final long serialVersionUID = 1L;
     
@@ -44,26 +44,15 @@ public class OdmlFormSet extends OdmlFormField implements FormSet {
     public OdmlFormSet(String name, Class<?> type) throws Exception {
         super(name, OdmlTypeMapper.instance().mapType(type));
     }
-
-
-    @Override
-    public void setContent(Form form) {
-        subsections.removeAllElements();
-        add((Section) form);
-    }
-
-
-    @Override
-    public void setContent(FormField item) {
-        subsections.removeAllElements();
-        add((Section) item);
-    }
-
-
-    @Override
-    public void setDatatype(String datatype) {
-        // TODO setdatatype u formset nema vyznam
-        addProperty("datatype", datatype);
+    
+    
+    public void addItem(FormItem item) {
+        if (item instanceof Section)
+            add((Section) item);
+        else if (item instanceof Property)
+            add((Property) item);
+        else
+            ; // TODO log
     }
 
 }

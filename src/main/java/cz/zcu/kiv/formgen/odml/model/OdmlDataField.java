@@ -79,5 +79,19 @@ public class OdmlDataField extends Property implements DataField {
         // TODO Auto-generated method stub
         return null;
     }
+
+
+    @Override
+    public void setRequired(boolean required) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    @Override
+    public boolean isRequired() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

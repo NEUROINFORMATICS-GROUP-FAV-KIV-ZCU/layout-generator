@@ -29,9 +29,9 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.model.DataField;
-import cz.zcu.kiv.formgen.model.DataSet;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormItem;
+import cz.zcu.kiv.formgen.model.FormItemContainer;
 
 
 /**
@@ -76,9 +76,9 @@ public class ObjectParser extends AbstractParser<Object> {
     }
     
     
-    private DataSet createDataSet(Field field, Object obj) {
+    private FormItemContainer createDataSet(Field field, Object obj) {
         String name = field.getName();
-        DataSet dataSet = formProvider.newDataSet(name);
+        FormItemContainer dataSet = formProvider.newFormSet(name, field.getType());
         
         Object value = fieldValue(field, obj);
         int index = 0;

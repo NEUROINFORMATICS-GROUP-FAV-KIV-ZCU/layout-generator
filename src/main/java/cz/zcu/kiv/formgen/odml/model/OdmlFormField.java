@@ -54,22 +54,6 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
 
 
     @Override
-    public void setRequired(boolean required) {
-        addProperty("required", required);
-    }
-
-
-    @Override
-    public boolean isRequired() {
-        Property prop = getProperty("required");
-        if (prop != null)
-            return (Boolean) prop.getValue();
-        else
-            return false;
-    }
-
-
-    @Override
     public void setDatatype(String datatype) {
         addProperty("datatype", datatype);
     }

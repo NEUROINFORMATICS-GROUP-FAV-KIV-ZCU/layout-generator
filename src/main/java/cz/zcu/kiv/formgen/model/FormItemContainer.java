@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * FormSet.java, 23. 1. 2014 14:42:46 Jakub Krauz
+ * FormItemContainer.java, 23. 1. 2014 14:42:46 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -46,23 +46,15 @@ package cz.zcu.kiv.formgen.model;
  *
  * @author Jakub Krauz
  */
-public interface FormSet extends FormField {
+public interface FormItemContainer extends FormItem {
     
     
     /**
-     * Sets the type of this collection's items to the given subform.
+     * Adds the given item to the end of this form container.
      * 
-     * @param form the subform contained in the colection
+     * @param item - the item to be added
      */
-    void setContent(Form form);
-    
-    
-    /**
-     *  Sets the type of this collection's items to the given form item.
-     *  
-     * @param item the item contained in the collection
-     */
-    void setContent(FormField item);
+    void addItem(FormItem item);
     
 
 }

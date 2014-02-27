@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * FormProvider.java, 2. 12. 2013 17:18:54 Jakub Krauz
+ * ModelProvider.java, 2. 12. 2013 17:18:54 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -27,10 +27,9 @@ package cz.zcu.kiv.formgen;
 
 import cz.zcu.kiv.formgen.core.TypeMapper;
 import cz.zcu.kiv.formgen.model.DataField;
-import cz.zcu.kiv.formgen.model.DataSet;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
-import cz.zcu.kiv.formgen.model.FormSet;
+import cz.zcu.kiv.formgen.model.FormItemContainer;
 
 
 /**
@@ -45,9 +44,7 @@ public interface ModelProvider {
     
     DataField newDataField(String name, Object value);
     
-    FormSet newFormSet(String name, Class<?> type);
-    
-    DataSet newDataSet(String name);
+    FormItemContainer newFormSet(String name, Class<?> type);
     
     TypeMapper typeMapper();
 

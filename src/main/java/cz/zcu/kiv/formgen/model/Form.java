@@ -37,15 +37,7 @@ package cz.zcu.kiv.formgen.model;
  * 
  * @author Jakub Krauz
  */
-public interface Form extends FormItem {
-
-
-    /**
-     * Adds the given item to the end of this form.
-     * 
-     * @param item - the item to be added
-     */
-    void addItem(FormItem item);
+public interface Form extends FormItem, FormItemContainer {
     
     
     /**

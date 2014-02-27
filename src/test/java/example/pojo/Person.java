@@ -26,6 +26,7 @@
 package example.pojo;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
@@ -49,7 +50,7 @@ public class Person {
     private int age;
     
     @FormItem
-    private Set<Address> addresses;
+    private Set<Address> addresses = new HashSet<Address>();
     
     @FormItem
     private boolean clever;
@@ -117,6 +118,11 @@ public class Person {
     
     public void setAddress(Address address) {
         this.address = address;
+    }
+    
+    
+    public void addAddress(Address address) {
+        this.addresses.add(address);
     }
     
 

@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlFormProvider.java, 2. 12. 2013 17:22:18 Jakub Krauz
+ * OdmlModelProvider.java, 2. 12. 2013 17:22:18 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -28,12 +28,10 @@ package cz.zcu.kiv.formgen.odml;
 import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.core.TypeMapper;
 import cz.zcu.kiv.formgen.model.DataField;
-import cz.zcu.kiv.formgen.model.DataSet;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
-import cz.zcu.kiv.formgen.model.FormSet;
+import cz.zcu.kiv.formgen.model.FormItemContainer;
 import cz.zcu.kiv.formgen.odml.model.OdmlDataField;
-import cz.zcu.kiv.formgen.odml.model.OdmlDataSet;
 import cz.zcu.kiv.formgen.odml.model.OdmlForm;
 import cz.zcu.kiv.formgen.odml.model.OdmlFormField;
 import cz.zcu.kiv.formgen.odml.model.OdmlFormSet;
@@ -100,10 +98,10 @@ public class OdmlModelProvider implements ModelProvider {
      * @see cz.zcu.kiv.formgen.core.FormProvider#newFormSet(java.lang.String, java.lang.Class)
      */
     @Override
-    public FormSet newFormSet(String name, Class<?> type) {
+    public FormItemContainer newFormSet(String name, Class<?> type) {
         if (name == null || type == null)
             return null;
-        FormSet formSet = null;
+        FormItemContainer formSet = null;
         
         try {
             formSet = new OdmlFormSet(name, type);            
@@ -130,25 +128,6 @@ public class OdmlModelProvider implements ModelProvider {
         }
         return dataField;
     }
-
-
-    @Override
-    public DataSet newDataSet(String name) {
-        if (name == null)
-            return null;
-        
-        DataSet dataSet = null;
-        try {
-            dataSet = new OdmlDataSet(name);
-        } catch (Exception e) {
-            // exception is never thrown
-            e.printStackTrace();
-        }
-        
-        return dataSet;
-    }
-
-
 
 
 }
