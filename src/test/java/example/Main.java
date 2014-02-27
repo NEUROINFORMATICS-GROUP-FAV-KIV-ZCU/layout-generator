@@ -28,9 +28,13 @@ package example;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import cz.zcu.kiv.formgen.FormDataGenerator;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.core.ObjectParser;
+import cz.zcu.kiv.formgen.core.SimpleFormDataGenerator;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.odml.OdmlModelProvider;
@@ -41,7 +45,7 @@ import example.pojo.Person;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         
         pokus();
         
@@ -67,14 +71,20 @@ public class Main {
     
     
     
-    private static void pokus() throws IOException {
+    private static void pokus() throws Exception {
         Address address = new Address("Plzen", "Manesova", 78);
         Person person = new Person(0, "Jakub", 24, null);
         person.setAddress(address);
         //person.addAddress(address);
         //person.addAddress(new Address("Litice", "Vetrna", 33));
-        ObjectParser parser = new ObjectParser(new OdmlModelProvider());
-        Form form = parser.parse(person);
+        
+        FormDataGenerator generator = new SimpleFormDataGenerator(new OdmlModelProvider());
+        List<Object> list = new ArrayList<Object>(2);
+        list.add(address);
+        list.add(person);
+        //generator.load(person, address);
+        generator.loadObjects(list);
+        Form form = generator.getForm("Person");
         
         Writer writer = new OdmlWriter();
         OutputStream stream = new FileOutputStream("pokus.odml");

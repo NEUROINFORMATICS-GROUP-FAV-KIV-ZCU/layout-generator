@@ -41,8 +41,8 @@ import cz.zcu.kiv.formgen.model.FormItem;
 public class ObjectParser extends AbstractParser<Object> {
     
     
-    public ObjectParser(ModelProvider formProvider) {
-        super(formProvider);
+    public ObjectParser(ModelProvider modelProvider) {
+        super(modelProvider);
     }
 
 

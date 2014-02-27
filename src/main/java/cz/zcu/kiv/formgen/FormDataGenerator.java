@@ -25,6 +25,8 @@
 
 package cz.zcu.kiv.formgen;
 
+import java.util.Collection;
+
 
 /**
  * Interface that enables to control the form-data-generator tool.
@@ -32,5 +34,7 @@ package cz.zcu.kiv.formgen;
  * @author Jakub Krauz
  */
 public interface FormDataGenerator extends Generator<Object> {
+    
+    void loadObjects(Collection<Object> collection) throws FormNotFoundException;
 
 }

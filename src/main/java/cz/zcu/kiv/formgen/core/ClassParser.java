@@ -49,10 +49,10 @@ public class ClassParser extends AbstractParser<Class<?>> {
     /**
      * Constructor. 
      * 
-     * @param formProvider object implementing the FormProvider interface
+     * @param modelProvider object implementing the {@link ModelProvider} interface
      */
-    public ClassParser(ModelProvider formProvider) {
-        super(formProvider);
+    public ClassParser(ModelProvider modelProvider) {
+        super(modelProvider);
     }
     
     

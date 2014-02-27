@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * SimpleFormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * SimpleFormDataGenerator.java, 27. 2. 2014 12:44:53 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -28,95 +28,77 @@ package cz.zcu.kiv.formgen.core;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import org.reflections.Reflections;
-import cz.zcu.kiv.formgen.ModelProvider;
-import cz.zcu.kiv.formgen.LayoutGenerator;
+import cz.zcu.kiv.formgen.FormDataGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
+import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
- * Generates form layout from a POJO data model.
  *
  * @author Jakub Krauz
  */
-public class SimpleLayoutGenerator implements LayoutGenerator {
+public class SimpleFormDataGenerator implements FormDataGenerator {
     
-    /** Class parser instance. */
-    private ClassParser parser;
+    /** Object parser instance. */
+    private ObjectParser parser;
     
     /** Map of created forms by their name. */
     private Map<String, Form> forms = new HashMap<String, Form>();
+    
     
     
     /**
      * Constructs new generator using the given {@link ModelProvider} object.
      * @param modelProvider object that provides a concrete model implementation
      */
-    public SimpleLayoutGenerator(ModelProvider modelProvider) {
-        parser = new ClassParser(modelProvider);
+    public SimpleFormDataGenerator(ModelProvider modelProvider) {
+        parser = new ObjectParser(modelProvider);
     }
     
+
     
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.Generator#load(java.lang.Object[])
+     */
     @Override
-    public void loadClass(String... names) throws ClassNotFoundException, FormNotFoundException {
-        Class<?>[] classes = new Class<?>[names.length];
-        for (int i = 0; i < classes.length; i++)
-            classes[i] = Class.forName(names[i]);
-        load(classes);
-    }
-    
-    
-    @Override
-    public void load(Class<?>... cls) throws FormNotFoundException {
-        for (Class<?> c : cls) {
-            if (c.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
-                loadClass(c, false);
-            else if (c.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.MultiForm.class))
-                loadClass(c, true);
+    public void load(Object... objects) throws FormNotFoundException {
+        for (Object o : objects) {
+            if (o.getClass().isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class))
+                loadObject(o, false);
+            else if (o.getClass().isAnnotationPresent(cz.zcu.kiv.formgen.annotation.MultiForm.class))
+                loadObject(o, true);
             else
                 throw new FormNotFoundException();
         }
     }
-
     
+    
+    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.FormDataGenerator#loadObjects(java.util.Collection<java.lang.Object>)
+     */
     @Override
-    public void loadPackage(String name) throws FormNotFoundException {
-        Reflections reflections = new Reflections(name);
-        Set<Class<?>> classes;
-        
-        /* simple forms */
-        classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.Form.class);
-        for (Class<?> cls : classes) {
-            loadClass(cls, false);
-        }
-        
-        /* multiple (cross-class) forms */
-        classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.MultiForm.class);
-        for (Class<?> cls : classes) {
-            loadClass(cls, true);
-        }
+    public void loadObjects(Collection<Object> collection) throws FormNotFoundException {
+        for (Object object : collection)
+            load(object);
     }
 
 
-    @Override
-    public void loadPackage(Package pack) throws FormNotFoundException {
-        if (pack == null)
-            return;
-        
-        // note: calling "new Reflections(Package);" can lead to 
-        // "ReflectionsException: could not use param package ..."
-        loadPackage(pack.getName());
-    }
     
-    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.Generator#getForm(java.lang.String)
+     */
     @Override
     public Form getForm(String name) {
         return forms.get(name);
     }
 
 
+    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.Generator#getForms()
+     */
     @Override
     public Collection<Form> getForms() {
         return forms.values();
@@ -130,26 +112,26 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
      * Otherwise (if multiForm is true), cls MUST be annotated with the
      * {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation.
      * 
-     * @param cls the class to be loaded
-     * @param multiForm if true, the class is a part of a multi-form
+     * @param obj the object to be loaded
+     * @param multiForm if true, the object is a part of a multi-form
      */
-    private void loadClass(Class<?> cls, boolean multiForm) {
+    private void loadObject(Object obj, boolean multiForm) {
         if (multiForm) {
             cz.zcu.kiv.formgen.annotation.MultiForm annotation = 
-                    cls.getAnnotation(cz.zcu.kiv.formgen.annotation.MultiForm.class);
+                    obj.getClass().getAnnotation(cz.zcu.kiv.formgen.annotation.MultiForm.class);
             String name = annotation.value();
             if (forms.containsKey(name))
-                parser.parse(cls, forms.get(name));
+                parser.parse(obj, forms.get(name));
             else {
                 Form form = parser.createMultiform(annotation);
-                parser.parse(cls, form);
+                parser.parse(obj, form);
                 forms.put(name, form);
             }
         } else {
-            Form form = parser.parse(cls);
+            Form form = parser.parse(obj);
             forms.put(form.getFormName(), form);
         }
     }
-
+    
 
 }
