@@ -66,6 +66,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
     @Override
     public Form parse(Class<?> cls) {
         Form form = super.parse(cls);
+        form.setLayout(true);
         form.setLayoutName(form.getName() + "-generated");
         return form;
     }

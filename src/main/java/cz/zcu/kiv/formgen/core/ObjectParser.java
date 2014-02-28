@@ -27,10 +27,9 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import cz.zcu.kiv.formgen.model.DataField;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
-import cz.zcu.kiv.formgen.model.FormItemContainer;
 import cz.zcu.kiv.formgen.model.FormSet;
 
 
@@ -53,19 +52,15 @@ public class ObjectParser extends AbstractParser<Object> {
             return null;
         
         Form form = createForm(obj.getClass());
+        form.setLayout(false);
         
         for (Field f : formItemFields(obj.getClass())) {
             if (isSimpleType(f.getType())) {
                 FormItem item = createDataField(f, obj);
                 form.addItem(item);
             } else if (Collection.class.isAssignableFrom(f.getType())) {
-                Collection<?> collection = (Collection<?>) fieldValue(f, obj);
-                if (collection == null || collection.isEmpty())
-                    continue;
-                if (isSimpleType(collection.iterator().next().getClass()))
-                    form.addItem(createDataField(f, obj));
-                else
-                    form.addItem(createDataSet(f, obj));
+                FormSet set = createDataSet(f, obj);
+                form.addItem(set);
             } else {
                 Form subform = _parse(fieldValue(f, obj));
                 form.addItem(subform);
@@ -75,39 +70,38 @@ public class ObjectParser extends AbstractParser<Object> {
         return form;
     }
     
-    
-    private FormItemContainer createDataSet(Field field, Object obj) {
+
+    private FormSet createDataSet(Field field, Object obj) {
         String name = field.getName();
         //FormItemContainer dataSet = formProvider.newFormSet(name, field.getType());
-        FormItemContainer dataSet = new FormSet(name, field.getType());
+        FormSet dataSet = new FormSet(name, field.getType());
         
-        Object value = fieldValue(field, obj);
+        Collection<?> collection = (Collection<?>) fieldValue(field, obj);
+        if (collection == null || collection.isEmpty())
+            return null;
+        
         int index = 0;
-        for (Object o : (Collection<?>) value) {
-            Form form = _parse(o);
-            form.setName(name + "[" + index++ + "]");
-            dataSet.addItem(form);
+        for (Object o : collection) {
+            if (isSimpleType(o.getClass())) {
+                FormField formField = new FormField(name + "[" + index++ + "]", o.getClass());
+                formField.setValue(o);
+                dataSet.addItem(formField);
+            } else {
+                Form form = _parse(o);
+                form.setName(name + "[" + index++ + "]");
+                dataSet.addItem(form);   
+            }
         }
         
         return dataSet;
     }
 
 
-    @SuppressWarnings("unchecked")
-    private DataField createDataField(Field f, Object obj) {
-        f.setAccessible(true);
+
+    private FormField createDataField(Field f, Object obj) {
         Object value = fieldValue(f, obj);
-        DataField dataField = null;
-        
-        //TODO
-        
-        /*if (value instanceof Collection<?>) {
-            dataField = formProvider.newDataField(f.getName(), null);
-            dataField.addValues((Collection<Object>) value);
-        } else {
-            dataField = formProvider.newDataField(f.getName(), value);
-        }*/
-        
+        FormField dataField = new FormField(f.getName(), f.getType());
+        dataField.setValue(value);
         return dataField;
     }
     

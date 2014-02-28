@@ -47,9 +47,12 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     
     private int lastItemId = 0;
     
+    private boolean layout;
+    
     private String layoutName;
     
     private Vector<FormItem> items = new Vector<FormItem>();
+    
     
     
     public Form(String name) {
@@ -145,6 +148,18 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
      */
     public String getLayoutName() {
         return layoutName;
+    }
+
+
+    
+    public boolean isLayout() {
+        return layout;
+    }
+
+
+    
+    public void setLayout(boolean layout) {
+        this.layout = layout;
     }
 
 

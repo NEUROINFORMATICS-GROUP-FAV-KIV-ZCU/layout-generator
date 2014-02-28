@@ -44,16 +44,18 @@ public class Converter {
     private static final int COMBOBOX_MAX_ITEMS = 5;
     
     
-    public Section modelToOdml(Form form) {
+    public Section layoutToOdml(Form form) {
         Section root = null;
         
         try {
             root = new Section(form.getName(), "form");
-            root.setDefinition(form.getDescription());
+            if (form.getDescription() != null)
+                root.setDefinition(form.getDescription());
             //root.addProperty("id", form.getId());
-            root.addProperty("label", form.getLabel());
+            if (form.getLabel() != null)
+                root.addProperty("label", form.getLabel());
             
-            addItems(root, form.getItems());
+            addItems(root, form.getItems(), true);
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -62,22 +64,44 @@ public class Converter {
         
         if (form.getLayoutName() != null)
             root.addProperty("layoutName", form.getLayoutName());
+        
+        return root;
+    }
+    
+    
+    public Section dataToOdml(Form form) {
+        Section root = null;
+        
+        try {
+            root = new Section(form.getName(), "form");
+            addItems(root, form.getItems(), false);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         return root;
     }
     
     
     
-    private Section convert(Form form) {
+    private Section convert(Form form, boolean layoutInfo) {
         Section section = null;
         
         try {
             section = new Section(form.getName(), "form");
-            section.setDefinition(form.getDescription());
-            section.addProperty("id", form.getId());
-            section.addProperty("label", form.getLabel());
-            section.addProperty("required", form.isRequired());
             
-            addItems(section, form.getItems());
+            if (layoutInfo) {
+                if (form.getDescription() != null)
+                    section.setDefinition(form.getDescription());
+                if (form.getId() > 0)
+                    section.addProperty("id", form.getId());
+                if (form.getLabel() != null)
+                    section.addProperty("label", form.getLabel());
+                section.addProperty("required", form.isRequired());
+            }
+            
+            addItems(section, form.getItems(), layoutInfo);
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -92,11 +116,14 @@ public class Converter {
         Section section = null;
         
         try {
-            section = new Section(field.getName(), field.getType().getValue());  // TODO type
-            section.addProperty("id", field.getId());
-            section.addProperty("label", field.getLabel());
+            section = new Section(field.getName(), field.getType().getValue());
+            
+            if (field.getId() > 0)
+                section.addProperty("id", field.getId());
+            if (field.getLabel() != null)
+                section.addProperty("label", field.getLabel());
             section.addProperty("required", field.isRequired());
-            section.addProperty("datatype", field.getDatatype().getValue());   // TODO datatype
+            section.addProperty("datatype", field.getDatatype().getValue());
             
             if (field.getMinLength() > 0)
                 section.addProperty("minLength", field.getMinLength());
@@ -129,16 +156,21 @@ public class Converter {
     
     
     
-    private Section convert(FormSet set) {
+    private Section convert(FormSet set, boolean layoutInfo) {
         Section section = null;
         
         try {
             section = new Section(set.getName(), "set");
-            section.addProperty("id", set.getId());
-            section.addProperty("label", set.getLabel());
-            section.addProperty("required", set.isRequired());
             
-            addItems(section, set.getItems());
+            if (layoutInfo) {
+                if (set.getId() > 0)
+                    section.addProperty("id", set.getId());
+                if (set.getLabel() != null)
+                    section.addProperty("label", set.getLabel());
+                section.addProperty("required", set.isRequired());
+            }
+            
+            addItems(section, set.getItems(), layoutInfo);
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -150,29 +182,36 @@ public class Converter {
     
     
     
-    private void addItems(Section section, Vector<FormItem> items) {
+    private void addItems(Section section, Vector<FormItem> items, boolean layoutInfo) {
         int lastId = -1;
         Section subSection;
         
         for (FormItem item : items) {
             if (item instanceof Form) {
-                subSection = convert((Form) item);
-                if (lastId != -1)
+                subSection = convert((Form) item, layoutInfo);
+                if (layoutInfo && lastId != -1)
                     subSection.addProperty("idTop", lastId);
                 section.add(subSection);
             } else if (item instanceof FormSet) {
-                subSection = convert((FormSet) item);
-                if (lastId != -1)
+                subSection = convert((FormSet) item, layoutInfo);
+                if (layoutInfo && lastId != -1)
                     subSection.addProperty("idTop", lastId);
                 section.add(subSection);
-            } else {
+            } else if (layoutInfo) {
                 subSection = convert((FormField) item);
                 if (lastId != -1)
                     subSection.addProperty("idTop", lastId);
                 section.add(subSection);
+            } else {
+                section.addProperty(item.getName(), ((FormField) item).getValue());
             }
-            lastId = item.getId();
+            
+            if (layoutInfo)
+                lastId = item.getId();
         }
+        
     }
+    
+    
 
 }

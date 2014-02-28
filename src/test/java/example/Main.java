@@ -42,7 +42,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         
-        //data();
+        data();
         
         LayoutGenerator gen = new SimpleLayoutGenerator();
         //Package pack = Package.getPackage("example.pojo");

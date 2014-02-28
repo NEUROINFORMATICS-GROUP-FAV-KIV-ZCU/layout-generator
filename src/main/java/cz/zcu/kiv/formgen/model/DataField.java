@@ -32,8 +32,8 @@ import java.util.Collection;
  *
  * @author Jakub Krauz
  */
-public interface DataField extends FormItem {
+/*public interface DataField extends FormItem {
     
     void addValues(Collection<Object> values);
     
-}
+}*/

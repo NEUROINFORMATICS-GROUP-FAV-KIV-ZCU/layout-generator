@@ -26,7 +26,6 @@
 package cz.zcu.kiv.formgen.odml.model;
 
 import java.util.Collection;
-import cz.zcu.kiv.formgen.model.DataField;
 import odml.core.Property;
 
 
@@ -34,7 +33,7 @@ import odml.core.Property;
  *
  * @author Jakub Krauz
  */
-public class OdmlDataField extends Property implements DataField {
+public class OdmlDataField extends Property {
     
     private static final long serialVersionUID = -3253266139533736224L;
 
@@ -45,7 +44,7 @@ public class OdmlDataField extends Property implements DataField {
     }
     
     
-    @Override
+
     public void addValues(Collection<Object> values) {
         for (Object value : values)
             addValue(value);
@@ -56,39 +55,39 @@ public class OdmlDataField extends Property implements DataField {
     
     
 
-    @Override
+
     public void setId(int id) {
         // TODO Auto-generated method stub
         
     }
 
-    @Override
+
     public int getId() {
         // TODO Auto-generated method stub
         return 0;
     }
 
-    @Override
+
     public void setLabel(String label) {
         // TODO Auto-generated method stub
         
     }
 
-    @Override
+
     public String getLabel() {
         // TODO Auto-generated method stub
         return null;
     }
 
 
-    @Override
+
     public void setRequired(boolean required) {
         // TODO Auto-generated method stub
         
     }
 
 
-    @Override
+
     public boolean isRequired() {
         // TODO Auto-generated method stub
         return false;

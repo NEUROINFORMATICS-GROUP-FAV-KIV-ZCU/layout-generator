@@ -58,6 +58,8 @@ public class FormField extends AbstractFormItem implements FormItem {
     
     private Object possibleValues[];
     
+    private Object value;
+    
     
     public FormField(String name, Class<?> type) {
         this.name = name;
@@ -215,6 +217,20 @@ public class FormField extends AbstractFormItem implements FormItem {
      */
     public Object[] getPossibleValues() {
         return possibleValues;
+    }
+
+
+
+    
+    public Object getValue() {
+        return value;
+    }
+
+
+
+    
+    public void setValue(Object value) {
+        this.value = value;
     }
 
 

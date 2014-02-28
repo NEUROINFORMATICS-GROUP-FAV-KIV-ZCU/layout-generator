@@ -27,7 +27,6 @@ package cz.zcu.kiv.formgen.odml.model;
 
 import odml.core.Property;
 import odml.core.Section;
-import cz.zcu.kiv.formgen.model.DataField;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FieldType;
@@ -57,9 +56,9 @@ public class OdmlForm extends OdmlFormItem {
 
 
     public void addItem(FormItem item) {
-        if (item instanceof DataField) {
+        /*if (item instanceof DataField) {
             addDataField((DataField) item);
-        } else {
+        } else {*/
             if (item instanceof OdmlForm)
                 highestItemId = Math.max(highestItemId, ((OdmlForm) item).highestItemId());
             else
@@ -70,7 +69,7 @@ public class OdmlForm extends OdmlFormItem {
             lastItemId = item.getId();
             
             add((Section) item);
-        }
+       // }
     }
     
     
@@ -125,8 +124,8 @@ public class OdmlForm extends OdmlFormItem {
     
     
     
-    private void addDataField(DataField field) {
+    /*private void addDataField(DataField field) {
         add((Property) field);
-    }
+    }*/
 
 }
