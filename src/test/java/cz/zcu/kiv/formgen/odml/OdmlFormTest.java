@@ -61,7 +61,7 @@ public class OdmlFormTest {
         
         try {
             OdmlFormField item = new OdmlFormField(sectionName, String.class);
-            odmlForm.addItem(item);
+            //odmlForm.addItem(item);
             assertTrue(odmlForm.containsSection(sectionName));
             assertEquals(item, odmlForm.getSection(sectionName));
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class OdmlFormTest {
         
         try {
             OdmlForm subform = new OdmlForm(subformName);
-            odmlForm.addItem(subform);
+            //odmlForm.addItem(subform);
             assertTrue(odmlForm.containsSection(subformName));
             assertEquals(subform, odmlForm.getSection(subformName));
         } catch (Exception e) {

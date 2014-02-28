@@ -28,7 +28,6 @@ package cz.zcu.kiv.formgen.core;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 import org.reflections.Reflections;
-import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 
@@ -45,8 +44,8 @@ public class SimpleLayoutGenerator extends AbstractGenerator<Class<?>> implement
      * Constructs new generator using the given {@link ModelProvider} object.
      * @param modelProvider object that provides a concrete model implementation
      */
-    public SimpleLayoutGenerator(ModelProvider modelProvider) {
-        super(new ClassParser(modelProvider));
+    public SimpleLayoutGenerator() {
+        super(new ClassParser());
     }
     
     

@@ -27,11 +27,11 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.model.DataField;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormItemContainer;
+import cz.zcu.kiv.formgen.model.FormSet;
 
 
 /**
@@ -41,8 +41,8 @@ import cz.zcu.kiv.formgen.model.FormItemContainer;
 public class ObjectParser extends AbstractParser<Object> {
     
     
-    public ObjectParser(ModelProvider modelProvider) {
-        super(modelProvider);
+    public ObjectParser() {
+        
     }
 
 
@@ -78,13 +78,14 @@ public class ObjectParser extends AbstractParser<Object> {
     
     private FormItemContainer createDataSet(Field field, Object obj) {
         String name = field.getName();
-        FormItemContainer dataSet = formProvider.newFormSet(name, field.getType());
+        //FormItemContainer dataSet = formProvider.newFormSet(name, field.getType());
+        FormItemContainer dataSet = new FormSet(name, field.getType());
         
         Object value = fieldValue(field, obj);
         int index = 0;
         for (Object o : (Collection<?>) value) {
             Form form = _parse(o);
-            form.setFormName(name + "[" + index++ + "]");
+            form.setName(name + "[" + index++ + "]");
             dataSet.addItem(form);
         }
         
@@ -96,14 +97,16 @@ public class ObjectParser extends AbstractParser<Object> {
     private DataField createDataField(Field f, Object obj) {
         f.setAccessible(true);
         Object value = fieldValue(f, obj);
-        DataField dataField;
+        DataField dataField = null;
         
-        if (value instanceof Collection<?>) {
+        //TODO
+        
+        /*if (value instanceof Collection<?>) {
             dataField = formProvider.newDataField(f.getName(), null);
             dataField.addValues((Collection<Object>) value);
         } else {
             dataField = formProvider.newDataField(f.getName(), value);
-        }
+        }*/
         
         return dataField;
     }

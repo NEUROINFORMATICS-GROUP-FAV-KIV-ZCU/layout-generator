@@ -132,7 +132,7 @@ public abstract class AbstractGenerator<T> implements Generator<T> {
             }
         } else {
             Form form = parser.parse(object);
-            forms.put(form.getFormName(), form);
+            forms.put(form.getName(), form);
         }
     }
 

@@ -38,7 +38,7 @@ import cz.zcu.kiv.formgen.odml.SectionType;
  * 
  * @author Jakub Krauz
  */
-public class OdmlForm extends OdmlFormItem implements Form {
+public class OdmlForm extends OdmlFormItem {
 
     public static final String TYPE = SectionType.FORM.getValue();
 
@@ -56,7 +56,6 @@ public class OdmlForm extends OdmlFormItem implements Form {
     }
 
 
-    @Override
     public void addItem(FormItem item) {
         if (item instanceof DataField) {
             addDataField((DataField) item);
@@ -75,31 +74,30 @@ public class OdmlForm extends OdmlFormItem implements Form {
     }
     
     
-    @Override
     public void setFormName(String name) {
         setName(name);
     }
     
     
-    @Override
+
     public String getFormName() {
         return getName();
     }
 
 
-    @Override
+
     public void setDescription(String description) {
         setDefinition(description);
     }
 
 
-    @Override
+
     public String getDescription() {
         return getDefinition();
     }
     
     
-    @Override
+
     public void setId(int id) {
         super.setId(id);
         if (id > highestItemId)
@@ -107,20 +105,20 @@ public class OdmlForm extends OdmlFormItem implements Form {
     }
 
 
-    @Override
+
     public int highestItemId() {
         return highestItemId;
     }
 
 
-    @Override
+
     public void setLayoutName(String name) {
         this.layoutName = name;
         addProperty("layoutName", name);
     }
     
     
-    @Override
+
     public String getLayoutName() {
         return layoutName;
     }

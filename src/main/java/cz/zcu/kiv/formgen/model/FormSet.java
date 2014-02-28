@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,33 +19,39 @@
  *
  ***********************************************************************************************************************
  *
- * ModelProvider.java, 2. 12. 2013 17:18:54 Jakub Krauz
+ * FormSet.java, 28. 2. 2014 17:23:34 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.model;
 
-import cz.zcu.kiv.formgen.core.TypeMapper;
-import cz.zcu.kiv.formgen.model.DataField;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.model.FormField;
-import cz.zcu.kiv.formgen.model.FormItemContainer;
+import java.util.Vector;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public interface ModelProvider {
+public class FormSet extends AbstractFormItem implements FormItemContainer {
     
-    Form newForm(String name);
+    private Vector<FormItem> items = new Vector<FormItem>();
     
-    FormField newFormField(String name, Class<?> type);
     
-    DataField newDataField(String name, Object value);
+    public FormSet(String name, Class<?> type) {
+        this.name = name;
+        // TODO type
+    }
     
-    FormItemContainer newFormSet(String name, Class<?> type);
-    
-    TypeMapper typeMapper();
+
+    @Override
+    public void addItem(FormItem item) {
+        items.add(item);
+    }
+
+
+    @Override
+    public Vector<FormItem> getItems() {
+        return items;
+    }
 
 }

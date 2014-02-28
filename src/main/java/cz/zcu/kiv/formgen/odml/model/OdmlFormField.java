@@ -35,7 +35,7 @@ import cz.zcu.kiv.formgen.odml.SectionType;
  * 
  * @author Jakub Krauz
  */
-public class OdmlFormField extends OdmlFormItem implements FormField {
+public class OdmlFormField extends OdmlFormItem {
     
     private static final int COMBOBOX_MAX_ITEMS = 5;
 
@@ -53,13 +53,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
     }
 
 
-    @Override
+
     public void setDatatype(String datatype) {
         addProperty("datatype", datatype);
     }
 
 
-    @Override
+
     public String getDatatype() {
         Property prop = getProperty("datatype");
         if (prop != null)
@@ -69,13 +69,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
     }
 
 
-    @Override
+
     public void setMinLength(int value) {
         addProperty("minLength", value);
     }
 
 
-    @Override
+
     public int getMinLength() {
         Property prop = getProperty("minLength");
         if (prop != null)
@@ -85,13 +85,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
     }
 
 
-    @Override
+
     public void setMaxLength(int value) {
         addProperty("maxLength", value);
     }
 
 
-    @Override
+
     public int getMaxLength() {
         Property prop = getProperty("maxLength");
         if (prop != null)
@@ -101,13 +101,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
     }
 
 
-    @Override
+
     public void setMinValue(Object value) {
         addProperty("minValue", value);
     }
 
 
-    @Override
+
     public Number getMinValue() {
         Property prop = getProperty("minValue");
         if (prop != null)
@@ -117,13 +117,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
     }
 
 
-    @Override
+
     public void setMaxValue(Number value) {
         addProperty("maxValue", value);
     }
 
 
-    @Override
+
     public Number getMaxValue() {
         Property prop = getProperty("maxValue");
         if (prop != null)
@@ -133,13 +133,13 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
     }
 
 
-    @Override
+
     public void setDefaultValue(Object value) {
         addProperty("defaultValue", value);
     }
 
 
-    @Override
+
     public Object getDefaultValue() {
         Property prop = getProperty("defaultValue");
         if (prop != null)
@@ -149,7 +149,7 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
     }
 
 
-    @Override
+
     public void setPossibleValues(Object[] values) {
         if (values.length <= COMBOBOX_MAX_ITEMS)
             setType(SectionType.COMBOBOX.getValue());
@@ -168,7 +168,7 @@ public class OdmlFormField extends OdmlFormItem implements FormField {
     }
 
 
-    @Override
+
     public Object[] getPossibleValues() {
         Property prop = getProperty("values");
         if (prop != null)

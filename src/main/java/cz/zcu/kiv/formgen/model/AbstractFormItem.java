@@ -19,81 +19,91 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlFormItem.java, 11. 2. 2014 17:46:35 Jakub Krauz
+ * AbstractFormItem.java, 28. 2. 2014 16:57:30 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml.model;
-
-import odml.core.Property;
-import odml.core.Section;
-import cz.zcu.kiv.formgen.model.FormItem;
+package cz.zcu.kiv.formgen.model;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class OdmlFormItem extends Section {
-
-    private static final long serialVersionUID = 1L;
+public abstract class AbstractFormItem implements FormItem {
     
-    private int id = -1;
+    protected int id;
     
+    protected String name;
     
-    public OdmlFormItem(String name, String type) throws Exception {
-        super(name, type);
-    }
+    protected String label;
+    
+    protected boolean required;
+    
 
-
-
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#setId(int)
+     */
+    @Override
     public void setId(int id) {
         this.id = id;
-        addProperty("id", id);
     }
 
-    
 
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#getId()
+     */
+    @Override
     public int getId() {
-        // BUG v odml-java-lib??
-        // pokud neni property predtim nastaveno, pada na stack overflow
-        /*Property prop = getProperty("id");
-        if (prop != null)
-            return (Integer) prop.getValue();
-        else
-            return -1;*/
         return id;
     }
+    
+    
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+
+    @Override
+    public String getName() {
+        return name;
+    }
 
 
-
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#setLabel(java.lang.String)
+     */
+    @Override
     public void setLabel(String label) {
-        addProperty("label", label);
+        this.label = label;
     }
 
 
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#getLabel()
+     */
+    @Override
     public String getLabel() {
-        Property prop = getProperty("label");
-        if (prop != null)
-            return (String) prop.getValue();
-        else
-            return null;
+        return label;
     }
 
 
-
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#setRequired(boolean)
+     */
+    @Override
     public void setRequired(boolean required) {
-        addProperty("required", required);
+        this.required = required;
     }
 
 
-
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#isRequired()
+     */
+    @Override
     public boolean isRequired() {
-        Property prop = getProperty("required");
-        if (prop != null)
-            return (Boolean) prop.getValue();
-        else
-            return false;
+        return required;
     }
 
 }

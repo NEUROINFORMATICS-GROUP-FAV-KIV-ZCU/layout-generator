@@ -38,7 +38,39 @@ package cz.zcu.kiv.formgen.model;
  * 
  * @author Jakub Krauz
  */
-public interface FormField extends FormItem {
+public class FormField extends AbstractFormItem implements FormItem {
+    
+    private String datatype;
+    
+    private int minLength = -1;
+    
+    private int maxLength = -1;
+    
+    private Number minValue;
+    
+    private Number maxValue;
+    
+    private Object defaultValue;
+    
+    private Object possibleValues[];
+    
+    
+    public FormField(String name, Class<?> type) {
+        this.name = name;
+        // TODO type
+    }
+
+
+    
+    public String getName() {
+        return name;
+    }
+
+
+    
+    public void setName(String name) {
+        this.name = name;
+    }
 
 
     /**
@@ -46,7 +78,9 @@ public interface FormField extends FormItem {
      * 
      * @param datatype - the datatype name
      */
-    void setDatatype(String datatype);
+    public void setDatatype(String datatype) {
+        this.datatype = datatype;
+    }
 
 
     /**
@@ -54,7 +88,9 @@ public interface FormField extends FormItem {
      * 
      * @return the datatype
      */
-    String getDatatype();
+    public String getDatatype() {
+        return datatype;
+    }
 
 
     /**
@@ -62,7 +98,9 @@ public interface FormField extends FormItem {
      * 
      * @param value the minimum length
      */
-    void setMinLength(int value);
+    public void setMinLength(int value) {
+        this.minLength = value;
+    }
 
 
     /**
@@ -70,7 +108,9 @@ public interface FormField extends FormItem {
      * 
      * @return the minimum length
      */
-    int getMinLength();
+    public int getMinLength() {
+        return minLength;
+    }
 
 
     /**
@@ -78,7 +118,9 @@ public interface FormField extends FormItem {
      * 
      * @param value the maximum length
      */
-    void setMaxLength(int value);
+    public void setMaxLength(int value) {
+        this.maxLength = value;
+    }
 
 
     /**
@@ -86,7 +128,9 @@ public interface FormField extends FormItem {
      * 
      * @return the maximum length
      */
-    int getMaxLength();
+    public int getMaxLength() {
+        return maxLength;
+    }
 
 
     /**
@@ -94,7 +138,9 @@ public interface FormField extends FormItem {
      * 
      * @param value the minimum value
      */
-    void setMinValue(Object value);
+    public void setMinValue(Number value) {
+        this.minValue = value;
+    }
 
     
     /**
@@ -102,7 +148,9 @@ public interface FormField extends FormItem {
      * 
      * @return the minimum value
      */
-    Number getMinValue();
+    public Number getMinValue() {
+        return minValue;
+    }
 
 
     /**
@@ -110,7 +158,9 @@ public interface FormField extends FormItem {
      * 
      * @param value the maximum value
      */
-    void setMaxValue(Number value);
+    public void setMaxValue(Number value) {
+        this.maxValue = value;
+    }
 
 
     /**
@@ -118,7 +168,9 @@ public interface FormField extends FormItem {
      * 
      * @return the maximum value
      */
-    Number getMaxValue();
+    public Number getMaxValue() {
+        return maxValue;
+    }
 
 
     /**
@@ -126,7 +178,9 @@ public interface FormField extends FormItem {
      * 
      * @param value the default value
      */
-    void setDefaultValue(Object value);
+    public void setDefaultValue(Object value) {
+        this.defaultValue = value;
+    }
 
 
     /**
@@ -134,7 +188,9 @@ public interface FormField extends FormItem {
      * 
      * @return the default value
      */
-    Object getDefaultValue();
+    public Object getDefaultValue() {
+        return defaultValue;
+    }
 
 
     /**
@@ -142,7 +198,9 @@ public interface FormField extends FormItem {
      * 
      * @param values possible values
      */
-    void setPossibleValues(Object[] values);
+    public void setPossibleValues(Object[] values) {
+        this.possibleValues = values;
+    }
 
     
     /**
@@ -150,7 +208,9 @@ public interface FormField extends FormItem {
      * 
      * @return possible values
      */
-    Object[] getPossibleValues();
+    public Object[] getPossibleValues() {
+        return possibleValues;
+    }
 
 
 }

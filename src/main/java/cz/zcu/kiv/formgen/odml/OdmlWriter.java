@@ -39,8 +39,14 @@ public class OdmlWriter implements Writer {
 
     @Override
     public void write(Form form, OutputStream outputStream) {
-        Section rootSection = new Section();
-        rootSection.add((Section) form);
+        //Section rootSection = new Section();
+        
+        // TODO prevest model na odML section tree
+        //rootSection.add((Section) form);
+        
+        Converter converter = new Converter();
+        Section rootSection = converter.modelToOdml(form);
+        
         odml.core.Writer writer = new odml.core.Writer(rootSection);
         writer.write(outputStream);
     }

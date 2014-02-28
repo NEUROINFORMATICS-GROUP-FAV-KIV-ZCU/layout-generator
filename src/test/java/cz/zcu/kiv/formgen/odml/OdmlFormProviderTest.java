@@ -41,7 +41,7 @@ import cz.zcu.kiv.formgen.odml.model.OdmlFormField;
  */
 public class OdmlFormProviderTest {
     
-    private OdmlModelProvider provider = new OdmlModelProvider();
+    /*private OdmlModelProvider provider = new OdmlModelProvider();
 
     
     @Test
@@ -73,7 +73,7 @@ public class OdmlFormProviderTest {
         TypeMapper mapper = provider.typeMapper();
         assertNotNull(mapper);
         assertEquals(OdmlTypeMapper.class, mapper.getClass());
-    }
+    }*/
     
     
 }

@@ -25,6 +25,8 @@
 
 package cz.zcu.kiv.formgen.model;
 
+import java.util.Vector;
+
 
 /**
  * Represents a form.
@@ -37,7 +39,62 @@ package cz.zcu.kiv.formgen.model;
  * 
  * @author Jakub Krauz
  */
-public interface Form extends FormItem, FormItemContainer {
+public class Form extends AbstractFormItem implements FormItem, FormItemContainer {
+    
+    private String description;
+    
+    private int highestItemId = 0;
+    
+    private int lastItemId = 0;
+    
+    private String layoutName;
+    
+    private Vector<FormItem> items = new Vector<FormItem>();
+    
+    
+    public Form(String name) {
+        this.name = name;
+    }
+    
+    
+    @Override
+    public void addItem(FormItem item) {
+        
+        if (item == null) {
+            System.out.println("item je null");
+            return;
+        }
+        
+        /*if (item instanceof DataField) {
+            addDataField((DataField) item);
+        } else {
+            if (item instanceof OdmlForm)
+                highestItemId = Math.max(highestItemId, ((OdmlForm) item).highestItemId());
+            else
+                highestItemId = Math.max(highestItemId, item.getId());
+            
+            if (lastItemId != 0)
+                ((OdmlFormItem) item).addProperty("idTop", lastItemId);
+            lastItemId = item.getId();
+            
+            add((Section) item);
+        }*/
+        
+        if (item instanceof Form)
+            highestItemId = Math.max(highestItemId, ((Form) item).highestItemId());
+        else
+            highestItemId = Math.max(highestItemId, item.getId());
+
+        lastItemId = item.getId();
+        
+        items.add(item);
+    }
+    
+    
+    @Override 
+    public Vector<FormItem> getItems() {
+        return items;
+    }
     
     
     /**
@@ -45,23 +102,10 @@ public interface Form extends FormItem, FormItemContainer {
      * 
      * @return the highest ID
      */
-    int highestItemId();
+    public int highestItemId() {
+        return highestItemId;
+    }
 
-    
-    /**
-     * Sets the name of this form.
-     * 
-     * @param name the name
-     */
-    void setFormName(String name);
-    
-
-    /**
-     * Returns the name of this form.
-     * 
-     * @return the name
-     */
-    String getFormName();
 
 
     /**
@@ -69,7 +113,9 @@ public interface Form extends FormItem, FormItemContainer {
      * 
      * @param description - the description for this form
      */
-    void setDescription(String description);
+    public void setDescription(String description) {
+        this.description = description;
+    }
     
     
     /**
@@ -77,7 +123,9 @@ public interface Form extends FormItem, FormItemContainer {
      * 
      * @return the description
      */
-    String getDescription();
+    public String getDescription() {
+        return description;
+    }
     
     
     /**
@@ -85,7 +133,9 @@ public interface Form extends FormItem, FormItemContainer {
      * 
      * @param name the name of the layout
      */
-    void setLayoutName(String name);
+    public void setLayoutName(String name) {
+        this.layoutName = name;
+    }
     
     
     /**
@@ -93,6 +143,9 @@ public interface Form extends FormItem, FormItemContainer {
      * 
      * @return the name of the form layout
      */
-    String getLayoutName();
+    public String getLayoutName() {
+        return layoutName;
+    }
+
 
 }

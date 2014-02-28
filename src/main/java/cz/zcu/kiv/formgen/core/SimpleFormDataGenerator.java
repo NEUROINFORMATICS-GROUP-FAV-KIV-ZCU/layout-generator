@@ -29,7 +29,6 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 import cz.zcu.kiv.formgen.FormDataGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
-import cz.zcu.kiv.formgen.ModelProvider;
 
 
 /**
@@ -44,8 +43,8 @@ public class SimpleFormDataGenerator extends AbstractGenerator<Object> implement
      * Constructs new generator using the given {@link ModelProvider} object.
      * @param modelProvider object that provides a concrete model implementation
      */
-    public SimpleFormDataGenerator(ModelProvider modelProvider) {
-        super(new ObjectParser(modelProvider));
+    public SimpleFormDataGenerator() {
+        super(new ObjectParser());
     }
     
 

@@ -50,6 +50,22 @@ public interface FormItem {
     
     
     /**
+     * Sets the name of this item.
+     * 
+     * @param name the name
+     */
+    public void setName(String name);
+    
+
+    /**
+     * Returns the name of this item.
+     * 
+     * @return the name
+     */
+    public String getName();
+    
+    
+    /**
      * Sets the label to this form item.
      * 
      * @param label - label to be set

@@ -28,9 +28,9 @@ package cz.zcu.kiv.formgen.core;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Vector;
-import cz.zcu.kiv.formgen.ModelProvider;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
+import cz.zcu.kiv.formgen.odml.OdmlTypeMapper;
 
 
 /**
@@ -41,11 +41,11 @@ public abstract class AbstractParser<T> {
     
     
     /** Object used to create new {@link Form} and {@link FormField} objects. */
-    protected ModelProvider formProvider;
+    //protected ModelProvider formProvider;
     
     
-    public AbstractParser(ModelProvider formProvider) {
-        this.formProvider = formProvider;
+    public AbstractParser() {
+        //this.formProvider = formProvider;
     }
     
     
@@ -69,7 +69,8 @@ public abstract class AbstractParser<T> {
      * @return new form defined by the annotation
      */
     public Form createMultiform(cz.zcu.kiv.formgen.annotation.MultiForm annotation) {
-        return formProvider.newForm(annotation.value());
+        //return formProvider.newForm(annotation.value());
+        return new Form(annotation.value());
     }
     
     
@@ -91,7 +92,8 @@ public abstract class AbstractParser<T> {
             name = cls.getSimpleName();
         }
         
-        return formProvider.newForm(name);
+        //return formProvider.newForm(name);
+        return new Form(name);
     }
     
     
@@ -105,7 +107,8 @@ public abstract class AbstractParser<T> {
      * @return true if the type is considered simple in the given model, false otherwise
      */
     protected boolean isSimpleType(Class<?> type) {
-        return formProvider.typeMapper().isSimpleType(type);
+        //return formProvider.typeMapper().isSimpleType(type);
+        return OdmlTypeMapper.instance().isSimpleType(type);
     }
     
     

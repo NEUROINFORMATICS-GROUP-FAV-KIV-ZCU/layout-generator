@@ -36,7 +36,7 @@ import cz.zcu.kiv.formgen.odml.OdmlTypeMapper;
  *
  * @author Jakub Krauz
  */
-public class OdmlFormSet extends OdmlFormField implements FormItemContainer {
+public class OdmlFormSet extends OdmlFormField  {
 
     private static final long serialVersionUID = 1L;
     

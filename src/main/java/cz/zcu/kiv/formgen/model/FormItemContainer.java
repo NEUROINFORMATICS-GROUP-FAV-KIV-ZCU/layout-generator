@@ -25,6 +25,8 @@
 
 package cz.zcu.kiv.formgen.model;
 
+import java.util.Vector;
+
 
 /**
  * Represents a set of form items or subforms.
@@ -55,6 +57,9 @@ public interface FormItemContainer extends FormItem {
      * @param item - the item to be added
      */
     void addItem(FormItem item);
+    
+    
+    Vector<FormItem> getItems();
     
 
 }
