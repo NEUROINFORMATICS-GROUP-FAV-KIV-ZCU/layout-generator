@@ -26,9 +26,9 @@
 package cz.zcu.kiv.formgen.odml.model;
 
 import odml.core.Property;
+import cz.zcu.kiv.formgen.core.TypeMapper;
 import cz.zcu.kiv.formgen.model.FormField;
-import cz.zcu.kiv.formgen.odml.OdmlTypeMapper;
-import cz.zcu.kiv.formgen.odml.SectionType;
+import cz.zcu.kiv.formgen.model.FieldType;
 
 
 /**
@@ -42,10 +42,10 @@ public class OdmlFormField extends OdmlFormItem {
     private static final long serialVersionUID = 1L;
 
 
-    public OdmlFormField(String name, Class<?> type) throws Exception {
-        super(name, OdmlTypeMapper.instance().mapType(type));
-        setDatatype(OdmlTypeMapper.instance().mapDatatype(type));
-    }
+    /*public OdmlFormField(String name, Class<?> type) throws Exception {
+        super(name, TypeMapper.instance().mapType(type));
+        setDatatype(TypeMapper.instance().mapDatatype(type));
+    }*/
 
 
     protected OdmlFormField(String name, String type) throws Exception {
@@ -152,9 +152,9 @@ public class OdmlFormField extends OdmlFormItem {
 
     public void setPossibleValues(Object[] values) {
         if (values.length <= COMBOBOX_MAX_ITEMS)
-            setType(SectionType.COMBOBOX.getValue());
+            setType(FieldType.COMBOBOX.getValue());
         else
-            setType(SectionType.CHOICE.getValue());
+            setType(FieldType.CHOICE.getValue());
         
         try {
             Property prop = new Property("values");

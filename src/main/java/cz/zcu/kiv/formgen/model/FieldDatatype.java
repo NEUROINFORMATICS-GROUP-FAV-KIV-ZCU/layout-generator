@@ -19,11 +19,11 @@
  *
  ***********************************************************************************************************************
  *
- * FormItemDatatype.java, 18. 12. 2013 16:11:45 Jakub Krauz
+ * FieldDatatype.java, 18. 12. 2013 16:11:45 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml;
+package cz.zcu.kiv.formgen.model;
 
 
 /**
@@ -31,7 +31,7 @@ package cz.zcu.kiv.formgen.odml;
  *
  * @author Jakub Krauz
  */
-public enum FormItemDatatype {
+public enum FieldDatatype {
     
     STRING      ("string"),
     INTEGER     ("integer"),
@@ -42,7 +42,7 @@ public enum FormItemDatatype {
     
     private String value;
     
-    private FormItemDatatype(String value) {
+    private FieldDatatype(String value) {
         this.value = value;
     }
     

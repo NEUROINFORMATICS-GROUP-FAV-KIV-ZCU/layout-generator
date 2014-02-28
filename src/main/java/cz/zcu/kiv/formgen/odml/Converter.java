@@ -26,10 +26,12 @@
 package cz.zcu.kiv.formgen.odml;
 
 import java.util.Vector;
+import cz.zcu.kiv.formgen.model.FieldType;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormSet;
+import odml.core.Property;
 import odml.core.Section;
 
 
@@ -38,6 +40,8 @@ import odml.core.Section;
  * @author Jakub Krauz
  */
 public class Converter {
+    
+    private static final int COMBOBOX_MAX_ITEMS = 5;
     
     
     public Section modelToOdml(Form form) {
@@ -88,11 +92,11 @@ public class Converter {
         Section section = null;
         
         try {
-            section = new Section(field.getName());  // TODO type
+            section = new Section(field.getName(), field.getType().getValue());  // TODO type
             section.addProperty("id", field.getId());
             section.addProperty("label", field.getLabel());
             section.addProperty("required", field.isRequired());
-            section.addProperty("datatype", "XXX");   // TODO datatype
+            section.addProperty("datatype", field.getDatatype().getValue());   // TODO datatype
             
             if (field.getMinLength() > 0)
                 section.addProperty("minLength", field.getMinLength());
@@ -104,8 +108,37 @@ public class Converter {
                 section.addProperty("maxValue", field.getMaxValue());
             if (field.getDefaultValue() != null)
                 section.addProperty("defaultValue", field.getDefaultValue());
+            if (field.getPossibleValues() != null) {
+                if (field.getPossibleValues().length <= COMBOBOX_MAX_ITEMS)
+                    section.setType(FieldType.COMBOBOX.getValue());
+                else
+                    section.setType(FieldType.CHOICE.getValue());
+                Property property = new Property("values");
+                for (Object value : field.getPossibleValues())
+                    property.addValue(value);
+                section.add(property);
+            }
             
-            // TODO possible values
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return section;
+    }
+    
+    
+    
+    private Section convert(FormSet set) {
+        Section section = null;
+        
+        try {
+            section = new Section(set.getName(), "set");
+            section.addProperty("id", set.getId());
+            section.addProperty("label", set.getLabel());
+            section.addProperty("required", set.isRequired());
+            
+            addItems(section, set.getItems());
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -128,7 +161,10 @@ public class Converter {
                     subSection.addProperty("idTop", lastId);
                 section.add(subSection);
             } else if (item instanceof FormSet) {
-                ; // TODO
+                subSection = convert((FormSet) item);
+                if (lastId != -1)
+                    subSection.addProperty("idTop", lastId);
+                section.add(subSection);
             } else {
                 subSection = convert((FormField) item);
                 if (lastId != -1)

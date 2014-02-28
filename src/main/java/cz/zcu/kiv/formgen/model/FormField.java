@@ -25,6 +25,8 @@
 
 package cz.zcu.kiv.formgen.model;
 
+import cz.zcu.kiv.formgen.core.TypeMapper;
+
 
 /**
  * Represents a form item.
@@ -40,7 +42,9 @@ package cz.zcu.kiv.formgen.model;
  */
 public class FormField extends AbstractFormItem implements FormItem {
     
-    private String datatype;
+    private FieldType type;
+    
+    private FieldDatatype datatype;
     
     private int minLength = -1;
     
@@ -57,19 +61,20 @@ public class FormField extends AbstractFormItem implements FormItem {
     
     public FormField(String name, Class<?> type) {
         this.name = name;
-        // TODO type
+        this.type = TypeMapper.instance().mapType(type);
+        this.datatype = TypeMapper.instance().mapDatatype(type);
     }
 
 
     
-    public String getName() {
-        return name;
+    public FieldType getType() {
+        return type;
     }
 
 
     
-    public void setName(String name) {
-        this.name = name;
+    public void setType(FieldType type) {
+        this.type = type;
     }
 
 
@@ -78,7 +83,7 @@ public class FormField extends AbstractFormItem implements FormItem {
      * 
      * @param datatype - the datatype name
      */
-    public void setDatatype(String datatype) {
+    public void setDatatype(FieldDatatype datatype) {
         this.datatype = datatype;
     }
 
@@ -88,7 +93,7 @@ public class FormField extends AbstractFormItem implements FormItem {
      * 
      * @return the datatype
      */
-    public String getDatatype() {
+    public FieldDatatype getDatatype() {
         return datatype;
     }
 

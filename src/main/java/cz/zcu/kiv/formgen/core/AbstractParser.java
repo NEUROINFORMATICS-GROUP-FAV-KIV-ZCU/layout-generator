@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.Vector;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
-import cz.zcu.kiv.formgen.odml.OdmlTypeMapper;
 
 
 /**
@@ -108,7 +107,7 @@ public abstract class AbstractParser<T> {
      */
     protected boolean isSimpleType(Class<?> type) {
         //return formProvider.typeMapper().isSimpleType(type);
-        return OdmlTypeMapper.instance().isSimpleType(type);
+        return TypeMapper.instance().isSimpleType(type);
     }
     
     
@@ -120,7 +119,7 @@ public abstract class AbstractParser<T> {
      * @return true if the type is a whole-number type, false otherwise
      */
     protected boolean isIntegerType(Class<?> type) {
-        Class<?> cls = type.isPrimitive() ? type : AbstractTypeMapper.toPrimitiveType(type);
+        Class<?> cls = type.isPrimitive() ? type : TypeMapper.toPrimitiveType(type);
         return (cls == byte.class || cls == short.class || cls == int.class || cls == long.class);
     }
     

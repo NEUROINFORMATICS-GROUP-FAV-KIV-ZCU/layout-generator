@@ -27,7 +27,6 @@ package cz.zcu.kiv.formgen.odml;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import cz.zcu.kiv.formgen.core.TypeMapper;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.odml.model.OdmlForm;

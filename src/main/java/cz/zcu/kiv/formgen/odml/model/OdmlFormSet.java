@@ -27,9 +27,9 @@ package cz.zcu.kiv.formgen.odml.model;
 
 import odml.core.Property;
 import odml.core.Section;
+import cz.zcu.kiv.formgen.core.TypeMapper;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormItemContainer;
-import cz.zcu.kiv.formgen.odml.OdmlTypeMapper;
 
 
 /**
@@ -42,7 +42,8 @@ public class OdmlFormSet extends OdmlFormField  {
     
     
     public OdmlFormSet(String name, Class<?> type) throws Exception {
-        super(name, OdmlTypeMapper.instance().mapType(type));
+        //super(name, TypeMapper.instance().mapType(type));
+        super(null, null);
     }
     
     

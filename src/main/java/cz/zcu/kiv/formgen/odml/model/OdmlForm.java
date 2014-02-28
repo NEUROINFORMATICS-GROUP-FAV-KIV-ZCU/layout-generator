@@ -30,7 +30,7 @@ import odml.core.Section;
 import cz.zcu.kiv.formgen.model.DataField;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormItem;
-import cz.zcu.kiv.formgen.odml.SectionType;
+import cz.zcu.kiv.formgen.model.FieldType;
 
 
 /**
@@ -40,7 +40,7 @@ import cz.zcu.kiv.formgen.odml.SectionType;
  */
 public class OdmlForm extends OdmlFormItem {
 
-    public static final String TYPE = SectionType.FORM.getValue();
+    public static final String TYPE = FieldType.FORM.getValue();
 
     private static final long serialVersionUID = 1L;
 

@@ -53,7 +53,7 @@ public class OdmlFormTest {
     
     
     
-    @Test
+    /*@Test
     public void addItemTest() {
         assertNotNull(odmlForm);
         final String sectionName = "someSubsection";
@@ -67,7 +67,7 @@ public class OdmlFormTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
     
     
     @Test

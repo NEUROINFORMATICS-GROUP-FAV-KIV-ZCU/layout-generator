@@ -19,18 +19,18 @@
  *
  ***********************************************************************************************************************
  *
- * SectionType.java, 15. 11. 2013 19:14:06 Jakub Krauz
+ * FieldType.java, 15. 11. 2013 19:14:06 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml;
+package cz.zcu.kiv.formgen.model;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public enum SectionType {
+public enum FieldType {
     
     FORM       ("form"), 
     TEXTBOX    ("textbox"), 
@@ -44,7 +44,7 @@ public enum SectionType {
     
     private String value;
     
-    private SectionType(String value) {
+    private FieldType(String value) {
         this.value = value;
     }
     
