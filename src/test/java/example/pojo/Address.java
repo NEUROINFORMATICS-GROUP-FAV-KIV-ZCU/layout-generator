@@ -46,6 +46,11 @@ public class Address {
     private int number;
     
     
+    public Address() {
+        this(null, null, -1);
+    }
+    
+    
     public Address(String town, String street, int number) {
         this.town = town;
         this.street = street;

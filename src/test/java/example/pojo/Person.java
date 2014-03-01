@@ -55,13 +55,17 @@ public class Person {
     @FormItem
     private boolean clever;
  
-    //@FormItem
+    @FormItem
     private Address address;
     
     @FormItem
     private Date birth;
     
     
+    
+    public Person() {
+        this(0, null, 0, null);
+    }
     
     
     public Person(int id, String name, int age, Date birth) {

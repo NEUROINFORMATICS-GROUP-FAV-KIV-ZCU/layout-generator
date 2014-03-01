@@ -27,9 +27,11 @@ package example;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import cz.zcu.kiv.formgen.FormDataGenerator;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.Writer;
+import cz.zcu.kiv.formgen.core.ObjectBuilder;
 import cz.zcu.kiv.formgen.core.SimpleFormDataGenerator;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.model.Form;
@@ -72,6 +74,7 @@ public class Main {
         person.setAddress(address);
         person.addAddress(address);
         person.addAddress(new Address("Prague", "Brnenska", 415));
+        person.setBirth(new Date());
         
         FormDataGenerator generator = new SimpleFormDataGenerator();
         generator.load(person);
@@ -81,6 +84,18 @@ public class Main {
         OutputStream stream = new FileOutputStream("pokus.odml");
         writer.write(form, stream);
         stream.close();
+        
+        
+        
+        /* load data */
+        ObjectBuilder<Person> builder = new ObjectBuilder<Person>(Person.class);
+        Person tmp = builder.build(form);
+        
+        System.out.println("\n\nBuild result:");
+        System.out.println("name: " + tmp.getName());
+        System.out.println("age: " + tmp.getAge());
+        System.out.println("birth: " + tmp.getBirth());
+        System.out.println("address: " + tmp.getAddress().getTown() + ", " + tmp.getAddress().getStreet() + " " + tmp.getAddress().getNumber());
     }
     
 
