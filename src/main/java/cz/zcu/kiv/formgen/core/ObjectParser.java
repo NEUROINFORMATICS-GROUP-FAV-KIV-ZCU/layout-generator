@@ -89,7 +89,9 @@ public class ObjectParser extends AbstractParser<Object> {
         int index = 0;
         for (Object o : collection) {
             if (isSimpleType(o.getClass())) {
-                FormField formField = new FormField(name + "[" + index++ + "]", o.getClass());
+                //FormField formField = new FormField(name + "[" + index++ + "]", o.getClass());
+                FormField formField = new FormField(name + "[" + index++ + "]", TypeMapper.instance().mapType(o.getClass()),
+                        TypeMapper.instance().mapDatatype(o.getClass()));
                 formField.setValue(o);
                 dataSet.addItem(formField);
             } else {
@@ -106,7 +108,9 @@ public class ObjectParser extends AbstractParser<Object> {
 
     private FormField createDataField(Field f, Object obj) {
         Object value = fieldValue(f, obj);
-        FormField dataField = new FormField(f.getName(), f.getType());
+        //FormField dataField = new FormField(f.getName(), f.getType());
+        FormField dataField = new FormField(f.getName(), TypeMapper.instance().mapType(f.getType()),
+                TypeMapper.instance().mapDatatype(f.getType()));
         dataField.setValue(value);
         return dataField;
     }

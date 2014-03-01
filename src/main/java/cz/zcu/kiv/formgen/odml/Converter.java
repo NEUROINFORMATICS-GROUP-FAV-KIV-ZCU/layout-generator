@@ -84,6 +84,59 @@ public class Converter {
     }
     
     
+    public Form odmlToForm(Section section) {
+        Form form = convert(section.getSection(0));
+        
+        System.out.println(form.getItems().size());
+        
+        return form;
+    }
+    
+    
+    private Form convert(Section section) {
+        Form form = new Form(section.getName());
+        
+        // fields
+        for (Property property : section.getProperties()) {
+            FormField field = new FormField(property.getName());
+            field.setValue(property.getValue());
+            form.addItem(field);
+        }
+        
+        // sets
+        for (Section subsection : section.getSectionsByType("set")) {
+            FormSet set = convertSet(subsection);
+            form.addItem(set);
+        }
+        
+        // subforms
+        for (Section subsection : section.getSectionsByType("form")) {
+            form.addItem(convert(subsection));
+        }
+        
+        return form;
+    }
+    
+    
+    private FormSet convertSet(Section section) {
+        FormSet set = new FormSet(section.getName(), null);
+        
+        // fields
+        for (Property property : section.getProperties()) {
+            FormField field = new FormField(property.getName());
+            field.setValue(property.getValue());
+            set.addItem(field);
+        }
+        
+        // subforms
+        for (Section subsection : section.getSectionsByType("form")) {
+            set.addItem(convert(subsection));
+        }
+        
+        return set;
+    }
+    
+    
     
     private Section convert(Form form, boolean layoutInfo) {
         Section section = null;

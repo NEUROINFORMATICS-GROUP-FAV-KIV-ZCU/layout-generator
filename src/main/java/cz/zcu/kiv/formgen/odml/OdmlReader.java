@@ -26,6 +26,7 @@
 package cz.zcu.kiv.formgen.odml;
 
 import java.io.InputStream;
+import odml.core.Section;
 import cz.zcu.kiv.formgen.Reader;
 import cz.zcu.kiv.formgen.model.Form;
 
@@ -42,8 +43,19 @@ public class OdmlReader implements Reader {
      */
     @Override
     public Form read(InputStream stream) {
-        // TODO Auto-generated method stub
-        return null;
+        Form form = null;
+        
+        try {
+            odml.core.Reader reader = new odml.core.Reader();
+            Section section = reader.load(stream);
+            Converter converter = new Converter();
+            form = converter.odmlToForm(section);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return form;
     }
 
 }

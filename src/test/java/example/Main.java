@@ -25,16 +25,20 @@
 
 package example;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import cz.zcu.kiv.formgen.FormDataGenerator;
 import cz.zcu.kiv.formgen.LayoutGenerator;
+import cz.zcu.kiv.formgen.Reader;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.core.ObjectBuilder;
 import cz.zcu.kiv.formgen.core.SimpleFormDataGenerator;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.odml.OdmlReader;
 import cz.zcu.kiv.formgen.odml.OdmlWriter;
 import example.pojo.Address;
 import example.pojo.Person;
@@ -86,8 +90,14 @@ public class Main {
         stream.close();
         
         
+        /* load back */
+        InputStream in = new FileInputStream("pokus.odml");
+        Reader reader = new OdmlReader();
+        form = reader.read(in);
         
-        /* load data */
+        
+        
+        /* build data object */
         ObjectBuilder<Person> builder = new ObjectBuilder<Person>(Person.class);
         Person tmp = builder.build(form);
         

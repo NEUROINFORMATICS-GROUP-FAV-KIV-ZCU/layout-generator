@@ -61,11 +61,23 @@ public class FormField extends AbstractFormItem implements FormItem {
     private Object value;
     
     
-    public FormField(String name, Class<?> type) {
+    public FormField(String name) {
+        this(name, null, null);
+    }
+    
+    
+    public FormField(String name, FieldType type, FieldDatatype datatype) {
+        this.name = name;
+        this.type = type;
+        this.datatype = datatype;
+    }
+    
+    
+    /*public FormField(String name, Class<?> type) {
         this.name = name;
         this.type = TypeMapper.instance().mapType(type);
         this.datatype = TypeMapper.instance().mapDatatype(type);
-    }
+    }*/
 
 
     

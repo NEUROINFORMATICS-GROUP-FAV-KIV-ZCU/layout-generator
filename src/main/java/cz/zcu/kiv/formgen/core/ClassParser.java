@@ -176,7 +176,9 @@ public class ClassParser extends AbstractParser<Class<?>> {
      */
     protected FormItem createFormField(Field field) {
         //FormField formField = formProvider.newFormField(field.getName(), field.getType());
-        FormField formField = new FormField(field.getName(), field.getType());
+        //FormField formField = new FormField(field.getName(), field.getType());
+        FormField formField = new FormField(field.getName(), TypeMapper.instance().mapType(field.getType()),
+                TypeMapper.instance().mapDatatype(field.getType()));
         
         cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
         String label = formItemAnnot.label();
@@ -243,7 +245,9 @@ public class ClassParser extends AbstractParser<Class<?>> {
                 Class<?> clazz = (Class<?>) parameters[0];
                 if (isSimpleType(clazz)) {
                     //FormField formField = formProvider.newFormField(clazz.getSimpleName(), clazz);
-                    FormField formField = new FormField(clazz.getSimpleName(), clazz);
+                    //FormField formField = new FormField(clazz.getSimpleName(), clazz);
+                    FormField formField = new FormField(clazz.getSimpleName(), TypeMapper.instance().mapType(clazz),
+                            TypeMapper.instance().mapDatatype(clazz));
                     formField.setId(id);
                     formSet.addItem(formField);
                     formSet.setId(id + 1);
