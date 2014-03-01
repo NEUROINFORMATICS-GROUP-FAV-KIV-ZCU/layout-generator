@@ -136,7 +136,7 @@ public class Converter {
             if (field.getDefaultValue() != null)
                 section.addProperty("defaultValue", field.getDefaultValue());
             if (field.getPossibleValues() != null) {
-                if (field.getPossibleValues().length <= COMBOBOX_MAX_ITEMS)
+                if (field.getPossibleValues().length <= COMBOBOX_MAX_ITEMS)   // TODO delat pri vytvareni FormField
                     section.setType(FieldType.COMBOBOX.getValue());
                 else
                     section.setType(FieldType.CHOICE.getValue());

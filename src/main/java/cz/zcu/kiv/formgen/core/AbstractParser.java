@@ -29,7 +29,6 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Vector;
 import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.model.FormField;
 
 
 /**
@@ -38,13 +37,9 @@ import cz.zcu.kiv.formgen.model.FormField;
  */
 public abstract class AbstractParser<T> {
     
-    
-    /** Object used to create new {@link Form} and {@link FormField} objects. */
-    //protected ModelProvider formProvider;
-    
-    
+
     public AbstractParser() {
-        //this.formProvider = formProvider;
+        
     }
     
     
@@ -91,7 +86,6 @@ public abstract class AbstractParser<T> {
             name = cls.getSimpleName();
         }
         
-        //return formProvider.newForm(name);
         return new Form(name);
     }
     

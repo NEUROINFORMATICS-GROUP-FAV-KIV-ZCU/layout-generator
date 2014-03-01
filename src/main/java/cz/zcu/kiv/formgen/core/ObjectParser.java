@@ -48,10 +48,16 @@ public class ObjectParser extends AbstractParser<Object> {
     
     @Override
     protected Form _parse(Object obj) {
+        return _parse(obj, obj.getClass().getSimpleName());
+    }
+    
+    
+    protected Form _parse(Object obj, String formName) {
         if (obj == null)
             return null;
         
-        Form form = createForm(obj.getClass());
+        //Form form = createForm(obj.getClass());
+        Form form = new Form(formName);
         form.setLayout(false);
         
         for (Field f : formItemFields(obj.getClass())) {
@@ -62,7 +68,7 @@ public class ObjectParser extends AbstractParser<Object> {
                 FormSet set = createDataSet(f, obj);
                 form.addItem(set);
             } else {
-                Form subform = _parse(fieldValue(f, obj));
+                Form subform = _parse(fieldValue(f, obj), f.getName());
                 form.addItem(subform);
             }
         }
