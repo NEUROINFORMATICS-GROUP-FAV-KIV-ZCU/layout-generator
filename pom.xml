@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>org.gnode</groupId>
 			<artifactId>odml-java-lib</artifactId>
-			<version>1.0.3</version>
+			<version>1.0.4</version>
 		</dependency>
 
 		<!-- =============== slf4j =============== -->
@@ -91,9 +91,14 @@
 
 
 	<repositories>
+	   
+	    <!-- Nexus repository (eeg.kiv.zcu.cz) -->
+        <repository>
+            <id>releases</id>
+            <url>http://eeg.kiv.zcu.cz:8081/nexus/content/repositories/releases/</url>
+        </repository>
 
-		<!-- Local repository for in-house libs and jars not available in public
-			repos -->
+		<!-- Local repository for in-house libs and jars not available in public repos -->
 		<repository>
 			<id>cz.zcu.kiv.formgen.repo.local</id>
 			<url>file://${basedir}/repo</url>
