@@ -80,12 +80,13 @@ public class ObjectParser extends AbstractParser<Object> {
     private FormSet createDataSet(Field field, Object obj) {
         String name = field.getName();
         //FormItemContainer dataSet = formProvider.newFormSet(name, field.getType());
-        FormSet dataSet = new FormSet(name, field.getType());
         
         Collection<?> collection = (Collection<?>) fieldValue(field, obj);
         if (collection == null || collection.isEmpty())
             return null;
-        
+
+        FormSet dataSet = new FormSet(name, TypeMapper.instance().mapType(collection.iterator().next().getClass()));
+
         int index = 0;
         for (Object o : collection) {
             if (isSimpleType(o.getClass())) {

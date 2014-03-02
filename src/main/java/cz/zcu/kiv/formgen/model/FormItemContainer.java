@@ -29,21 +29,11 @@ import java.util.Vector;
 
 
 /**
- * Represents a set of form items or subforms.
+ * Interface of a container of form items.
  * 
  * <p>
- * Every {@link Form} consists of items and/or subforms. An item can be set a label and a required-flag.
- * Label is a text that should appear in the form right in front of the field
- * that allows user to set the value of the item. If the required-flag is true then
- * the item must be set in every form (cannot be left blank).
- * </p>
- * 
- * <p>
- * This class represents a special type of form item - a collection of items or subforms. It means
- * that in the form there can be added 0 - n items/subform of the same type in this item.
- * For example: Consider a form gathering information about a person. There can be items like
- * name, age, weight and so on. And what about car? One person can have several cars - it is exactly
- * the use-case for this class.
+ * Form item container represents a special type of form item - a collection of form fields and subforms.
+ * It means that in the form there can be added 0 - n fields/subform of the same type in this item.
  * </p>
  *
  * @author Jakub Krauz
@@ -59,6 +49,11 @@ public interface FormItemContainer extends FormItem {
     void addItem(FormItem item);
     
     
+    /**
+     * Gets all items in the container.
+     * 
+     * @return vector of contained items
+     */
     Vector<FormItem> getItems();
     
 

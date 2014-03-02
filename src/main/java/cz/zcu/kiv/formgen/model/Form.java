@@ -54,7 +54,7 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     
     
     public Form(String name) {
-        this.name = name;
+        super(name, Type.FORM);
     }
     
     

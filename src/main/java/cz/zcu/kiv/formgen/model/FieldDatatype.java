@@ -27,7 +27,7 @@ package cz.zcu.kiv.formgen.model;
 
 
 /**
- * Enumeration of data types used in odML form layouts.
+ * Data types of input values of form fields.
  *
  * @author Jakub Krauz
  */

@@ -30,7 +30,7 @@ import java.util.Map;
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import cz.zcu.kiv.formgen.model.FieldDatatype;
-import cz.zcu.kiv.formgen.model.FieldType;
+import cz.zcu.kiv.formgen.model.Type;
 
 
 /**
@@ -42,7 +42,7 @@ public class TypeMapper {
         
     private static final BidiMap WRAPPER_TYPES = new DualHashBidiMap();
 
-    private static final Map<Class<?>, FieldType> TYPES = new HashMap<Class<?>, FieldType>();
+    private static final Map<Class<?>, Type> TYPES = new HashMap<Class<?>, Type>();
     
     private static final Map<Class<?>, FieldDatatype> DATATYPES = new HashMap<Class<?>, FieldDatatype>();
     
@@ -78,18 +78,18 @@ public class TypeMapper {
     
     
     static {
-        TYPES.put(Boolean.TYPE, FieldType.CHECKBOX);
-        TYPES.put(Byte.TYPE, FieldType.TEXTBOX);
-        TYPES.put(Character.TYPE, FieldType.TEXTBOX);
-        TYPES.put(Short.TYPE, FieldType.TEXTBOX);
-        TYPES.put(Integer.TYPE, FieldType.TEXTBOX);
-        TYPES.put(Long.TYPE, FieldType.TEXTBOX);
-        TYPES.put(Float.TYPE, FieldType.TEXTBOX);
-        TYPES.put(Double.TYPE, FieldType.TEXTBOX);
-        TYPES.put(String.class, FieldType.TEXTBOX);
-        TYPES.put(java.util.Date.class, FieldType.TEXTBOX);
-        TYPES.put(java.sql.Date.class, FieldType.TEXTBOX);
-        TYPES.put(java.util.Collection.class, FieldType.SET);
+        TYPES.put(Boolean.TYPE, Type.CHECKBOX);
+        TYPES.put(Byte.TYPE, Type.TEXTBOX);
+        TYPES.put(Character.TYPE, Type.TEXTBOX);
+        TYPES.put(Short.TYPE, Type.TEXTBOX);
+        TYPES.put(Integer.TYPE, Type.TEXTBOX);
+        TYPES.put(Long.TYPE, Type.TEXTBOX);
+        TYPES.put(Float.TYPE, Type.TEXTBOX);
+        TYPES.put(Double.TYPE, Type.TEXTBOX);
+        TYPES.put(String.class, Type.TEXTBOX);
+        TYPES.put(java.util.Date.class, Type.TEXTBOX);
+        TYPES.put(java.sql.Date.class, Type.TEXTBOX);
+        TYPES.put(java.util.Collection.class, Type.SET);
     }
     
     
@@ -138,7 +138,7 @@ public class TypeMapper {
      * @param type the Java type
      * @return type name used in form layout
      */
-    public FieldType mapType(Class<?> type) {
+    public Type mapType(Class<?> type) {
         if (isWrapperType(type))
             type = toPrimitiveType(type);
         
@@ -151,7 +151,7 @@ public class TypeMapper {
         }
             
         // default
-        return FieldType.TEXTBOX;
+        return Type.TEXTBOX;
     }
     
     

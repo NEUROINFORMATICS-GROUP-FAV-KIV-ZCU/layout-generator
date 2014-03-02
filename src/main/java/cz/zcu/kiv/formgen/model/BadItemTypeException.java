@@ -19,59 +19,33 @@
  *
  ***********************************************************************************************************************
  *
- * FormSet.java, 28. 2. 2014 17:23:34 Jakub Krauz
+ * BadItemTypeException.java, 2. 3. 2014 12:58:18 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.model;
 
-import java.util.Vector;
-
 
 /**
- * Form set is a special type of form item which contains N form items (of the same type).
+ * Exception thrown if the actual item type does not match the expected type.
  * 
- * <p>
- * For example: Consider a form gathering information about a person. There can be items like
- * name, age, weight and so on. And what about car? One person can have several cars - it is exactly
- * the use-case for this class.
- * </p>
- *
  * @author Jakub Krauz
  */
-public class FormSet extends AbstractFormItem implements FormItemContainer {
+public class BadItemTypeException extends RuntimeException {
     
-    /** Vector of form items. */
-    private Vector<FormItem> items = new Vector<FormItem>();
-    
-    /** Type of contained items. */
-    private Type innerType;
-    
-    
+    private static final long serialVersionUID = 1L;
+
     
     /**
      * Constructor.
      * 
-     * @param name - name of the form item
-     * @param type - type of contained items
+     * @param expected - the expected item type
+     * @param actual - the actual item type
      */
-    public FormSet(String name, Type type) {
-        super(name, Type.SET);
-        this.innerType = type;
+    public BadItemTypeException(Type expected, Type actual) {
+        super("FormItem of bad type inserted in the FormSet. Expected " + expected.getValue() 
+                + ", got " + actual.getValue() + ".");
     }
     
-
-    @Override
-    public void addItem(FormItem item) throws BadItemTypeException {
-        if (item.getType() != innerType)
-            throw new BadItemTypeException(innerType, item.getType());
-        items.add(item);
-    }
-
-
-    @Override
-    public Vector<FormItem> getItems() {
-        return items;
-    }
 
 }

@@ -24,6 +24,7 @@
  **********************************************************************************************************************/
 
 /**
+ * Contains the internal model which is used to represent forms and their items.
  * 
  * @author Jakub Krauz
  */

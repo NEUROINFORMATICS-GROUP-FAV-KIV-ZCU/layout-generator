@@ -27,10 +27,36 @@ package cz.zcu.kiv.formgen.model;
 
 
 /**
+ * Interface for objects that can be added to a form as its items.
+ * 
+ * <p>
+ * Every {@link Form} consists of items which can be either fields or subforms.
+ * Every item can be set 4 values - ID, name, label and required-flag. ID is a numeric identifier of the item
+ * that can be used to refer to other items. Name is a unique name of the item.
+ * Label is a text that should appear in the form right in front of the
+ * item that allows user to set the value of the item.
+ * If the required-flag is true then the item must be set in every form (cannot be left blank).
+ * </p>
  *
  * @author Jakub Krauz
  */
 public interface FormItem {
+    
+    
+    /**
+     * Gets the type of the form item.
+     * 
+     * @return the type of the form item
+     */
+    Type getType();
+
+
+    /**
+     * Sets the type of the form item.
+     * 
+     * @param type - the type to be set
+     */
+    void setType(Type type);
     
     
     /**

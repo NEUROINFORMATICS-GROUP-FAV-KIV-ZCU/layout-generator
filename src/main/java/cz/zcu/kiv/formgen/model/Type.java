@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * FieldType.java, 15. 11. 2013 19:14:06 Jakub Krauz
+ * Type.java, 15. 11. 2013 19:14:06 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -27,10 +27,11 @@ package cz.zcu.kiv.formgen.model;
 
 
 /**
+ * Type of the form item.
  *
  * @author Jakub Krauz
  */
-public enum FieldType {
+public enum Type {
     
     FORM       ("form"), 
     TEXTBOX    ("textbox"), 
@@ -44,7 +45,7 @@ public enum FieldType {
     
     private String value;
     
-    private FieldType(String value) {
+    private Type(String value) {
         this.value = value;
     }
     

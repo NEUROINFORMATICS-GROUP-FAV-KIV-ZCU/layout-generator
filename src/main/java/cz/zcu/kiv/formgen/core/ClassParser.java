@@ -235,14 +235,15 @@ public class ClassParser extends AbstractParser<Class<?>> {
             Type[] parameters = type.getActualTypeArguments();
             
             if (parameters.length == 1 && parameters[0] instanceof Class) {
+                Class<?> clazz = (Class<?>) parameters[0];
+                
                 //formSet = formProvider.newFormSet(field.getName(), field.getType());
-                formSet = new FormSet(field.getName(), field.getType());
+                formSet = new FormSet(field.getName(), TypeMapper.instance().mapType(clazz));
                 cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
                 String label = formItemAnnot.label();
                 formSet.setLabel(label.isEmpty() ? field.getName() : label);
                 formSet.setRequired(formItemAnnot.required());
 
-                Class<?> clazz = (Class<?>) parameters[0];
                 if (isSimpleType(clazz)) {
                     //FormField formField = formProvider.newFormField(clazz.getSimpleName(), clazz);
                     //FormField formField = new FormField(clazz.getSimpleName(), clazz);

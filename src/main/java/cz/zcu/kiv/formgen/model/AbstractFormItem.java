@@ -27,18 +27,58 @@ package cz.zcu.kiv.formgen.model;
 
 
 /**
+ * Abstract implementation of {@link FormItem} interface.
  *
  * @author Jakub Krauz
  */
 public abstract class AbstractFormItem implements FormItem {
     
+    /** Type of the form item. */
+    protected Type type;
+    
+    /** ID of the form item. */
     protected int id;
     
+    /** Name of the form item. */
     protected String name;
     
+    /** Label of the form item. */
     protected String label;
     
+    /** Required flag of the form item. */
     protected boolean required;
+    
+    
+    
+    /**
+     * Constructor.
+     * Sets the name and type of the form item.
+     * 
+     * @param name - the name of the form item
+     * @param type - the type of the form item
+     */
+    public AbstractFormItem(String name, Type type) {
+        this.name = name;
+        this.type = type;
+    }
+    
+    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#getType()
+     */
+    @Override
+    public Type getType() {
+        return type;
+    }
+
+
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#setType(cz.zcu.kiv.formgen.model.Type)
+     */
+    @Override
+    public void setType(Type type) {
+        this.type = type;
+    }
     
 
     /* (non-Javadoc)
@@ -59,12 +99,18 @@ public abstract class AbstractFormItem implements FormItem {
     }
     
     
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#setName(java.lang.String)
+     */
     @Override
     public void setName(String name) {
         this.name = name;
     }
     
 
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#getName()
+     */
     @Override
     public String getName() {
         return name;
