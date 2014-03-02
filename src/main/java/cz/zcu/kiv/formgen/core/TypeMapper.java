@@ -65,12 +65,27 @@ public class TypeMapper {
     
     
     public static Class<?> toPrimitiveType(Class<?> wrapperType) {
-        return (Class<?>) WRAPPER_TYPES.get(wrapperType);
+        if (wrapperType.isPrimitive())
+            return wrapperType;
+        else
+            return (Class<?>) WRAPPER_TYPES.get(wrapperType);
     }
     
     
     public static Class<?> toWrapperType(Class<?> primitiveType) {
         return (Class<?>) WRAPPER_TYPES.getKey(primitiveType);
+    }
+    
+    
+    /**
+     * Determines whether the given type is a whole-number type (i.e. byte, short, int, long or their object wrappers).
+     * 
+     * @param type the Java type
+     * @return true if the type is a whole-number type, false otherwise
+     */
+    public static boolean isIntegerType(Class<?> type) {
+        Class<?> cls = type.isPrimitive() ? type : toPrimitiveType(type);
+        return (cls == byte.class || cls == short.class || cls == int.class || cls == long.class);
     }
 
     

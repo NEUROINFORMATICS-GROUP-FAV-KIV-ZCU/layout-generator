@@ -74,33 +74,6 @@ public abstract class AbstractParser<T> {
 
     
     /**
-     * Determines whether the given type is considered a simple type in the given model using
-     * the {@link ModelProvider} object. The provider object is set in the constructor 
-     * (see {@link #ClassParser(ModelProvider)}.
-     * 
-     * @param type the Java type
-     * @return true if the type is considered simple in the given model, false otherwise
-     */
-    protected boolean isSimpleType(Class<?> type) {
-        return mapper.isSimpleType(type);
-    }
-    
-    
-    
-    /**
-     * Determines whether the given type is a whole-number type (i.e. byte, short, int, long or their object wrappers).
-     * 
-     * @param type the Java type
-     * @return true if the type is a whole-number type, false otherwise
-     */
-    protected boolean isIntegerType(Class<?> type) {
-        Class<?> cls = type.isPrimitive() ? type : TypeMapper.toPrimitiveType(type);
-        return (cls == byte.class || cls == short.class || cls == int.class || cls == long.class);
-    }
-    
-    
-    
-    /**
      * Returns collection of fields annotated by the {@link cz.zcu.kiv.formgen.annotation.FormItem FormItem} annotation.
      * 
      * @param cls - the class

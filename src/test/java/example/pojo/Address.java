@@ -45,8 +45,8 @@ public class Address {
     @FormItemRestriction(minValue = 1)
     private int number;
     
-    //@FormItem
-    private Pokus pokus;
+    @FormItem
+    private Pokus pokus = new Pokus();
     
     
     public Address() {
@@ -100,6 +100,11 @@ public class Address {
     
     public void setPokus(Pokus pokus) {
         this.pokus = pokus;
+    }
+    
+    
+    public String toString() {
+        return street + " " + number + ", " + town + "  (" + pokus.getShortNumber() + " - " + pokus.getBajt() + ")";
     }
     
 

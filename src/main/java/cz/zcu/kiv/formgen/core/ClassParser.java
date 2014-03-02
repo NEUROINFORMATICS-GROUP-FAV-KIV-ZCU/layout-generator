@@ -105,7 +105,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
         form.setId(id++);
         
         for (Field f : formItemFields(cls)) {
-            if (isSimpleType(f.getType())) {
+            if (mapper.isSimpleType(f.getType())) {
                 FormItem item = createFormField(f);
                 item.setId(id++);
                 form.addItem(item);
@@ -171,13 +171,13 @@ public class ClassParser extends AbstractParser<Class<?>> {
             if (restriction.maxLength() != -1)
                 formField.setMaxLength(restriction.maxLength());
             if (!Double.isNaN(restriction.minValue())) {
-                if (isIntegerType(field.getType()))
+                if (TypeMapper.isIntegerType(field.getType()))
                     formField.setMinValue((int) restriction.minValue());
                 else
                     formField.setMinValue(restriction.minValue());
             }
             if (!Double.isNaN(restriction.maxValue())) {
-                if (isIntegerType(field.getType()))
+                if (TypeMapper.isIntegerType(field.getType()))
                     formField.setMaxValue((int) restriction.maxValue());
                 else
                     formField.setMaxValue(restriction.maxValue());
@@ -222,7 +222,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
                 formSet.setLabel(label.isEmpty() ? field.getName() : label);
                 formSet.setRequired(formItemAnnot.required());
 
-                if (isSimpleType(clazz)) {
+                if (mapper.isSimpleType(clazz)) {
                     FormField formField = new FormField(clazz.getSimpleName(), mapper.mapType(clazz),
                             mapper.mapDatatype(clazz));
                     formField.setId(id);

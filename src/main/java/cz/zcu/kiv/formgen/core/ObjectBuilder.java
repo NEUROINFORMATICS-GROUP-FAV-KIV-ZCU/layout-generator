@@ -69,13 +69,23 @@ public class ObjectBuilder<T> {
         try {
         
             for (FormItem item : form.getItems()) {
-                //System.out.println("parsing " + item.getName());
                 Field field = obj.getClass().getDeclaredField(item.getName());
                 field.setAccessible(true);
                 if (item instanceof FormField) {
-                    /*System.out.println("setting " + item.getName() + " = " + ((FormField) item).getValue()
-                            + "  (" + ((FormField) item).getValue().getClass() + ")");*/
-                    field.set(obj, ((FormField) item).getValue());
+                    Object value = ((FormField) item).getValue();
+                    
+                    // odML uses only "int" type - need to convert to proper whole-number type
+                    if (TypeMapper.isIntegerType(field.getType())) {
+                        Class<?> type = TypeMapper.toPrimitiveType(field.getType());
+                        if (type.equals(Byte.TYPE))
+                            value = ((Number) value).byteValue();
+                        else if (type.equals(Short.TYPE))
+                            value = ((Number) value).shortValue();
+                        else if (type.equals(Long.TYPE))
+                            value = ((Number) value).longValue();
+                    }
+                    
+                    field.set(obj, value);
                 } else if (item instanceof Form) {
                     Object o = field.getType().newInstance();
                     fill(o, (Form) item);

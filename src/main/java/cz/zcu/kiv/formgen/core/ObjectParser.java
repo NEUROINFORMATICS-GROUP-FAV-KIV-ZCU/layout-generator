@@ -73,7 +73,7 @@ public class ObjectParser extends AbstractParser<Object> {
         form.setLayout(false);
         
         for (Field f : formItemFields(obj.getClass())) {
-            if (isSimpleType(f.getType())) {
+            if (mapper.isSimpleType(f.getType())) {
                 FormItem item = createDataField(f, obj);
                 form.addItem(item);
             } else if (Collection.class.isAssignableFrom(f.getType())) {
@@ -100,7 +100,7 @@ public class ObjectParser extends AbstractParser<Object> {
 
         int index = 0;
         for (Object o : collection) {
-            if (isSimpleType(o.getClass())) {
+            if (mapper.isSimpleType(o.getClass())) {
                 FormField formField = new FormField(name + "[" + index++ + "]", mapper.mapType(o.getClass()),
                         mapper.mapDatatype(o.getClass()));
                 formField.setValue(o);

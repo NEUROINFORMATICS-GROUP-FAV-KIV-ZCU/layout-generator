@@ -28,6 +28,7 @@ package cz.zcu.kiv.formgen.odml;
 import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import cz.zcu.kiv.formgen.core.TypeMapper;
 import cz.zcu.kiv.formgen.model.FieldDatatype;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
@@ -308,15 +309,19 @@ public class Converter {
                     subSection.addProperty("idTop", lastId);
                 section.add(subSection);
             } else {
-                section.addProperty(item.getName(), ((FormField) item).getValue());
+                Object value = ((FormField) item).getValue();
+                if (value == null)
+                    continue;
+                if (TypeMapper.isIntegerType(value.getClass()))  // odML uses only "int" type
+                    value = ((Number) value).intValue();
+                section.addProperty(item.getName(), value);
             }
             
             if (isLayout)
                 lastId = item.getId();
         }
         
-    }
-    
+    } 
     
 
 }

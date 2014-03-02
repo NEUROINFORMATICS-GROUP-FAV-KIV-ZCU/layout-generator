@@ -55,7 +55,7 @@ public class Person {
     @FormItem
     private boolean clever;
  
-    //@FormItem
+    @FormItem
     private Address address;
     
     @FormItem
@@ -133,6 +133,33 @@ public class Person {
     public Set<Address> getAddresses() {
         return addresses;
     }
+
+
     
+    public boolean isClever() {
+        return clever;
+    }
+
+
+    
+    public void setClever(boolean clever) {
+        this.clever = clever;
+    }
+    
+    
+    
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("name: " + name);
+        builder.append("\nage: " + age);
+        builder.append("\nclever: " + clever);
+        builder.append("\nbirth: " + birth);
+        builder.append("\naddress: " + address.toString());
+        builder.append("\naddresses:");
+        for (Address a : addresses)
+            builder.append("\n    " + a.toString());
+        builder.append("\n");
+        return builder.toString();
+    }
 
 }
