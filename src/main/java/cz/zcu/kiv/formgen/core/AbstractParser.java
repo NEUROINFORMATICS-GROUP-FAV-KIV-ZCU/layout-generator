@@ -37,6 +37,9 @@ import cz.zcu.kiv.formgen.model.Form;
  */
 public abstract class AbstractParser<T> {
     
+    /** Type mapper object. */
+    protected TypeMapper mapper = new TypeMapper();
+    
     
     /**
      * Parses the given object and creates a new {@link Form} model.
@@ -79,7 +82,7 @@ public abstract class AbstractParser<T> {
      * @return true if the type is considered simple in the given model, false otherwise
      */
     protected boolean isSimpleType(Class<?> type) {
-        return TypeMapper.instance().isSimpleType(type);
+        return mapper.isSimpleType(type);
     }
     
     

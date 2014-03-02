@@ -45,8 +45,6 @@ public class TypeMapper {
     private static final Map<Class<?>, Type> TYPES = new HashMap<Class<?>, Type>();
     
     private static final Map<Class<?>, FieldDatatype> DATATYPES = new HashMap<Class<?>, FieldDatatype>();
-    
-    private static TypeMapper instance;
   
 
     static {
@@ -104,18 +102,6 @@ public class TypeMapper {
         DATATYPES.put(String.class, FieldDatatype.STRING);
         DATATYPES.put(java.util.Date.class, FieldDatatype.DATE);
         DATATYPES.put(java.sql.Date.class, FieldDatatype.DATE);
-    }
-    
-    
-    public static TypeMapper instance() {
-        if (instance == null)
-            instance = new TypeMapper();
-        return instance;
-    }
-    
-    
-    private TypeMapper() {
-        // private ctor
     }
 
     
