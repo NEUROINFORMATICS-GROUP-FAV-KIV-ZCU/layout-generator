@@ -19,44 +19,30 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlReader.java, 1. 3. 2014 18:26:58 Jakub Krauz
+ * OdmlException.java, 2. 3. 2014 19:39:06 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.odml;
-
-import java.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import odml.core.Section;
-import cz.zcu.kiv.formgen.Reader;
-import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class OdmlReader implements Reader {
+public class OdmlException extends Exception {
     
-    final Logger logger = LoggerFactory.getLogger(OdmlReader.class);
 
+    private static final long serialVersionUID = 1L;
+
+
+    public OdmlException(String message) {
+        super(message);
+    }
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.Reader#read(java.io.InputStream)
-     */
-    @Override
-    public Form read(InputStream stream) throws OdmlException {
-        odml.core.Reader reader = new odml.core.Reader();
-        Section section = null;
-        try {
-            section = reader.load(stream);
-        } catch (Exception e) {
-            logger.error("Unable to load the odML document!", e);
-            throw new OdmlException("Unable to load the odML document.", e);
-        }
-        Converter converter = new Converter();
-        return converter.odmlDataToModel(section);
+    
+    public OdmlException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

@@ -30,7 +30,7 @@ package cz.zcu.kiv.formgen.odml;
  *
  * @author Jakub Krauz
  */
-public class OdmlConvertException extends Exception {
+public class OdmlConvertException extends OdmlException {
     
 
     private static final long serialVersionUID = 1L;
@@ -38,6 +38,11 @@ public class OdmlConvertException extends Exception {
     
     public OdmlConvertException(String message) {
         super(message);
+    }
+    
+    
+    public OdmlConvertException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

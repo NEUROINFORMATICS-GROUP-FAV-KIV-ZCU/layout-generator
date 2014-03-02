@@ -35,6 +35,6 @@ import cz.zcu.kiv.formgen.model.Form;
  */
 public interface Reader {
     
-    Form read(InputStream stream);
+    Form read(InputStream stream) throws Exception;
 
 }
