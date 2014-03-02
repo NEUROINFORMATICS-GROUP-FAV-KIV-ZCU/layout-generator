@@ -37,23 +37,25 @@ import cz.zcu.kiv.formgen.model.Form;
  */
 public abstract class AbstractParser<T> {
     
-
-    public AbstractParser() {
-        
-    }
+    
+    /**
+     * Parses the given object and creates a new {@link Form} model.
+     * 
+     * @param obj - the object to be parsed
+     * @return the newly created {@link Form} object
+     */
+    public abstract Form parse(T obj);
     
     
-    public Form parse(T obj) {
-        return _parse(obj);
-    }
+    /**
+     * Parses the given object and adds it as a subform to an existing {@link Form} model
+     * (used for multiple-class forms).
+     * 
+     * @param obj - the object to be parsed
+     * @param form - the form in which the parsed class is to be added
+     */
+    public abstract void parse(T obj, Form form);
     
-    
-    public void parse(T obj, Form form) {
-        form.addItem(_parse(obj));
-    }
-    
-    
-    protected abstract Form _parse(T obj);
 
     
     /**
@@ -63,33 +65,10 @@ public abstract class AbstractParser<T> {
      * @return new form defined by the annotation
      */
     public Form createMultiform(cz.zcu.kiv.formgen.annotation.MultiForm annotation) {
-        //return formProvider.newForm(annotation.value());
         return new Form(annotation.value());
     }
     
-    
-    
-    /**
-     * Creates a new {@link Form} representing the given class using the {@link ModelProvider} object. 
-     * The provider object is set in the constructor (see {@link #ClassParser(ModelProvider)}.
-     * 
-     * @param cls the Java class representing the form to be created
-     * @return the newly created form
-     */
-    protected Form createForm(Class<?> cls) {
-        String name;
-        if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
-            name = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class).value();
-            if (name.isEmpty())
-                name = cls.getSimpleName();
-        } else {
-            name = cls.getSimpleName();
-        }
-        
-        return new Form(name);
-    }
-    
-    
+
     
     /**
      * Determines whether the given type is considered a simple type in the given model using
@@ -100,7 +79,6 @@ public abstract class AbstractParser<T> {
      * @return true if the type is considered simple in the given model, false otherwise
      */
     protected boolean isSimpleType(Class<?> type) {
-        //return formProvider.typeMapper().isSimpleType(type);
         return TypeMapper.instance().isSimpleType(type);
     }
     
@@ -119,6 +97,12 @@ public abstract class AbstractParser<T> {
     
     
     
+    /**
+     * Returns collection of fields annotated by the {@link cz.zcu.kiv.formgen.annotation.FormItem FormItem} annotation.
+     * 
+     * @param cls - the class
+     * @return collection of annotated fields
+     */
     protected Collection<Field> formItemFields(Class<?> cls) {
         Vector<Field> vector = new Vector<Field>();
         

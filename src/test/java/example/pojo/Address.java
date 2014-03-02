@@ -45,7 +45,7 @@ public class Address {
     @FormItemRestriction(minValue = 1)
     private int number;
     
-    @FormItem
+    //@FormItem
     private Pokus pokus;
     
     

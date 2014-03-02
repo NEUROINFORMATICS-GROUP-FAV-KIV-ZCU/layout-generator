@@ -45,17 +45,7 @@ import cz.zcu.kiv.formgen.model.FormSet;
  */
 public class ClassParser extends AbstractParser<Class<?>> {
     
-    
-    /**
-     * Constructor. 
-     * 
-     * @param modelProvider object implementing the {@link ModelProvider} interface
-     */
-    public ClassParser() {
-        
-    }
-    
-    
+
     
     /**
      * Parses the given class and creates a new {@link Form} model.
@@ -65,7 +55,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
      */
     @Override
     public Form parse(Class<?> cls) {
-        Form form = super.parse(cls);
+        Form form = _parse(cls, cls.getSimpleName(), 0);
         form.setLayout(true);
         form.setLayoutName(form.getName() + "-generated");
         return form;
@@ -79,11 +69,10 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * 
      * @param cls the Java class to be parsed
      * @param form the model in which the parsed class is to be added
-     * @return the updated form model
      */
     @Override
     public void parse(Class<?> cls, Form form) {
-        form.addItem(_parse(cls, form.highestItemId() + 1));
+        form.addItem(_parse(cls, cls.getSimpleName(), form.highestItemId() + 1));
     }
     
     
@@ -104,13 +93,6 @@ public class ClassParser extends AbstractParser<Class<?>> {
     
     
     
-    @Override
-    protected Form _parse(Class<?> cls) {
-        return _parse(cls, 0);
-    }
-    
-    
-    
     /**
      * Recursively parses the given class and its members and adds them to an existing {@link Form} model.
      * 
@@ -118,8 +100,8 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @param form the model in which the parsed class is to be added
      * @return the updated form model
      */
-    protected Form _parse(Class<?> cls, int id) {
-        Form form = createForm(cls);
+    protected Form _parse(Class<?> cls, String formName, int id) {
+        Form form = createForm(formName, cls);
         form.setId(id++);
         
         for (Field f : formItemFields(cls)) {
@@ -133,7 +115,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
                 form.addItem(set);
                 id = set.getId() + 1;
             } else {
-                Form subform = _parse(f.getType(), id++);
+                Form subform = _parse(f.getType(), f.getName(), id++);
                 form.addItem(subform);
                 id = subform.highestItemId() + 1;
             }
@@ -151,9 +133,8 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @param cls the Java class representing the form to be created
      * @return the newly created form
      */
-    @Override
-    protected Form createForm(Class<?> cls) {
-        Form form = super.createForm(cls);
+    protected Form createForm(String name, Class<?> cls) {
+        Form form = new Form(name);
         
         String definition = null;
         if (cls.isAnnotationPresent(FormDescription.class)) {
@@ -175,8 +156,6 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @return the newly created form item object
      */
     protected FormItem createFormField(Field field) {
-        //FormField formField = formProvider.newFormField(field.getName(), field.getType());
-        //FormField formField = new FormField(field.getName(), field.getType());
         FormField formField = new FormField(field.getName(), TypeMapper.instance().mapType(field.getType()),
                 TypeMapper.instance().mapDatatype(field.getType()));
         
@@ -237,7 +216,6 @@ public class ClassParser extends AbstractParser<Class<?>> {
             if (parameters.length == 1 && parameters[0] instanceof Class) {
                 Class<?> clazz = (Class<?>) parameters[0];
                 
-                //formSet = formProvider.newFormSet(field.getName(), field.getType());
                 formSet = new FormSet(field.getName(), TypeMapper.instance().mapType(clazz));
                 cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
                 String label = formItemAnnot.label();
@@ -245,15 +223,13 @@ public class ClassParser extends AbstractParser<Class<?>> {
                 formSet.setRequired(formItemAnnot.required());
 
                 if (isSimpleType(clazz)) {
-                    //FormField formField = formProvider.newFormField(clazz.getSimpleName(), clazz);
-                    //FormField formField = new FormField(clazz.getSimpleName(), clazz);
                     FormField formField = new FormField(clazz.getSimpleName(), TypeMapper.instance().mapType(clazz),
                             TypeMapper.instance().mapDatatype(clazz));
                     formField.setId(id);
                     formSet.addItem(formField);
                     formSet.setId(id + 1);
                 } else {
-                    Form form = _parse(clazz, id);
+                    Form form = _parse(clazz, clazz.getSimpleName(), id);
                     formSet.addItem(form);
                     formSet.setId(form.highestItemId() + 1);
                 }

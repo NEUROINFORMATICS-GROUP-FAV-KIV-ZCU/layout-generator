@@ -55,7 +55,7 @@ public class Person {
     @FormItem
     private boolean clever;
  
-    @FormItem
+    //@FormItem
     private Address address;
     
     @FormItem

@@ -151,7 +151,7 @@ public class TypeMapper {
         }
             
         // default
-        return Type.TEXTBOX;
+        return Type.FORM;
     }
     
     

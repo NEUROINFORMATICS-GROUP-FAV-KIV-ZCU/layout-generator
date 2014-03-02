@@ -96,14 +96,14 @@ public class Main {
         
         
         /* load back */
-        InputStream in = new FileInputStream("pokus.odml");
+        /*InputStream in = new FileInputStream("pokus.odml");
         Reader reader = new OdmlReader();
-        form = reader.read(in);
+        form = reader.read(in);*/
         
         
         
         /* build data object */
-        ObjectBuilder<Person> builder = new ObjectBuilder<Person>(Person.class);
+        /*ObjectBuilder<Person> builder = new ObjectBuilder<Person>(Person.class);
         Person tmp = builder.build(form);
         
         System.out.println("\n\nBuilt object:");
@@ -115,7 +115,7 @@ public class Main {
         System.out.println("addresses: size = " + tmp.getAddresses().size());
         Address[] arr = (Address[]) tmp.getAddresses().toArray();
         System.out.println("     address 1: " + arr[0].getTown() + ", " + arr[0].getStreet() + " " + arr[0].getNumber());
-        System.out.println("     address 2: " + arr[1].getTown() + ", " + arr[1].getStreet() + " " + arr[1].getNumber());
+        System.out.println("     address 2: " + arr[1].getTown() + ", " + arr[1].getStreet() + " " + arr[1].getNumber());*/
     }
     
 

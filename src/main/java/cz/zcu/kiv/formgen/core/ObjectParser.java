@@ -40,23 +40,35 @@ import cz.zcu.kiv.formgen.model.FormSet;
 public class ObjectParser extends AbstractParser<Object> {
     
     
-    public ObjectParser() {
-        
-    }
-
-
-    
+    /**
+     * Parses the given POJO and creates a new {@link Form} model.
+     * 
+     * @param obj - the POJO to be parsed
+     * @return the newly created {@link Form} object
+     */
     @Override
-    protected Form _parse(Object obj) {
+    public Form parse(Object obj) {
         return _parse(obj, obj.getClass().getSimpleName());
     }
     
     
-    protected Form _parse(Object obj, String formName) {
+    /**
+     * Parses the given POJO and adds it as a subform to an existing {@link Form} model
+     * (used for multiple-class forms).
+     * 
+     * @param obj - the POJO to be parsed
+     * @param form - the form in which the parsed POJO is to be added
+     */
+    @Override
+    public void parse(Object obj, Form form) {
+        form.addItem(_parse(obj, obj.getClass().getSimpleName()));
+    }
+    
+    
+    private Form _parse(Object obj, String formName) {
         if (obj == null)
             return null;
         
-        //Form form = createForm(obj.getClass());
         Form form = new Form(formName);
         form.setLayout(false);
         
@@ -79,7 +91,6 @@ public class ObjectParser extends AbstractParser<Object> {
 
     private FormSet createDataSet(Field field, Object obj) {
         String name = field.getName();
-        //FormItemContainer dataSet = formProvider.newFormSet(name, field.getType());
         
         Collection<?> collection = (Collection<?>) fieldValue(field, obj);
         if (collection == null || collection.isEmpty())
@@ -90,14 +101,12 @@ public class ObjectParser extends AbstractParser<Object> {
         int index = 0;
         for (Object o : collection) {
             if (isSimpleType(o.getClass())) {
-                //FormField formField = new FormField(name + "[" + index++ + "]", o.getClass());
                 FormField formField = new FormField(name + "[" + index++ + "]", TypeMapper.instance().mapType(o.getClass()),
                         TypeMapper.instance().mapDatatype(o.getClass()));
                 formField.setValue(o);
                 dataSet.addItem(formField);
             } else {
-                Form form = _parse(o);
-                form.setName(name + "[" + index++ + "]");
+                Form form = _parse(o, name + "[" + index++ + "]");
                 dataSet.addItem(form);   
             }
         }
@@ -109,7 +118,6 @@ public class ObjectParser extends AbstractParser<Object> {
 
     private FormField createDataField(Field f, Object obj) {
         Object value = fieldValue(f, obj);
-        //FormField dataField = new FormField(f.getName(), f.getType());
         FormField dataField = new FormField(f.getName(), TypeMapper.instance().mapType(f.getType()),
                 TypeMapper.instance().mapDatatype(f.getType()));
         dataField.setValue(value);
