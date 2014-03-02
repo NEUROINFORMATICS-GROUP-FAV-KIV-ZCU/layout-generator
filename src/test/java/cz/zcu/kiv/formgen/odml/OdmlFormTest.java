@@ -27,8 +27,6 @@ package cz.zcu.kiv.formgen.odml;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import cz.zcu.kiv.formgen.odml.model.OdmlForm;
-import cz.zcu.kiv.formgen.odml.model.OdmlFormField;
 
 
 /**
@@ -40,7 +38,7 @@ public class OdmlFormTest {
     
     private final String formName = "someFormName";
     
-    private OdmlForm odmlForm;
+   /* private OdmlForm odmlForm;
     
     
     public OdmlFormTest() {
@@ -53,7 +51,7 @@ public class OdmlFormTest {
     
     
     
-    /*@Test
+    @Test
     public void addItemTest() {
         assertNotNull(odmlForm);
         final String sectionName = "someSubsection";
@@ -67,7 +65,7 @@ public class OdmlFormTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
     
     
     @Test
@@ -97,6 +95,6 @@ public class OdmlFormTest {
         
         odmlForm.setDescription(null);
         assertNull(odmlForm.getDescription());
-    }
+    }*/
 
 }

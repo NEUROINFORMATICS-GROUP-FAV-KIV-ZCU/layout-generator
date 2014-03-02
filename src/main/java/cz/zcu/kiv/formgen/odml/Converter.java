@@ -26,7 +26,6 @@
 package cz.zcu.kiv.formgen.odml;
 
 import java.util.Vector;
-import cz.zcu.kiv.formgen.model.FieldType;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
@@ -40,8 +39,6 @@ import odml.core.Section;
  * @author Jakub Krauz
  */
 public class Converter {
-    
-    private static final int COMBOBOX_MAX_ITEMS = 5;
     
     
     public Section layoutToOdml(Form form) {
@@ -86,9 +83,6 @@ public class Converter {
     
     public Form odmlToForm(Section section) {
         Form form = convert(section.getSection(0));
-        
-        System.out.println(form.getItems().size());
-        
         return form;
     }
     
@@ -189,10 +183,6 @@ public class Converter {
             if (field.getDefaultValue() != null)
                 section.addProperty("defaultValue", field.getDefaultValue());
             if (field.getPossibleValues() != null) {
-                if (field.getPossibleValues().length <= COMBOBOX_MAX_ITEMS)   // TODO delat pri vytvareni FormField
-                    section.setType(FieldType.COMBOBOX.getValue());
-                else
-                    section.setType(FieldType.CHOICE.getValue());
                 Property property = new Property("values");
                 for (Object value : field.getPossibleValues())
                     property.addValue(value);

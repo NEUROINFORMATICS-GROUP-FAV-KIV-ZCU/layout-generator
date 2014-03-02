@@ -42,6 +42,7 @@ import cz.zcu.kiv.formgen.odml.OdmlReader;
 import cz.zcu.kiv.formgen.odml.OdmlWriter;
 import example.pojo.Address;
 import example.pojo.Person;
+import example.pojo.Pokus;
 
 
 public class Main {
@@ -75,6 +76,10 @@ public class Main {
     private static void data() throws Exception {
         Person person = new Person(0, "Thomas", 31, null);
         Address address = new Address("Pilsen", "Zluticka", 26);
+        Pokus pokus = new Pokus();
+        pokus.setShortNumber((short) 20);
+        pokus.setBajt((byte) 44);
+        address.setPokus(pokus);
         person.setAddress(address);
         person.addAddress(address);
         person.addAddress(new Address("Prague", "Brnenska", 415));
@@ -101,11 +106,16 @@ public class Main {
         ObjectBuilder<Person> builder = new ObjectBuilder<Person>(Person.class);
         Person tmp = builder.build(form);
         
-        System.out.println("\n\nBuild result:");
+        System.out.println("\n\nBuilt object:");
         System.out.println("name: " + tmp.getName());
         System.out.println("age: " + tmp.getAge());
         System.out.println("birth: " + tmp.getBirth());
         System.out.println("address: " + tmp.getAddress().getTown() + ", " + tmp.getAddress().getStreet() + " " + tmp.getAddress().getNumber());
+        System.out.println("     pokus: " + tmp.getAddress().getPokus().getShortNumber() + ",  " + tmp.getAddress().getPokus().getBajt());
+        System.out.println("addresses: size = " + tmp.getAddresses().size());
+        Address[] arr = (Address[]) tmp.getAddresses().toArray();
+        System.out.println("     address 1: " + arr[0].getTown() + ", " + arr[0].getStreet() + " " + arr[0].getNumber());
+        System.out.println("     address 2: " + arr[1].getTown() + ", " + arr[1].getStreet() + " " + arr[1].getNumber());
     }
     
 

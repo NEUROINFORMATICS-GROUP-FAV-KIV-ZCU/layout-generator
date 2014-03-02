@@ -45,6 +45,9 @@ public class Address {
     @FormItemRestriction(minValue = 1)
     private int number;
     
+    @FormItem
+    private Pokus pokus;
+    
     
     public Address() {
         this(null, null, -1);
@@ -85,6 +88,18 @@ public class Address {
     
     public void setNumber(int number) {
         this.number = number;
+    }
+
+
+    
+    public Pokus getPokus() {
+        return pokus;
+    }
+
+
+    
+    public void setPokus(Pokus pokus) {
+        this.pokus = pokus;
     }
     
 

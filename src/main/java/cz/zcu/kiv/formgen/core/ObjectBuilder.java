@@ -26,10 +26,10 @@
 package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
+import cz.zcu.kiv.formgen.model.FormSet;
 
 
 /**
@@ -69,19 +69,19 @@ public class ObjectBuilder<T> {
         try {
         
             for (FormItem item : form.getItems()) {
-                System.out.println("parsing " + item.getName());
+                //System.out.println("parsing " + item.getName());
+                Field field = obj.getClass().getDeclaredField(item.getName());
+                field.setAccessible(true);
                 if (item instanceof FormField) {
                     /*System.out.println("setting " + item.getName() + " = " + ((FormField) item).getValue()
                             + "  (" + ((FormField) item).getValue().getClass() + ")");*/
-                    Field field = obj.getClass().getDeclaredField(item.getName());
-                    field.setAccessible(true);
                     field.set(obj, ((FormField) item).getValue());
                 } else if (item instanceof Form) {
-                    Field field = obj.getClass().getDeclaredField(item.getName());
                     Object o = field.getType().newInstance();
                     fill(o, (Form) item);
-                    field.setAccessible(true);
                     field.set(obj, o);
+                } else if (item instanceof FormSet) {
+                    // TODO build set
                 }
             }
         } catch (Exception e) {

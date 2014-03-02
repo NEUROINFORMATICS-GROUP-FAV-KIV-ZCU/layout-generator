@@ -129,5 +129,10 @@ public class Person {
         this.addresses.add(address);
     }
     
+    
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+    
 
 }

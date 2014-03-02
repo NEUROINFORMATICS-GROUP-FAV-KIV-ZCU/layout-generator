@@ -45,8 +45,6 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     
     private int highestItemId = 0;
     
-    private int lastItemId = 0;
-    
     private boolean layout;
     
     private String layoutName;
@@ -68,27 +66,10 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
             return;
         }
         
-        /*if (item instanceof DataField) {
-            addDataField((DataField) item);
-        } else {
-            if (item instanceof OdmlForm)
-                highestItemId = Math.max(highestItemId, ((OdmlForm) item).highestItemId());
-            else
-                highestItemId = Math.max(highestItemId, item.getId());
-            
-            if (lastItemId != 0)
-                ((OdmlFormItem) item).addProperty("idTop", lastItemId);
-            lastItemId = item.getId();
-            
-            add((Section) item);
-        }*/
-        
         if (item instanceof Form)
             highestItemId = Math.max(highestItemId, ((Form) item).highestItemId());
         else
             highestItemId = Math.max(highestItemId, item.getId());
-
-        lastItemId = item.getId();
         
         items.add(item);
     }
@@ -107,6 +88,14 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
      */
     public int highestItemId() {
         return highestItemId;
+    }
+    
+    
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        if (id > highestItemId)
+            highestItemId = id;
     }
 
 

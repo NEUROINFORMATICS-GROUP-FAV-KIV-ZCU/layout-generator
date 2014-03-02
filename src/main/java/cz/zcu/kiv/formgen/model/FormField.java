@@ -25,8 +25,6 @@
 
 package cz.zcu.kiv.formgen.model;
 
-import cz.zcu.kiv.formgen.core.TypeMapper;
-
 
 /**
  * Represents a form item.
@@ -41,6 +39,8 @@ import cz.zcu.kiv.formgen.core.TypeMapper;
  * @author Jakub Krauz
  */
 public class FormField extends AbstractFormItem implements FormItem {
+    
+    private static final int COMBOBOX_MAX_ITEMS = 5;
     
     private FieldType type;
     
@@ -72,15 +72,7 @@ public class FormField extends AbstractFormItem implements FormItem {
         this.datatype = datatype;
     }
     
-    
-    /*public FormField(String name, Class<?> type) {
-        this.name = name;
-        this.type = TypeMapper.instance().mapType(type);
-        this.datatype = TypeMapper.instance().mapDatatype(type);
-    }*/
 
-
-    
     public FieldType getType() {
         return type;
     }
@@ -219,6 +211,10 @@ public class FormField extends AbstractFormItem implements FormItem {
      */
     public void setPossibleValues(Object[] values) {
         this.possibleValues = values;
+        if (values.length <= COMBOBOX_MAX_ITEMS)
+            this.type = FieldType.COMBOBOX;
+        else
+            this.type = FieldType.CHOICE;
     }
 
     
