@@ -49,7 +49,7 @@ public class OdmlReader implements Reader {
             odml.core.Reader reader = new odml.core.Reader();
             Section section = reader.load(stream);
             Converter converter = new Converter();
-            form = converter.odmlToForm(section);
+            form = converter.odmlDataToModel(section);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

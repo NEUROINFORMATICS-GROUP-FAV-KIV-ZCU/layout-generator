@@ -96,9 +96,9 @@ public class Main {
         
         
         /* load back */
-        /*InputStream in = new FileInputStream("pokus.odml");
+        InputStream in = new FileInputStream("pokus.odml");
         Reader reader = new OdmlReader();
-        form = reader.read(in);*/
+        form = reader.read(in);
         
         
         

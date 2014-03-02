@@ -26,85 +26,108 @@
 package cz.zcu.kiv.formgen.odml;
 
 import java.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormSet;
+import cz.zcu.kiv.formgen.model.Type;
 import odml.core.Property;
 import odml.core.Section;
 
 
 /**
+ * Converts between internal form model and odML tree.
  *
  * @author Jakub Krauz
  */
 public class Converter {
     
+    /** Logger. */
+    final Logger logger = LoggerFactory.getLogger(Converter.class);
     
-    public Section layoutToOdml(Form form) {
+    /** Determines whether the model contains layout definition (true) or data (false). */
+    private boolean isLayout;
+    
+    
+    /**
+     * Converts from internal form model to odML section tree.
+     * 
+     * @param form - the internal model to be converted
+     * @return root section of odML tree
+     */
+    public Section modelToOdml(Form form) {
+        isLayout = form.isLayout();
         Section root = null;
         
         try {
-            root = new Section(form.getName(), "form");
-            if (form.getDescription() != null)
-                root.setDefinition(form.getDescription());
-            //root.addProperty("id", form.getId());
-            if (form.getLabel() != null)
-                root.addProperty("label", form.getLabel());
             
-            addItems(root, form.getItems(), true);
+            root = new Section(form.getName(), Type.FORM.toString());
+            
+            if (isLayout) {
+                if (form.getDescription() != null)
+                    root.setDefinition(form.getDescription());
+                if (form.getLabel() != null)
+                    root.addProperty("label", form.getLabel());
+                if (form.getLayoutName() != null)
+                    root.addProperty("layoutName", form.getLayoutName());
+            }
+            
+            addItems(root, form.getItems());
             
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Cannot create odML section.", e);
         }
-        
-        if (form.getLayoutName() != null)
-            root.addProperty("layoutName", form.getLayoutName());
         
         return root;
     }
     
     
-    public Section dataToOdml(Form form) {
-        Section root = null;
-        
-        try {
-            root = new Section(form.getName(), "form");
-            addItems(root, form.getItems(), false);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        return root;
+    
+    /**
+     * Converts from odML section tree to internal form model.
+     *  
+     * @param section - the root section of odML tree
+     * @return internal form model
+     */
+    public Form odmlDataToModel(Section section) {
+        Section formSection = section.getSection(0);  // root section wraps the form
+        //isLayout = formSection.getProperty("layoutName") != null;  // FIXME stack overflow pokud property neexistuje
+        logger.debug("Converting form \"{}\" (isLayout = {})", formSection.getName(), isLayout);
+        return convert(formSection);
     }
     
     
-    public Form odmlToForm(Section section) {
-        Form form = convert(section.getSection(0));
-        return form;
-    }
     
-    
+    /**
+     * Converts the given section to a form object.
+     * 
+     * @param section - the section to be converted
+     * @return corresponding Form object
+     */
     private Form convert(Section section) {
         Form form = new Form(section.getName());
         
         // fields
-        for (Property property : section.getProperties()) {
+        if (isLayout) {
+            
+            // TODO convert layout
+            
+        } else for (Property property : section.getProperties()) {
             FormField field = new FormField(property.getName());
             field.setValue(property.getValue());
             form.addItem(field);
         }
         
         // sets
-        for (Section subsection : section.getSectionsByType("set")) {
+        for (Section subsection : section.getSectionsByType(Type.SET.toString())) {
             FormSet set = convertSet(subsection);
             form.addItem(set);
         }
         
         // subforms
-        for (Section subsection : section.getSectionsByType("form")) {
+        for (Section subsection : section.getSectionsByType(Type.FORM.toString())) {
             form.addItem(convert(subsection));
         }
         
@@ -112,19 +135,34 @@ public class Converter {
     }
     
     
+    
+    /**
+     * Converts the given section to a FormSet object.
+     * Note that the section type must match the {@link Type#SET} value.
+     * 
+     * @param section - the section to be converted
+     * @return corresponding FormSet object
+     */
     private FormSet convertSet(Section section) {
+        logger.trace("Creating FormSet \"{}\".", section.getName());
         FormSet set = new FormSet(section.getName(), null);
         
-        // fields
-        for (Property property : section.getProperties()) {
-            FormField field = new FormField(property.getName());
-            field.setValue(property.getValue());
-            set.addItem(field);
-        }
-        
-        // subforms
-        for (Section subsection : section.getSectionsByType("form")) {
-            set.addItem(convert(subsection));
+        if (isLayout) {
+            
+            // TODO layout
+            
+        } else {
+            if (section.getSectionsByType(Type.FORM.toString()).isEmpty()) {
+                for (Property property : section.getProperties()) {
+                    FormField field = new FormField(property.getName());
+                    field.setValue(property.getValue());
+                    set.addItem(field);
+                } 
+            } else {
+                for (Section subsection : section.getSectionsByType(Type.FORM.toString())) {
+                    set.addItem(convert(subsection));
+                }
+            }
         }
         
         return set;
@@ -132,92 +170,66 @@ public class Converter {
     
     
     
-    private Section convert(Form form, boolean layoutInfo) {
-        Section section = null;
-        
-        try {
-            section = new Section(form.getName(), "form");
+    /**
+     * Converts the given Form to odML section.
+     * 
+     * @param form - the Form object to be converted
+     * @return corresponding section object
+     * @throws Exception if there was error when creating the section
+     */
+    private Section convert(Form form) throws Exception {
+        Section section = new Section(form.getName(), Type.FORM.toString());
             
-            if (layoutInfo) {
-                if (form.getDescription() != null)
-                    section.setDefinition(form.getDescription());
-                if (form.getId() > 0)
-                    section.addProperty("id", form.getId());
-                if (form.getLabel() != null)
-                    section.addProperty("label", form.getLabel());
-                section.addProperty("required", form.isRequired());
-            }
-            
-            addItems(section, form.getItems(), layoutInfo);
-            
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (isLayout) {
+            if (form.getDescription() != null)
+                section.setDefinition(form.getDescription());
+            if (form.getId() > 0)
+                section.addProperty("id", form.getId());
+            if (form.getLabel() != null)
+                section.addProperty("label", form.getLabel());
+            section.addProperty("required", form.isRequired());
         }
         
-        return section;
-    }
-    
-    
-    private Section convert(FormField field) {
-        Section section = null;
-        
-        try {
-            section = new Section(field.getName(), field.getType().getValue());
-            
-            if (field.getId() > 0)
-                section.addProperty("id", field.getId());
-            if (field.getLabel() != null)
-                section.addProperty("label", field.getLabel());
-            section.addProperty("required", field.isRequired());
-            section.addProperty("datatype", field.getDatatype().getValue());
-            
-            if (field.getMinLength() > 0)
-                section.addProperty("minLength", field.getMinLength());
-            if (field.getMaxLength() > 0)
-                section.addProperty("maxLength", field.getMaxLength());
-            if (field.getMinValue() != null)
-                section.addProperty("minValue", field.getMinValue());
-            if (field.getMaxValue() != null)
-                section.addProperty("maxValue", field.getMaxValue());
-            if (field.getDefaultValue() != null)
-                section.addProperty("defaultValue", field.getDefaultValue());
-            if (field.getPossibleValues() != null) {
-                Property property = new Property("values");
-                for (Object value : field.getPossibleValues())
-                    property.addValue(value);
-                section.add(property);
-            }
-            
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        addItems(section, form.getItems());
         
         return section;
     }
     
     
     
-    private Section convert(FormSet set, boolean layoutInfo) {
-        Section section = null;
+    /**
+     * Converts the given FormField to odML section.
+     * 
+     * @param field - the FormField object to be converted
+     * @return corresponding section object
+     * @throws Exception if there was error when creating the section
+     */
+    private Section convert(FormField field) throws Exception {
+        Section section = new Section(field.getName(), field.getType().toString());
         
-        try {
-            section = new Section(set.getName(), "set");
-            
-            if (layoutInfo) {
-                if (set.getId() > 0)
-                    section.addProperty("id", set.getId());
-                if (set.getLabel() != null)
-                    section.addProperty("label", set.getLabel());
-                section.addProperty("required", set.isRequired());
-            }
-            
-            addItems(section, set.getItems(), layoutInfo);
-            
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (field.getId() > 0)
+            section.addProperty("id", field.getId());
+        if (field.getLabel() != null)
+            section.addProperty("label", field.getLabel());
+        section.addProperty("required", field.isRequired());
+        section.addProperty("datatype", field.getDatatype().getValue());
+        
+        // restrictions
+        if (field.getMinLength() > 0)
+            section.addProperty("minLength", field.getMinLength());
+        if (field.getMaxLength() > 0)
+            section.addProperty("maxLength", field.getMaxLength());
+        if (field.getMinValue() != null)
+            section.addProperty("minValue", field.getMinValue());
+        if (field.getMaxValue() != null)
+            section.addProperty("maxValue", field.getMaxValue());
+        if (field.getDefaultValue() != null)
+            section.addProperty("defaultValue", field.getDefaultValue());
+        if (field.getPossibleValues() != null) {
+            Property property = new Property("values");
+            for (Object value : field.getPossibleValues())
+                property.addValue(value);
+            section.add(property);
         }
         
         return section;
@@ -225,22 +237,54 @@ public class Converter {
     
     
     
-    private void addItems(Section section, Vector<FormItem> items, boolean layoutInfo) {
+    /**
+     * Converts the given FormSet object to odML section.
+     * 
+     * @param set - the FormSet to be converted
+     * @return corresponding odML section
+     * @throws Exception if there was error when creating the section
+     */
+    private Section convert(FormSet set) throws Exception {
+        Section section = new Section(set.getName(), Type.SET.toString());
+            
+        if (isLayout) {
+            if (set.getId() > 0)
+                section.addProperty("id", set.getId());
+            if (set.getLabel() != null)
+                section.addProperty("label", set.getLabel());
+            section.addProperty("required", set.isRequired());
+        }
+        
+        addItems(section, set.getItems());
+        
+        return section;
+    }
+    
+    
+    
+    /**
+     * Converts and adds the given form items to the section object.
+     * 
+     * @param section - the section
+     * @param items - items to be converted and added in the section
+     * @throws Exception if there was error when creating the section
+     */
+    private void addItems(Section section, Vector<FormItem> items) throws Exception {
         int lastId = -1;
         Section subSection;
         
         for (FormItem item : items) {
             if (item instanceof Form) {
-                subSection = convert((Form) item, layoutInfo);
-                if (layoutInfo && lastId != -1)
+                subSection = convert((Form) item);
+                if (isLayout && lastId != -1)
                     subSection.addProperty("idTop", lastId);
                 section.add(subSection);
             } else if (item instanceof FormSet) {
-                subSection = convert((FormSet) item, layoutInfo);
-                if (layoutInfo && lastId != -1)
+                subSection = convert((FormSet) item);
+                if (isLayout && lastId != -1)
                     subSection.addProperty("idTop", lastId);
                 section.add(subSection);
-            } else if (layoutInfo) {
+            } else if (isLayout) {
                 subSection = convert((FormField) item);
                 if (lastId != -1)
                     subSection.addProperty("idTop", lastId);
@@ -249,7 +293,7 @@ public class Converter {
                 section.addProperty(item.getName(), ((FormField) item).getValue());
             }
             
-            if (layoutInfo)
+            if (isLayout)
                 lastId = item.getId();
         }
         

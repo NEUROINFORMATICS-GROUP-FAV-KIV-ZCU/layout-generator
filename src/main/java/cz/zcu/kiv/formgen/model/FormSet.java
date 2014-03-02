@@ -63,7 +63,9 @@ public class FormSet extends AbstractFormItem implements FormItemContainer {
 
     @Override
     public void addItem(FormItem item) throws BadItemTypeException {
-        if (item.getType() != innerType)
+        if (innerType == null)
+            innerType = item.getType();
+        else if (item.getType() != innerType)
             throw new BadItemTypeException(innerType, item.getType());
         items.add(item);
     }

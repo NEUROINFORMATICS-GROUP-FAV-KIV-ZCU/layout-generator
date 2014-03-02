@@ -43,8 +43,8 @@ public class BadItemTypeException extends RuntimeException {
      * @param actual - the actual item type
      */
     public BadItemTypeException(Type expected, Type actual) {
-        super("FormItem of bad type inserted in the FormSet. Expected " + expected.getValue() 
-                + ", got " + actual.getValue() + ".");
+        super("FormItem of bad type inserted in the FormSet. Expected " + expected.toString() 
+                + ", got " + actual.toString() + ".");
     }
     
 
