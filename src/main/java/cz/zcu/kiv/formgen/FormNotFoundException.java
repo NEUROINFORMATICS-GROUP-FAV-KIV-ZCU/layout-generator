@@ -30,9 +30,11 @@ package cz.zcu.kiv.formgen;
  *
  * @author Jakub Krauz
  */
-public class FormNotFoundException extends Exception {
+public class FormNotFoundException extends LayoutGeneratorException {
 
+    
     private static final long serialVersionUID = 1L;
+
     
     public FormNotFoundException() {
         super("The @Form annotation was not found in the given class(es).");

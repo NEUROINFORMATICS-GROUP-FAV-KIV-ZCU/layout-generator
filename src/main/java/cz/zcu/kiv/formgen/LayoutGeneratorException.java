@@ -19,31 +19,29 @@
  *
  ***********************************************************************************************************************
  *
- * OdmlException.java, 2. 3. 2014 19:39:06 Jakub Krauz
+ * LayoutGeneratorException.java, 2. 3. 2014 20:54:16 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.odml;
-
-import cz.zcu.kiv.formgen.LayoutGeneratorException;
+package cz.zcu.kiv.formgen;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class OdmlException extends LayoutGeneratorException {
+public class LayoutGeneratorException extends Exception {
     
+    
+    protected static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
 
-
-    public OdmlException(String message) {
+    public LayoutGeneratorException(String message) {
         super(message);
     }
     
     
-    public OdmlException(String message, Throwable cause) {
+    public LayoutGeneratorException(String message, Throwable cause) {
         super(message, cause);
     }
 
