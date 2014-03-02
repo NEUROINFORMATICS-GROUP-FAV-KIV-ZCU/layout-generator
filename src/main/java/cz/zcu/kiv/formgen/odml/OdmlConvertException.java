@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,59 +19,25 @@
  *
  ***********************************************************************************************************************
  *
- * Type.java, 15. 11. 2013 19:14:06 Jakub Krauz
+ * OdmlConvertException.java, 2. 3. 2014 19:06:48 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.model;
+package cz.zcu.kiv.formgen.odml;
 
 
 /**
- * Type of the form item.
  *
  * @author Jakub Krauz
  */
-public enum Type {
+public class OdmlConvertException extends Exception {
     
-    FORM       ("form"), 
-    TEXTBOX    ("textbox"), 
-    CHECKBOX   ("checkbox"),
-    COMBOBOX   ("combobox"),
-    CHOICE     ("choice"),
-    IMAGE      ("image"),
-    SET        ("set");
-    
-    
-    
-    private String value;
-    
-    private Type(String value) {
-        this.value = value;
-    }
-    
-    @Override
-    public String toString() {
-        return value;
-    }
-    
-    
-    public static Type fromString(String value) {
-        if (FORM.toString().equals(value))
-            return FORM;
-        if (TEXTBOX.toString().equals(value))
-            return TEXTBOX;
-        if (CHECKBOX.toString().equals(value))
-            return CHECKBOX;
-        if (COMBOBOX.toString().equals(value))
-            return COMBOBOX;
-        if (CHOICE.toString().equals(value))
-            return CHOICE;
-        if (IMAGE.toString().equals(value))
-            return IMAGE;
-        if (SET.toString().equals(value))
-            return SET;
-        return null;
-    }
 
+    private static final long serialVersionUID = 1L;
+
+    
+    public OdmlConvertException(String message) {
+        super(message);
+    }
 
 }

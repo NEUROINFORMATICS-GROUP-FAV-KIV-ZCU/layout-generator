@@ -46,8 +46,24 @@ public enum FieldDatatype {
         this.value = value;
     }
     
-    public String getValue() {
+    @Override
+    public String toString() {
         return value;
+    }
+    
+    
+    public static FieldDatatype fromString(String value) {
+        if (STRING.value.equals(value))
+            return STRING;
+        if (INTEGER.value.equals(value))
+            return INTEGER;
+        if (NUMBER.value.equals(value))
+            return NUMBER;
+        if (DATE.value.equals(value))
+            return DATE;
+        if (EMAIL.value.equals(value))
+            return EMAIL;
+        return null;
     }
     
 
