@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>org.gnode</groupId>
 			<artifactId>odml-java-lib</artifactId>
-			<version>1.0.4</version>
+			<version>1.0.5</version>
 		</dependency>
 
 		<!-- =============== slf4j =============== -->
