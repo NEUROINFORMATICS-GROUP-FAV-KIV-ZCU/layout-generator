@@ -35,7 +35,7 @@ import cz.zcu.kiv.formgen.model.Form;
  *
  * @author Jakub Krauz
  */
-public class SimpleFormGeneratorTest {
+public class SimpleLayoutGeneratorTest {
     
     SimpleLayoutGenerator generator;
     
