@@ -152,4 +152,39 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     }
 
 
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + highestItemId;
+        result = prime * result + ((items == null) ? 0 : items.hashCode());
+        result = prime * result + (layout ? 1231 : 1237);
+        result = prime * result + ((layoutName == null) ? 0 : layoutName.hashCode());
+        return result;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) { return true; }
+        if (!super.equals(obj)) { return false; }
+        if (getClass() != obj.getClass()) { return false; }
+        Form other = (Form) obj;
+        if (description == null) {
+            if (other.description != null) { return false; }
+        } else if (!description.equals(other.description)) { return false; }
+        if (highestItemId != other.highestItemId) { return false; }
+        if (items == null) {
+            if (other.items != null) { return false; }
+        } else if (!items.equals(other.items)) { return false; }
+        if (layout != other.layout) { return false; }
+        if (layoutName == null) {
+            if (other.layoutName != null) { return false; }
+        } else if (!layoutName.equals(other.layoutName)) { return false; }
+        return true;
+    }
+
+
 }

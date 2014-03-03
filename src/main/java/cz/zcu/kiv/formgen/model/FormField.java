@@ -25,6 +25,8 @@
 
 package cz.zcu.kiv.formgen.model;
 
+import java.util.Arrays;
+
 
 /**
  * Represents a form field.
@@ -70,6 +72,18 @@ public class FormField extends AbstractFormItem implements FormItem {
     
     
     
+    /*@Override
+    public boolean equals(Object other) {
+        if (this == other)
+            return true;
+        if (! (other instanceof FormField))
+            return false;
+        
+        FormField f = (FormField) other;
+        return name.equals(f.name) && type == f.type && datatype == f.datatype;
+    }*/
+
+
     /**
      * Constructor.
      * Sets the name of the form field.
@@ -258,5 +272,51 @@ public class FormField extends AbstractFormItem implements FormItem {
         this.value = value;
     }
 
+    
+    
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((datatype == null) ? 0 : datatype.hashCode());
+        result = prime * result + ((defaultValue == null) ? 0 : defaultValue.hashCode());
+        result = prime * result + maxLength;
+        result = prime * result + ((maxValue == null) ? 0 : maxValue.hashCode());
+        result = prime * result + minLength;
+        result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
+        result = prime * result + Arrays.hashCode(possibleValues);
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        return result;
+    }
+
+
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) { return true; }
+        if (!super.equals(obj)) { return false; }
+        if (getClass() != obj.getClass()) { return false; }
+        FormField other = (FormField) obj;
+        if (datatype != other.datatype) { return false; }
+        if (defaultValue == null) {
+            if (other.defaultValue != null) { return false; }
+        } else if (!defaultValue.equals(other.defaultValue)) { return false; }
+        if (maxLength != other.maxLength) { return false; }
+        if (maxValue == null) {
+            if (other.maxValue != null) { return false; }
+        } else if (!maxValue.equals(other.maxValue)) { return false; }
+        if (minLength != other.minLength) { return false; }
+        if (minValue == null) {
+            if (other.minValue != null) { return false; }
+        } else if (!minValue.equals(other.minValue)) { return false; }
+        if (!Arrays.equals(possibleValues, other.possibleValues)) { return false; }
+        if (value == null) {
+            if (other.value != null) { return false; }
+        } else if (!value.equals(other.value)) { return false; }
+        return true;
+    }
+
+    
 
 }
