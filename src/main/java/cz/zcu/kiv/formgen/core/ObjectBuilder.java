@@ -27,7 +27,11 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cz.zcu.kiv.formgen.model.Form;
@@ -43,8 +47,10 @@ import cz.zcu.kiv.formgen.model.Type;
  */
 public class ObjectBuilder<T> {
     
+    /** Logger. */
     final Logger logger = LoggerFactory.getLogger(ObjectBuilder.class);
     
+    /** Type of the object being built. */
     private Class<T> type;
     
     
@@ -81,7 +87,7 @@ public class ObjectBuilder<T> {
                 Object value = ((FormField) item).getValue();
                 
                 // convert to appropriate number type
-                if (TypeMapper.isNumber(field.getType()))
+                if (TypeMapper.isNumberType(field.getType()))
                     value = toNumber(value, field.getType());
                 
                 field.set(obj, value);
@@ -101,7 +107,8 @@ public class ObjectBuilder<T> {
                     throw new ObjectBuilderException("Cannot create collection.");
                 Collection collection = (Collection) field.get(obj);
                 if (collection == null) {
-                    ; // TODO create collection
+                    collection = instantiateCollection((Class<? extends Collection>) field.getType());
+                    field.set(obj, collection);
                 }
                 
                 if (((FormSet) item).getInnerType() == Type.FORM) {
@@ -114,7 +121,7 @@ public class ObjectBuilder<T> {
                     for (FormItem inner : ((FormSet) item).getItems()) {
                         Object value = ((FormField) inner).getValue();
                         // convert to appropriate number type
-                        if (TypeMapper.isNumber(innerType))
+                        if (TypeMapper.isNumberType(innerType))
                             value = toNumber(value, innerType);
                         collection.add(value);
                     }
@@ -162,6 +169,17 @@ public class ObjectBuilder<T> {
         }
         
         return value;
+    }
+    
+    
+    
+    protected Collection<?> instantiateCollection(Class<? extends Collection> type) {
+        if (type.equals(Set.class))
+            return new HashSet();
+        if (type.equals(List.class))
+            return new ArrayList();
+        
+        return null;
     }
 
     

@@ -93,7 +93,7 @@ public class TypeMapper {
     
     
     
-    public static boolean isNumber(Class<?> type) {
+    public static boolean isNumberType(Class<?> type) {
         return Number.class.isAssignableFrom(toWrapperType(type));
     }
 
