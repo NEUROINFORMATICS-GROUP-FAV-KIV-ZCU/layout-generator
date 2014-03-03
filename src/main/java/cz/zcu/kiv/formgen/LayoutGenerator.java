@@ -33,6 +33,7 @@ package cz.zcu.kiv.formgen;
  */
 public interface LayoutGenerator extends Generator<Class<?>> {
     
+    
     /**
      * Parses the class with given name and creates appropriate model.
      * 
@@ -42,6 +43,7 @@ public interface LayoutGenerator extends Generator<Class<?>> {
      */
     void loadClass(String... names) throws ClassNotFoundException, FormNotFoundException;
     
+    
     /**
      * Parses all classes in the given package.
      * 
@@ -49,6 +51,7 @@ public interface LayoutGenerator extends Generator<Class<?>> {
      * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on any class in the package
      */
     void loadPackage(String name) throws FormNotFoundException;
+    
     
     /**
      * Parses all classes in the given package.

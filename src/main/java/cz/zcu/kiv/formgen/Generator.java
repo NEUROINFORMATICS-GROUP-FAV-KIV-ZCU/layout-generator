@@ -41,7 +41,7 @@ public interface Generator<T> {
      * Parses the given object(s) and creates an appropriate model.
      * 
      * @param objects - object(s) to be parsed
-     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on the given class
+     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found in any of parsed objects
      */
     void load(T... objects) throws FormNotFoundException;
     

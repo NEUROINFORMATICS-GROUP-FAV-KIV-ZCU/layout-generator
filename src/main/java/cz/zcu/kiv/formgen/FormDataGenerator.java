@@ -35,6 +35,13 @@ import java.util.Collection;
  */
 public interface FormDataGenerator extends Generator<Object> {
     
+    
+    /**
+     * Parses all objects in the collection and creates an appropriate model.
+     * 
+     * @param collection - the collection of objects to be parsed
+     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found in any of parsed objects
+     */
     void loadObjects(Collection<Object> collection) throws FormNotFoundException;
 
 }

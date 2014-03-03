@@ -27,20 +27,35 @@ package cz.zcu.kiv.formgen;
 
 
 /**
+ * The root exception thrown by the layout-generator tool.
+ * All exceptions used by this tool are descendants of this one.
  *
  * @author Jakub Krauz
  */
 public class LayoutGeneratorException extends Exception {
     
-    
+    /** The serial version UID (default value). */
     protected static final long serialVersionUID = 1L;
 
 
+    /**
+     * Constructor.
+     * Creates a new exception with the specified detail message.
+     * 
+     * @param message - the detail message
+     */
     public LayoutGeneratorException(String message) {
         super(message);
     }
     
     
+    /**
+     * Constructor.
+     * Creates a new exception with the specified detail message and cause.
+     * 
+     * @param message - the detail message
+     * @param cause - the cause
+     */
     public LayoutGeneratorException(String message, Throwable cause) {
         super(message, cause);
     }

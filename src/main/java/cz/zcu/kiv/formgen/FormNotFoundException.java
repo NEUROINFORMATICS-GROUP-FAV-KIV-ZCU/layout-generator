@@ -27,15 +27,21 @@ package cz.zcu.kiv.formgen;
 
 
 /**
+ * This exception indicates that the required {@link cz.zcu.kiv.formgen.annotation.Form @Form}
+ * annotation was not found.
  *
  * @author Jakub Krauz
  */
 public class FormNotFoundException extends LayoutGeneratorException {
 
-    
+    /** The serial version UID (default value). */
     private static final long serialVersionUID = 1L;
 
     
+    /**
+     * Constructor.
+     * Creates a new exception.
+     */
     public FormNotFoundException() {
         super("The @Form annotation was not found in the given class(es).");
     }

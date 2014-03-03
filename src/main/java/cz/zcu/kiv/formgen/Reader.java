@@ -30,11 +30,21 @@ import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
+ * Reader of the model from a transport serialization format.
  *
  * @author Jakub Krauz
  */
 public interface Reader {
     
-    Form read(InputStream stream) throws Exception;
+    
+    /**
+     * Reads the serialization from the specified input stream and
+     * returns the internal model.
+     * 
+     * @param stream - input stream with the serialization
+     * @return internal model
+     * @throws LayoutGeneratorException if an error occured while reading the serialization
+     */
+    Form read(InputStream stream) throws LayoutGeneratorException;
 
 }
