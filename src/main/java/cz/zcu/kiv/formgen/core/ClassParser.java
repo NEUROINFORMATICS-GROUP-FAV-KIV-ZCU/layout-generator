@@ -27,8 +27,9 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 import cz.zcu.kiv.formgen.model.Form;
@@ -44,6 +45,9 @@ import cz.zcu.kiv.formgen.model.FormSet;
  * @author Jakub Krauz
  */
 public class ClassParser extends AbstractParser<Class<?>> {
+    
+    /** Logger. */
+    final Logger logger = LoggerFactory.getLogger(ClassParser.class);
     
 
     
@@ -206,37 +210,31 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @return the newly created set object, or null if the collection is not parameterized
      */
     private FormItemContainer createFormSet(Field field, int id) {
-        FormItemContainer formSet = null;
         
-        if (field.getGenericType() instanceof ParameterizedType) {
+        // check whether the collection type is parameterized
+        if (!(field.getGenericType() instanceof ParameterizedType)) {
+            logger.warn("Can not parse non-parameterized collection \"{}\"", field.getName());
+            return null;
+        }
             
-            ParameterizedType type = (ParameterizedType) field.getGenericType();
-            Type[] parameters = type.getActualTypeArguments();
-            
-            if (parameters.length == 1 && parameters[0] instanceof Class) {
-                Class<?> clazz = (Class<?>) parameters[0];
-                
-                formSet = new FormSet(field.getName(), mapper.mapType(clazz));
-                cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
-                String label = formItemAnnot.label();
-                formSet.setLabel(label.isEmpty() ? field.getName() : label);
-                formSet.setRequired(formItemAnnot.required());
+        Class<?> clazz = Utils.genericParameter((ParameterizedType) field.getGenericType());
+        FormItemContainer formSet = new FormSet(field.getName(), mapper.mapType(clazz));
+        cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
+        String label = formItemAnnot.label();
+        formSet.setLabel(label.isEmpty() ? field.getName() : label);
+        formSet.setRequired(formItemAnnot.required());
 
-                if (mapper.isSimpleType(clazz)) {
-                    FormField formField = new FormField(clazz.getSimpleName(), mapper.mapType(clazz),
-                            mapper.mapDatatype(clazz));
-                    formField.setId(id);
-                    formSet.addItem(formField);
-                    formSet.setId(id + 1);
-                } else {
-                    Form form = _parse(clazz, clazz.getSimpleName(), id);
-                    formSet.addItem(form);
-                    formSet.setId(form.highestItemId() + 1);
-                }
-            }
-            
+        // parse the content type
+        if (mapper.isSimpleType(clazz)) {
+            FormField formField = new FormField(clazz.getSimpleName(), mapper.mapType(clazz),
+                    mapper.mapDatatype(clazz));
+            formField.setId(id);
+            formSet.addItem(formField);
+            formSet.setId(id + 1);
         } else {
-            System.out.println("Warning: non-parameterized collection");
+            Form form = _parse(clazz, clazz.getSimpleName(), id);
+            formSet.addItem(form);
+            formSet.setId(form.highestItemId() + 1);
         }
         
         return formSet;

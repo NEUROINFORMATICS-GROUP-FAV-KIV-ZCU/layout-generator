@@ -26,6 +26,7 @@
 package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormSet;
+import cz.zcu.kiv.formgen.model.Type;
 
 
 /**
@@ -67,46 +69,99 @@ public class ObjectBuilder<T> {
     
     
     
-    private void fill(Object obj, Form form) throws SecurityException, NoSuchFieldException, 
-                        IllegalArgumentException, IllegalAccessException, InstantiationException {
+    protected void fill(Object obj, Form form) throws SecurityException, NoSuchFieldException, 
+                        IllegalArgumentException, IllegalAccessException, InstantiationException, ObjectBuilderException {
         
         for (FormItem item : form.getItems()) {
+            
             Field field = obj.getClass().getDeclaredField(item.getName());
             field.setAccessible(true);
+            
             if (item instanceof FormField) {
                 Object value = ((FormField) item).getValue();
                 
                 // convert to appropriate number type
-                if (value instanceof Number) {
-                    Class<?> type = TypeMapper.toPrimitiveType(field.getType());
-                    if (type.equals(Byte.TYPE))
-                        value = ((Number) value).byteValue();
-                    else if (type.equals(Short.TYPE))
-                        value = ((Number) value).shortValue();
-                    else if (type.equals(Integer.TYPE))
-                        value = ((Number) value).intValue();
-                    else if (type.equals(Long.TYPE))
-                        value = ((Number) value).longValue();
-                    else if (type.equals(Float.TYPE))
-                        value = ((Number) value).floatValue();
-                    else if (type.equals(Double.TYPE))
-                        value = ((Number) value).doubleValue();
-                }
+                if (TypeMapper.isNumber(field.getType()))
+                    value = toNumber(value, field.getType());
                 
                 field.set(obj, value);
+                
             } else if (item instanceof Form) {
+                
                 Object o = field.getType().newInstance();
                 fill(o, (Form) item);
                 field.set(obj, o);
+                
             } else if (item instanceof FormSet) {
-                Collection<?> collection = (Collection<?>) field.get(obj);
-                if (collection != null)
-                    ; // TODO add items
-                else
-                    ; // TODO create collection 
-            }
-        }
+                
+                if (!(field.getGenericType() instanceof ParameterizedType))
+                    throw new ObjectBuilderException("Cannot create a non-parameterized collection.");
+                Class<?> innerType = Utils.genericParameter((ParameterizedType) field.getGenericType());
+                if (innerType == null)
+                    throw new ObjectBuilderException("Cannot create collection.");
+                Collection collection = (Collection) field.get(obj);
+                if (collection == null) {
+                    ; // TODO create collection
+                }
+                
+                if (((FormSet) item).getInnerType() == Type.FORM) {
+                    for (FormItem inner : ((FormSet) item).getItems()) {
+                        Object o = innerType.newInstance();
+                        fill(o, (Form) inner);
+                        collection.add(o);
+                    }
+                } else {
+                    for (FormItem inner : ((FormSet) item).getItems()) {
+                        Object value = ((FormField) inner).getValue();
+                        // convert to appropriate number type
+                        if (TypeMapper.isNumber(innerType))
+                            value = toNumber(value, innerType);
+                        collection.add(value);
+                    }
+                }
+                
+            }  // end if
+            
+        }  // end for
 
+    }
+    
+    
+    
+    protected Number toNumber(Object obj, Class<?> numberType) throws NumberFormatException {
+        Number value = null;
+        Class<?> type = TypeMapper.toPrimitiveType(numberType);
+        
+        if (obj instanceof Number) {
+            if (type.equals(Byte.TYPE))
+                value = ((Number) obj).byteValue();
+            else if (type.equals(Short.TYPE))
+                value = ((Number) obj).shortValue();
+            else if (type.equals(Integer.TYPE))
+                value = ((Number) obj).intValue();
+            else if (type.equals(Long.TYPE))
+                value = ((Number) obj).longValue();
+            else if (type.equals(Float.TYPE))
+                value = ((Number) obj).floatValue();
+            else if (type.equals(Double.TYPE))
+                value = ((Number) obj).doubleValue();
+        } else {
+            // try to parse the value from string
+            if (type.equals(Byte.TYPE))
+                value = Byte.parseByte(obj.toString());
+            else if (type.equals(Short.TYPE))
+                value = Short.parseShort(obj.toString());
+            else if (type.equals(Integer.TYPE))
+                value = Integer.parseInt(obj.toString());
+            else if (type.equals(Long.TYPE))
+                value = Long.parseLong(obj.toString());
+            else if (type.equals(Float.TYPE))
+                value = Float.parseFloat(obj.toString());
+            else if (type.equals(Double.TYPE))
+                value = Double.parseDouble(obj.toString());
+        }
+        
+        return value;
     }
 
     

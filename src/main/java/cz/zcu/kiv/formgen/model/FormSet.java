@@ -75,5 +75,15 @@ public class FormSet extends AbstractFormItem implements FormItemContainer {
     public Vector<FormItem> getItems() {
         return items;
     }
+    
+    
+    /**
+     * Gets the type of contained items.
+     * 
+     * @return type of contained items
+     */
+    public Type getInnerType() {
+        return innerType;
+    }
 
 }

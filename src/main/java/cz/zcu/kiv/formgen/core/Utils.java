@@ -19,38 +19,34 @@
  *
  ***********************************************************************************************************************
  *
- * ClassParserTest.java, 1. 2. 2014 12:05:27 Jakub Krauz
+ * Utils.java, 3. 3. 2014 18:14:28 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.core;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import cz.zcu.kiv.formgen.FormNotFoundException;
-import cz.zcu.kiv.formgen.model.Form;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class ClassParserTest {
+public class Utils {
     
-    private ClassParser parser = new ClassParser();
+    static final Logger logger = LoggerFactory.getLogger(Utils.class);
     
     
-    // TODO test cases
-    
-    @Test
-    public void testParse() throws FormNotFoundException {
-        Class<?> cls;
-        try {
-            cls = Class.forName("example.pojo.Person");
-            Form form = parser.parse(cls);
-            assertNotNull(form);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+    public static Class<?> genericParameter(ParameterizedType type) {
+        Type[] parameters = type.getActualTypeArguments();
+        if (parameters.length == 1 && parameters[0] instanceof Class) {
+            return (Class<?>) parameters[0];
+        } else {
+            logger.warn("The parameterized type does not have exactly one type parameter.");
+            return null;
         }
     }
 
