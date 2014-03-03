@@ -66,14 +66,17 @@ public class TypeMapper {
     
     public static Class<?> toPrimitiveType(Class<?> wrapperType) {
         if (wrapperType.isPrimitive())
-            return wrapperType;
+            return wrapperType;  // not a wrapper type
         else
             return (Class<?>) WRAPPER_TYPES.get(wrapperType);
     }
     
     
     public static Class<?> toWrapperType(Class<?> primitiveType) {
-        return (Class<?>) WRAPPER_TYPES.getKey(primitiveType);
+        if (primitiveType.isPrimitive())
+            return (Class<?>) WRAPPER_TYPES.getKey(primitiveType);
+        else
+            return primitiveType;  // not a primitive type
     }
     
     
@@ -86,6 +89,12 @@ public class TypeMapper {
     public static boolean isIntegerType(Class<?> type) {
         Class<?> cls = type.isPrimitive() ? type : toPrimitiveType(type);
         return (cls == byte.class || cls == short.class || cls == int.class || cls == long.class);
+    }
+    
+    
+    
+    public static boolean isNumber(Class<?> type) {
+        return Number.class.isAssignableFrom(toWrapperType(type));
     }
 
     

@@ -26,6 +26,9 @@
 package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
@@ -38,6 +41,8 @@ import cz.zcu.kiv.formgen.model.FormSet;
  */
 public class ObjectBuilder<T> {
     
+    final Logger logger = LoggerFactory.getLogger(ObjectBuilder.class);
+    
     private Class<T> type;
     
     
@@ -46,18 +51,15 @@ public class ObjectBuilder<T> {
     }
     
     
-    public T build(Form form) {
+    public T build(Form form) throws ObjectBuilderException {
         T obj = null;
         
         try {
             obj = type.newInstance();
             fill(obj, form);
-        } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error("Can not create instance of " + type.getCanonicalName(), e);
+            throw new ObjectBuilderException("Can not create instance of " + type.getCanonicalName(), e);
         }
         
         return obj;
@@ -65,38 +67,46 @@ public class ObjectBuilder<T> {
     
     
     
-    private void fill(Object obj, Form form) {
-        try {
+    private void fill(Object obj, Form form) throws SecurityException, NoSuchFieldException, 
+                        IllegalArgumentException, IllegalAccessException, InstantiationException {
         
-            for (FormItem item : form.getItems()) {
-                Field field = obj.getClass().getDeclaredField(item.getName());
-                field.setAccessible(true);
-                if (item instanceof FormField) {
-                    Object value = ((FormField) item).getValue();
-                    
-                    // odML uses only "int" type - need to convert to proper whole-number type
-                    if (TypeMapper.isIntegerType(field.getType())) {
-                        Class<?> type = TypeMapper.toPrimitiveType(field.getType());
-                        if (type.equals(Byte.TYPE))
-                            value = ((Number) value).byteValue();
-                        else if (type.equals(Short.TYPE))
-                            value = ((Number) value).shortValue();
-                        else if (type.equals(Long.TYPE))
-                            value = ((Number) value).longValue();
-                    }
-                    
-                    field.set(obj, value);
-                } else if (item instanceof Form) {
-                    Object o = field.getType().newInstance();
-                    fill(o, (Form) item);
-                    field.set(obj, o);
-                } else if (item instanceof FormSet) {
-                    // TODO build set
+        for (FormItem item : form.getItems()) {
+            Field field = obj.getClass().getDeclaredField(item.getName());
+            field.setAccessible(true);
+            if (item instanceof FormField) {
+                Object value = ((FormField) item).getValue();
+                
+                // convert to appropriate number type
+                if (value instanceof Number) {
+                    Class<?> type = TypeMapper.toPrimitiveType(field.getType());
+                    if (type.equals(Byte.TYPE))
+                        value = ((Number) value).byteValue();
+                    else if (type.equals(Short.TYPE))
+                        value = ((Number) value).shortValue();
+                    else if (type.equals(Integer.TYPE))
+                        value = ((Number) value).intValue();
+                    else if (type.equals(Long.TYPE))
+                        value = ((Number) value).longValue();
+                    else if (type.equals(Float.TYPE))
+                        value = ((Number) value).floatValue();
+                    else if (type.equals(Double.TYPE))
+                        value = ((Number) value).doubleValue();
                 }
+                
+                field.set(obj, value);
+            } else if (item instanceof Form) {
+                Object o = field.getType().newInstance();
+                fill(o, (Form) item);
+                field.set(obj, o);
+            } else if (item instanceof FormSet) {
+                Collection<?> collection = (Collection<?>) field.get(obj);
+                if (collection != null)
+                    ; // TODO add items
+                else
+                    ; // TODO create collection 
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
     }
 
     
