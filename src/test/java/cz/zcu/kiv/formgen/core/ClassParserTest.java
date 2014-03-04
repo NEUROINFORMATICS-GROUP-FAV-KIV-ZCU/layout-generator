@@ -28,7 +28,11 @@ package cz.zcu.kiv.formgen.core;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import cz.zcu.kiv.formgen.FormNotFoundException;
+import cz.zcu.kiv.formgen.annotation.FormItem;
+import cz.zcu.kiv.formgen.model.FieldDatatype;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormField;
+import cz.zcu.kiv.formgen.model.Type;
 
 
 /**
@@ -40,18 +44,52 @@ public class ClassParserTest {
     private ClassParser parser = new ClassParser();
     
     
-    // TODO test cases
+    // TODO more test cases
     
     @Test
     public void testParse() throws FormNotFoundException {
-        Class<?> cls;
-        try {
-            cls = Class.forName("example.pojo.Person");
-            Form form = parser.parse(cls);
-            assertNotNull(form);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        Form form = parser.parse(TestClass.class);
+        assertEquals(createTestForm(), form);
+    }
+    
+    
+    
+    private Form createTestForm() {
+        Form form = new Form("TestClass");
+        form.setId(0);
+        form.setLabel("TestClass");
+        form.setLayout(true);
+        form.setLayoutName(form.getName() + "-generated");
+        cz.zcu.kiv.formgen.model.FormItem item = new FormField("id", Type.TEXTBOX, FieldDatatype.INTEGER);
+        item.setLabel("ID");
+        item.setId(1);
+        form.addItem(item);
+        
+        Form subform = new Form("foo");
+        subform.setId(2);
+        subform.setLabel("FOO_FORM");
+        item = new FormField("item", Type.TEXTBOX, FieldDatatype.INTEGER);
+        item.setLabel("item");
+        item.setId(3);
+        subform.addItem(item);
+        form.addItem(subform);
+        
+        return form;
+    }
+    
+    
+    
+    @cz.zcu.kiv.formgen.annotation.Form
+    private class TestClass {
+        @FormItem(label = "ID") int id;
+        @SuppressWarnings("unused") String str;
+        @FormItem Foo foo;
+    }
+    
+    
+    @cz.zcu.kiv.formgen.annotation.Form(label = "FOO_FORM")
+    private class Foo {
+        @FormItem Byte item;
     }
 
 }

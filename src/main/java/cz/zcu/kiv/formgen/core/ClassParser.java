@@ -140,12 +140,18 @@ public class ClassParser extends AbstractParser<Class<?>> {
     protected Form createForm(String name, Class<?> cls) {
         Form form = new Form(name);
         
-        String definition = null;
+        String label = cls.getSimpleName();
+        if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
+            cz.zcu.kiv.formgen.annotation.Form annot = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class);
+            if (!annot.label().isEmpty())
+                label = annot.label();
+        }
+        form.setLabel(label);
+        
         if (cls.isAnnotationPresent(FormDescription.class)) {
             FormDescription description = cls.getAnnotation(FormDescription.class);
-            definition = description.value();
+            form.setDescription(description.value());
         }
-        form.setDescription(definition);
         
         return form;
     }
@@ -209,7 +215,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @param id the ID assigned to the new form set
      * @return the newly created set object, or null if the collection is not parameterized
      */
-    private FormItemContainer createFormSet(Field field, int id) {
+    protected FormItemContainer createFormSet(Field field, int id) {
         
         // check whether the collection type is parameterized
         if (!(field.getGenericType() instanceof ParameterizedType)) {
