@@ -50,11 +50,28 @@ public interface FormItemContainer extends FormItem {
     
     
     /**
+     * Returns item on the given position (indexed from 0) or null.
+     * 
+     * @param index - the index of the position
+     * @return item on the specified position or null
+     */
+    FormItem getItemAt(int position);
+    
+    
+    /**
      * Gets all items in the container.
      * 
      * @return vector of contained items
      */
     Vector<FormItem> getItems();
+    
+    
+    /**
+     * Returns the number of contained items.
+     * 
+     * @return number of items
+     */
+    int countItems();
     
 
 }

@@ -61,6 +61,7 @@ public class FormSet extends AbstractFormItem implements FormItemContainer {
     }
     
 
+    
     @Override
     public void addItem(FormItem item) throws BadItemTypeException {
         if (innerType == null)
@@ -69,11 +70,27 @@ public class FormSet extends AbstractFormItem implements FormItemContainer {
             throw new BadItemTypeException(innerType, item.getType());
         items.add(item);
     }
+    
+    
+    @Override
+    public FormItem getItemAt(int position) {
+        try {
+            return items.get(position);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
+    }
 
 
     @Override
     public Vector<FormItem> getItems() {
         return items;
+    }
+    
+    
+    @Override
+    public int countItems() {
+        return items.size();
     }
     
     

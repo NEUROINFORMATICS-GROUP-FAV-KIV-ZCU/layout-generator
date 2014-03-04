@@ -33,7 +33,14 @@ package cz.zcu.kiv.formgen.model;
  */
 public class BadItemTypeException extends RuntimeException {
     
+    /** Serial version UID (default value). */
     private static final long serialVersionUID = 1L;
+    
+    /** Expected type. */
+    private final Type expected;
+    
+    /** Actual type. */
+    private final Type actual;
 
     
     /**
@@ -45,7 +52,26 @@ public class BadItemTypeException extends RuntimeException {
     public BadItemTypeException(Type expected, Type actual) {
         super("FormItem of bad type inserted in the FormSet. Expected " + expected.toString() 
                 + ", got " + actual.toString() + ".");
+        this.expected = expected;
+        this.actual = actual;
     }
     
+    
+    /**
+     * Returns the expected type.
+     * @return the expected type
+     */
+    public Type expected() {
+        return expected;
+    }
+    
+    
+    /**
+     * Returns the actual type.
+     * @return the actual type
+     */
+    public Type actual() {
+        return actual;
+    }
 
 }

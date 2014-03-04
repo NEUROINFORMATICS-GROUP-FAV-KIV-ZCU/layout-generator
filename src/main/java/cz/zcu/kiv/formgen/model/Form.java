@@ -26,6 +26,8 @@
 package cz.zcu.kiv.formgen.model;
 
 import java.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -41,36 +43,51 @@ import java.util.Vector;
  */
 public class Form extends AbstractFormItem implements FormItem, FormItemContainer {
     
+    /** Logger. */
+    final Logger logger = LoggerFactory.getLogger(Form.class);
+    
+    /** Description of the form. */
     private String description;
     
+    /** The highest of IDs of contained items. */
     private int highestItemId = 0;
     
+    /** Defines the form layout? */
     private boolean layout;
     
+    /** Name of the layout. */
     private String layoutName;
     
+    /** Contained items. */
     private Vector<FormItem> items = new Vector<FormItem>();
     
     
     
+    /**
+     * Constructor.
+     * Creates a new form object with the specified name.
+     * @param name
+     */
     public Form(String name) {
         super(name, Type.FORM);
     }
     
     
+    
     @Override
     public void addItem(FormItem item) {
-        
         if (item == null) {
-            System.out.println("item je null");
+            logger.debug("Form \"{}\": attempt to add a null item.", this.name);
             return;
         }
         
+        // update the highestItemId
         if (item instanceof Form)
             highestItemId = Math.max(highestItemId, ((Form) item).highestItemId());
         else
             highestItemId = Math.max(highestItemId, item.getId());
         
+        // add the item
         items.add(item);
     }
     
@@ -81,6 +98,30 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     }
     
     
+    @Override
+    public int countItems() {
+        return items.size();
+    }
+    
+    
+    @Override
+    public FormItem getItemAt(int position) {
+        try {
+            return items.get(position);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+    
+        
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        if (id > highestItemId)
+            highestItemId = id;
+    }
+
+    
     /**
      * Returns the highest ID of contained form items.
      * 
@@ -89,15 +130,6 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     public int highestItemId() {
         return highestItemId;
     }
-    
-    
-    @Override
-    public void setId(int id) {
-        super.setId(id);
-        if (id > highestItemId)
-            highestItemId = id;
-    }
-
 
 
     /**
@@ -140,13 +172,21 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     }
 
 
-    
+    /**
+     * Indicates whether this form defines the layout.
+     * 
+     * @return true if the form defines layout, else false
+     */
     public boolean isLayout() {
         return layout;
     }
 
 
-    
+    /**
+     * Sets whether this form defines the layout.
+     * 
+     * @param layout - true means the form defines layout
+     */
     public void setLayout(boolean layout) {
         this.layout = layout;
     }

@@ -70,18 +70,6 @@ public class FormField extends AbstractFormItem implements FormItem {
     /** The input value. */
     private Object value;
     
-    
-    
-    /*@Override
-    public boolean equals(Object other) {
-        if (this == other)
-            return true;
-        if (! (other instanceof FormField))
-            return false;
-        
-        FormField f = (FormField) other;
-        return name.equals(f.name) && type == f.type && datatype == f.datatype;
-    }*/
 
 
     /**
@@ -108,6 +96,7 @@ public class FormField extends AbstractFormItem implements FormItem {
         this.datatype = datatype;
     }
 
+    
 
     /**
      * Sets the datatype of the input value.
@@ -236,7 +225,9 @@ public class FormField extends AbstractFormItem implements FormItem {
      */
     public void setPossibleValues(Object[] values) {
         this.possibleValues = values;
-        if (values.length <= COMBOBOX_MAX_ITEMS)
+        if (values == null)
+            this.type = Type.TEXTBOX;
+        else if (values.length <= COMBOBOX_MAX_ITEMS)
             this.type = Type.COMBOBOX;
         else
             this.type = Type.CHOICE;
