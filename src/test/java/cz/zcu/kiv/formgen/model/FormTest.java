@@ -25,6 +25,7 @@
 
 package cz.zcu.kiv.formgen.model;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
 import com.gargoylesoftware.base.testing.EqualsTester;
 
@@ -44,6 +45,42 @@ public class FormTest {
         Form d = new Form("name") { /* trivial subclass */ };
         
         new EqualsTester(a, b, c, d);
+    }
+    
+    
+    @Test
+    public void testAddingItems() {
+        Form form = new Form("form");
+        
+        // empty
+        assertEquals(0, form.countItems());
+        assertEquals(0, form.highestItemId());
+        assertNull(form.getItemAt(0));
+        
+        // null item - nothing changes
+        form.addItem(null);
+        assertEquals(0, form.countItems());
+        assertEquals(0, form.highestItemId());
+        assertNull(form.getItemAt(0));
+        
+        final int subformId = 3;
+        FormItem item = new Form("subform");
+        item.setId(subformId);
+        form.addItem(item);
+        assertEquals(1, form.countItems());
+        assertEquals(subformId, form.highestItemId());
+        assertEquals(item, form.getItemAt(0));
+        
+        // add field
+        final int itemId = 5;
+        item = new FormField("field");
+        item.setId(itemId);
+        form.addItem(item);
+        assertEquals(2, form.countItems());
+        assertEquals(itemId, form.highestItemId());
+        assertEquals(item, form.getItemAt(1));
+        
+        assertNull(form.getItemAt(2));
     }
 
 }

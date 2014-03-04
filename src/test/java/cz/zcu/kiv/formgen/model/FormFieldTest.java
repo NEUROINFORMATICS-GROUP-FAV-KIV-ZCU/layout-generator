@@ -25,6 +25,7 @@
 
 package cz.zcu.kiv.formgen.model;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
 import com.gargoylesoftware.base.testing.EqualsTester;
 
@@ -44,6 +45,20 @@ public class FormFieldTest {
         FormField d = new FormField("name", Type.TEXTBOX, FieldDatatype.STRING) { /* trivial subclass */ };
         
         new EqualsTester(a, b, c, d);
+    }
+    
+    
+    
+    @Test
+    public void testSetPossibleValues() {
+        FormField field = new FormField("field", Type.TEXTBOX, FieldDatatype.INTEGER);
+        assertEquals(Type.TEXTBOX, field.getType());
+        field.setPossibleValues(new Object[] {1, 2, 3});
+        assertEquals(Type.COMBOBOX, field.getType());
+        field.setPossibleValues(new Object[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
+        assertEquals(Type.CHOICE, field.getType());
+        field.setPossibleValues(null);
+        assertEquals(Type.TEXTBOX, field.getType());
     }
     
 }

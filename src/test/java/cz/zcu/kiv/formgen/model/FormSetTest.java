@@ -36,7 +36,6 @@ import com.gargoylesoftware.base.testing.EqualsTester;
 public class FormSetTest {
     
     
-    
     @Test
     public void testEquals() {
         FormSet a = new FormSet("name", Type.FORM);
@@ -45,6 +44,14 @@ public class FormSetTest {
         FormSet d = new FormSet("name", Type.FORM) { /* trivial subclass */ };
         
         new EqualsTester(a, b, c, d);
+    }
+    
+    
+    @Test(expected = BadItemTypeException.class)
+    public void testAddBadItemType() {
+        FormSet set = new FormSet("set", Type.TEXTBOX);
+        FormField field = new FormField("field", Type.CHECKBOX, null);
+        set.addItem(field);
     }
 
 }
