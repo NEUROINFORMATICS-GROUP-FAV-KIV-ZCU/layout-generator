@@ -159,6 +159,8 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
      */
     public void setLayoutName(String name) {
         this.layoutName = name;
+        if (name != null)
+            this.layout = true;
     }
     
     

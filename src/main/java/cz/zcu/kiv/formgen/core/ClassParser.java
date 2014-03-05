@@ -92,6 +92,8 @@ public class ClassParser extends AbstractParser<Class<?>> {
         Form form = super.createMultiform(annotation);
         form.setId(0);
         form.setLayoutName(annotation.value() + "-generated");
+        if (!annotation.label().isEmpty())
+            form.setLabel(annotation.label());
         return form;
     }
     
@@ -120,6 +122,11 @@ public class ClassParser extends AbstractParser<Class<?>> {
                 id = set.getId() + 1;
             } else {
                 Form subform = _parse(f.getType(), f.getName(), id++);
+                cz.zcu.kiv.formgen.annotation.FormItem annotation = 
+                        f.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
+                if (!annotation.label().isEmpty())
+                    subform.setLabel(annotation.label());
+                subform.setRequired(annotation.required());
                 form.addItem(subform);
                 id = subform.highestItemId() + 1;
             }
