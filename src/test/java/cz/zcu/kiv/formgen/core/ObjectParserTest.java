@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * ClassParserTest.java, 1. 2. 2014 12:05:27 Jakub Krauz
+ * ObjectParserTest.java, 5. 3. 2014 16:51:41 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -36,16 +36,16 @@ import cz.zcu.kiv.formgen.model.Form;
  *
  * @author Jakub Krauz
  */
-public class ClassParserTest extends AbstractParserTest {
+public class ObjectParserTest extends AbstractParserTest {
     
-    /** The class parser object. */
-    private ClassParser parser = new ClassParser();
+    /** The object parser object. */
+    private ObjectParser parser = new ObjectParser();
     
     
     @Test
     public void testParse_success() {
-        Form form = parser.parse(TestClass.class);
-        assertEquals(createTestLayout(0, true), form);
+        Form form = parser.parse(new TestClass());
+        assertEquals(createTestFormData(), form);
     }
     
     
@@ -58,8 +58,8 @@ public class ClassParserTest extends AbstractParserTest {
     @Test
     public void testParse_addToForm() {
         Form form = new Form("superForm");
-        parser.parse(TestClass.class, form);
-        assertEquals(createTestLayout(1, false), form.getItemAt(0));
+        parser.parse(new TestClass(), form);
+        assertEquals(createTestFormData(), form.getItemAt(0));
     }
     
     
@@ -93,10 +93,6 @@ public class ClassParserTest extends AbstractParserTest {
         };
         
         Form expected = new Form("multi");
-        expected.setId(0);
-        expected.setLayoutName("multi-generated");
-        expected.setLabel("label");
-        
         assertEquals(expected, parser.createMultiform(annotation));
     }
     
@@ -105,6 +101,5 @@ public class ClassParserTest extends AbstractParserTest {
     public void testCreateMultiform_null() {
         parser.createMultiform(null);
     }
-    
 
 }
