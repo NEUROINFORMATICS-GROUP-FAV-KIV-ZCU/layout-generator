@@ -41,10 +41,12 @@
 
 
 	<dependencies>
+	
+	   <!-- ================= odml-java-lib ================== -->
 		<dependency>
 			<groupId>org.gnode</groupId>
 			<artifactId>odml-java-lib</artifactId>
-			<version>1.0.5</version>
+			<version>1.0.7</version>
 		</dependency>
 
 		<!-- =============== logging (slf4j + log4j) =============== -->
