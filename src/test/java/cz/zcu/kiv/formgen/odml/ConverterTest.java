@@ -42,21 +42,12 @@ public class ConverterTest {
     
     private Converter converter = new Converter();
     
-    private Form form;
-    
-    private Section section;
-    
-    
-    public ConverterTest() {
-        form = createTestForm();
-        section = createTestSection();
-    }
     
     
     @Test
     public void testModelToOdml() {
-        Section converted = converter.modelToOdml(form);
-        assertEquals(section, converted);
+        Section section = converter.modelToOdml(createTestForm());
+        assertEquals(createTestSection(), section);
     }
     
     
@@ -67,8 +58,9 @@ public class ConverterTest {
     
     
     @Test
-    public void testOdmlDataToModel() {
-        
+    public void testOdmlDataToModel() throws OdmlConvertException {
+        Form form = converter.odmlDataToModel(createTestDataSection());
+        assertEquals(createTestDataForm(), form);
     }
     
     
@@ -110,6 +102,38 @@ public class ConverterTest {
             subform.add(field2);
             section.add(subform);
             
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return section;
+    }
+    
+    
+    private Form createTestDataForm() {
+        Form form = new Form("form");
+        form.setLayout(false);
+        Form subform = new Form("subform");
+        FormField field = new FormField("textbox");
+        field.setValue("text");
+        subform.addItem(field);
+        form.addItem(subform);
+        field = new FormField("checkbox");
+        field.setValue(Boolean.TRUE);
+        form.addItem(field);
+        return form;
+    }
+    
+    
+    private Section createTestDataSection() {
+        Section section = null;
+        
+        try {
+            section = new Section("form", Type.FORM.toString());
+            section.addProperty("checkbox", Boolean.TRUE);
+            Section subform = new Section("subform", Type.FORM.toString());
+            subform.addProperty("textbox", "text");
+            section.add(subform);
         } catch (Exception e) {
             e.printStackTrace();
         }
