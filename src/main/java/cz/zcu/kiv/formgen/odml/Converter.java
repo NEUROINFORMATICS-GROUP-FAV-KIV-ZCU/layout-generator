@@ -96,10 +96,9 @@ public class Converter {
      * @throws OdmlConvertException 
      */
     public Form odmlDataToModel(Section section) throws OdmlConvertException {
-        Section formSection = section.getSection(0);  // root section wraps the form
-        isLayout = formSection.getProperty("layoutName") != null;
-        logger.debug("Converting form \"{}\" (isLayout = {})", formSection.getName(), isLayout);
-        FormItem form = convert(formSection);
+        isLayout = section.getProperty("layoutName") != null;
+        logger.debug("Converting form \"{}\" (isLayout = {})", section.getName(), isLayout);
+        FormItem form = convert(section);
         
         if (!(form instanceof Form))
             throw new OdmlConvertException("The root section must be of type \"form\"");

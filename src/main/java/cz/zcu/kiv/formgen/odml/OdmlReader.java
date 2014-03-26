@@ -48,15 +48,18 @@ public class OdmlReader implements Reader {
     @Override
     public Form read(InputStream stream) throws OdmlException {
         odml.core.Reader reader = new odml.core.Reader();
-        Section section = null;
+        Section root = null;
         try {
-            section = reader.load(stream);
+            root = reader.load(stream);
         } catch (Exception e) {
             logger.error("Unable to load the odML document!", e);
             throw new OdmlException("Unable to load the odML document.", e);
         }
         Converter converter = new Converter();
-        return converter.odmlDataToModel(section);
+        Section formSection;
+        if ((formSection = root.getSection(0)) == null)
+            throw new OdmlException("The odML document does not contain any form.");
+        return converter.odmlDataToModel(formSection);
     }
 
 }
