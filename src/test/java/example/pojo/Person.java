@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.Set;
 import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
-import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 
@@ -38,8 +37,7 @@ import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 @Form
 @FormDescription("Form used to add persons.")
 public class Person {
-    
-    @FormId
+
     private int id;
     
     @FormItem(label = "jmeno", required = true)
@@ -50,7 +48,8 @@ public class Person {
     private int age;
     
     @FormItem
-    private Set<Address> addresses = new HashSet<Address>();
+    //private Set<Address> addresses = new HashSet<Address>();
+    private Set<Address> addresses;
     
     @FormItem
     private boolean clever;
@@ -126,6 +125,8 @@ public class Person {
     
     
     public void addAddress(Address address) {
+        if (addresses == null)
+            addresses = new HashSet<Address>();
         this.addresses.add(address);
     }
     

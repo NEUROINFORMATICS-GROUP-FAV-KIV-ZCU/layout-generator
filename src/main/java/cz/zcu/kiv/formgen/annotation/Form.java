@@ -42,9 +42,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Form {
     
-    /** Name of the form. Default is the name of the class. */
-    String value() default "";
-
     /** Label of the form. */
     String label() default "";
     

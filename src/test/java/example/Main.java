@@ -61,7 +61,7 @@ public class Main {
             //gen.loadClass("example.pojo.Pokus");
             for (Form form : gen.getForms()) {
                 Writer writer = new OdmlWriter();
-                OutputStream stream = new FileOutputStream(form.getName() + ".odml");
+                OutputStream stream = new FileOutputStream("odml/" + form.getName() + ".odml");
                 writer.write(form, stream);
                 stream.close();
             }

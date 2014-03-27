@@ -31,7 +31,7 @@ import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 
 
-@Form("Adresa")
+@Form
 @FormDescription("formular pro zadavani adresy")
 public class Address {
     
