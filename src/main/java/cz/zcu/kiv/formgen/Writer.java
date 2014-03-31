@@ -26,6 +26,7 @@
 package cz.zcu.kiv.formgen;
 
 import java.io.OutputStream;
+import java.util.Collection;
 import cz.zcu.kiv.formgen.model.Form;
 
 
@@ -44,5 +45,8 @@ public interface Writer {
      * @param outputStream - the stream to which the model will be written
      */
     void write(Form form, OutputStream outputStream);
+    
+    
+    void write(Collection<Form> forms, OutputStream outputStream);
     
 }

@@ -40,6 +40,10 @@ import cz.zcu.kiv.formgen.model.FormSet;
 public class ObjectParser extends AbstractParser<Object> {
     
     
+    // TODO jen testovaci
+    private int counter = 0;
+    
+    
     /**
      * Parses the given POJO and creates a new {@link Form} model.
      * 
@@ -48,7 +52,7 @@ public class ObjectParser extends AbstractParser<Object> {
      */
     @Override
     public Form parse(Object obj) {
-        return _parse(obj, obj.getClass().getSimpleName());
+        return _parse(obj, obj.getClass().getSimpleName() + "_" + (++counter));
     }
     
     

@@ -26,6 +26,7 @@
 package cz.zcu.kiv.formgen.odml;
 
 import java.io.OutputStream;
+import java.util.Collection;
 import odml.core.Section;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.model.Form;
@@ -36,12 +37,20 @@ import cz.zcu.kiv.formgen.model.Form;
  * @author Jakub Krauz
  */
 public class OdmlWriter implements Writer {
+    
+    private Converter converter = new Converter();
 
     @Override
     public void write(Form form, OutputStream outputStream) {
-        Converter converter = new Converter();
         Section root = new Section();
         root.add(converter.modelToOdml(form));
+        odml.core.Writer writer = new odml.core.Writer(root);
+        writer.write(outputStream);
+    }
+
+    @Override
+    public void write(Collection<Form> forms, OutputStream outputStream) {
+        Section root = converter.modelToOdml(forms);
         odml.core.Writer writer = new odml.core.Writer(root);
         writer.write(outputStream);
     }

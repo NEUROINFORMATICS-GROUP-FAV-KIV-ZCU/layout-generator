@@ -25,6 +25,7 @@
 
 package cz.zcu.kiv.formgen.odml;
 
+import java.util.Collection;
 import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +86,14 @@ public class Converter {
             logger.error("Cannot create odML section.", e);
         }
         
+        return root;
+    }
+    
+    
+    public Section modelToOdml(Collection<Form> forms) {
+        Section root = new Section();
+        for (Form form : forms)
+            root.add(modelToOdml(form));
         return root;
     }
     
