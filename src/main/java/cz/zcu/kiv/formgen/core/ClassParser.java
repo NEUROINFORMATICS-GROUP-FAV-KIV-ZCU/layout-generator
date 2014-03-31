@@ -146,6 +146,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
      */
     protected Form createForm(String name, Class<?> cls) {
         Form form = new Form(name);
+        form.setDataReference(cls.getName());
         
         String label = cls.getSimpleName();
         if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
@@ -153,7 +154,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
             if (!annot.label().isEmpty())
                 label = annot.label();
         }
-        form.setLabel(label);
+        form.setLabel(label);        
         
         if (cls.isAnnotationPresent(FormDescription.class)) {
             FormDescription description = cls.getAnnotation(FormDescription.class);

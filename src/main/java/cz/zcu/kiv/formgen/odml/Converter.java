@@ -69,6 +69,8 @@ public class Converter {
             root = new Section(form.getName(), Type.FORM.toString());
             
             if (isLayout) {
+                if (form.getDataReference() != null)
+                    root.setReference(form.getDataReference());
                 if (form.getDescription() != null)
                     root.setDefinition(form.getDescription());
                 if (form.getLabel() != null)
@@ -199,6 +201,8 @@ public class Converter {
         Section section = new Section(form.getName(), Type.FORM.toString());
             
         if (isLayout) {
+            if (form.getDataReference() != null)
+                section.setReference(form.getDataReference());
             if (form.getDescription() != null)
                 section.setDefinition(form.getDescription());
             if (form.getId() > 0)

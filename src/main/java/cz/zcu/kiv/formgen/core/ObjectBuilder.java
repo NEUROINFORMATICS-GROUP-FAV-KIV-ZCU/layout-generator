@@ -75,6 +75,7 @@ public class ObjectBuilder<T> {
     
     
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void fill(Object obj, Form form) throws SecurityException, NoSuchFieldException, 
                         IllegalArgumentException, IllegalAccessException, InstantiationException, ObjectBuilderException {
         
@@ -173,6 +174,7 @@ public class ObjectBuilder<T> {
     
     
     
+    @SuppressWarnings("rawtypes")
     protected Collection<?> instantiateCollection(Class<? extends Collection> type) {
         if (type.equals(Set.class))
             return new HashSet();

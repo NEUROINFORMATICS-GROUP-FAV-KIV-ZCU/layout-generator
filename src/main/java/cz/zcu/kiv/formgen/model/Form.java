@@ -52,11 +52,13 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     /** The highest of IDs of contained items. */
     private int highestItemId = 0;
     
-    /** Defines the form layout? */
+    /** Does the form define layout? */
     private boolean layout;
     
     /** Name of the layout. */
     private String layoutName;
+    
+    private String dataReference;
     
     /** Contained items. */
     private Vector<FormItem> items = new Vector<FormItem>();
@@ -191,6 +193,22 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
      */
     public void setLayout(boolean layout) {
         this.layout = layout;
+    }
+    
+    
+    /**
+     * @return the dataReference
+     */
+    public String getDataReference() {
+        return dataReference;
+    }
+
+ 
+    /**
+     * @param dataReference the dataReference to set
+     */
+    public void setDataReference(String dataReference) {
+        this.dataReference = dataReference;
     }
 
 
