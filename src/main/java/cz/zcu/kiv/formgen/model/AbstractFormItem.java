@@ -25,6 +25,8 @@
 
 package cz.zcu.kiv.formgen.model;
 
+import cz.zcu.kiv.formgen.model.constraints.Cardinality;
+
 
 /**
  * Abstract implementation of {@link FormItem} interface.
@@ -47,6 +49,8 @@ public abstract class AbstractFormItem implements FormItem {
     
     /** Required flag of the form item. */
     protected boolean required;
+    
+    protected Cardinality cardinality;
     
     
     
@@ -150,6 +154,24 @@ public abstract class AbstractFormItem implements FormItem {
     @Override
     public boolean isRequired() {
         return required;
+    }
+    
+    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#setCardinality(cz.zcu.kiv.formgen.model.constraints.Cardinality)
+     */
+    @Override
+    public void setCardinality(Cardinality cardinality) {
+        this.cardinality = cardinality;
+    }
+    
+    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormItem#getCardinality()
+     */
+    @Override
+    public Cardinality getCardinality() {
+        return cardinality;
     }
 
 

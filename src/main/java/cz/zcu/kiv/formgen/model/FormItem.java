@@ -25,6 +25,8 @@
 
 package cz.zcu.kiv.formgen.model;
 
+import cz.zcu.kiv.formgen.model.constraints.Cardinality;
+
 
 /**
  * Interface for objects that can be added to a form as its items.
@@ -121,5 +123,11 @@ public interface FormItem {
      * @return the required-flag
      */
     boolean isRequired();
+    
+    
+    void setCardinality(Cardinality cardinality);
+    
+    
+    Cardinality getCardinality();
 
 }
