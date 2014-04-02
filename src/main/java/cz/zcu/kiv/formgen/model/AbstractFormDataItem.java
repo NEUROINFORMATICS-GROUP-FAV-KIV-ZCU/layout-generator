@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,40 +19,64 @@
  *
  ***********************************************************************************************************************
  *
- * Writer.java, 25. 11. 2013 18:53:13 Jakub Krauz
+ * AbstractFormDataItem.java, 2. 4. 2014 10:52:11 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
-
-import java.io.OutputStream;
-import java.util.Collection;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.model.FormData;
+package cz.zcu.kiv.formgen.model;
 
 
 /**
- * Enables serialization of the specified internal model to the output stream.
- * 
+ *
  * @author Jakub Krauz
  */
-public interface Writer {
+public abstract class AbstractFormDataItem implements FormDataItem {
+    
+    protected String type;
+    
+    protected String name;
     
     
-    /**
-     * Writes the serialization of the internal model to the output stream.
-     * 
-     * @param form - the internal model
-     * @param outputStream - the stream to which the model will be written
+    
+    protected AbstractFormDataItem(String type, String name) {
+        this.type = type;
+        this.name = name;
+    }
+    
+
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormDataItem#setType(java.lang.String)
      */
-    void write(Form form, OutputStream outputStream);
-    
-    
-    void write(Collection<Form> forms, OutputStream outputStream);
-    
-    
-    void writeData(FormData data, OutputStream out);
-    
-    void writeData(Collection<FormData> data, OutputStream out);
-    
+    @Override
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormDataItem#getType()
+     */
+    @Override
+    public String getType() {
+        return type;
+    }
+
+
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormDataItem#setName(java.lang.String)
+     */
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.FormDataItem#getName()
+     */
+    @Override
+    public String getName() {
+        return name;
+    }
+
 }

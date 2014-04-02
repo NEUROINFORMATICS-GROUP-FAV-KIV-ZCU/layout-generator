@@ -30,6 +30,7 @@ import java.util.Collection;
 import odml.core.Section;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
@@ -53,6 +54,24 @@ public class OdmlWriter implements Writer {
         Section root = converter.modelToOdml(forms);
         odml.core.Writer writer = new odml.core.Writer(root);
         writer.write(outputStream);
+    }
+
+    
+    
+    @Override
+    public void writeData(FormData data, OutputStream out) {
+        Section root = new Section();
+        root.add(converter.dataToOdml(data));
+        odml.core.Writer writer = new odml.core.Writer(root);
+        writer.write(out);
+    }
+
+    
+    @Override
+    public void writeData(Collection<FormData> data, OutputStream out) {
+        Section root = converter.dataToOdml(data);
+        odml.core.Writer writer = new odml.core.Writer(root);
+        writer.write(out);
     }
 
 }

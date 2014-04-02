@@ -43,6 +43,28 @@ public class ConverterTest {
     private Converter converter = new Converter();
     
     
+    public ConverterTest() {
+       /*try {
+            OdmlWriter odmlWriter = new OdmlWriter();
+            OutputStream os = new FileOutputStream("form.odml");
+            odmlWriter.write(form, os);
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            Section root = new Section();
+            root.add(section);
+            Writer writer = new Writer(root);
+            OutputStream os = new FileOutputStream("section.odml");
+            writer.write(os);
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } */
+    }
+    
     
     @Test
     public void testModelToOdml() {
@@ -53,7 +75,7 @@ public class ConverterTest {
     
     @Test(expected = NullPointerException.class)
     public void testModelToOdml_null() {
-        converter.modelToOdml(null);
+        converter.modelToOdml((Form) null);
     }
     
     

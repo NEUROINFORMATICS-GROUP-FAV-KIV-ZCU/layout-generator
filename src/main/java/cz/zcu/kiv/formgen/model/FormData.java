@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,40 +19,46 @@
  *
  ***********************************************************************************************************************
  *
- * Writer.java, 25. 11. 2013 18:53:13 Jakub Krauz
+ * FormData.java, 2. 4. 2014 10:48:14 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.model;
 
-import java.io.OutputStream;
-import java.util.Collection;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.model.FormData;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
- * Enables serialization of the specified internal model to the output stream.
- * 
+ *
  * @author Jakub Krauz
  */
-public interface Writer {
+public class FormData extends AbstractFormDataItem implements FormDataItem {
     
     
-    /**
-     * Writes the serialization of the internal model to the output stream.
-     * 
-     * @param form - the internal model
-     * @param outputStream - the stream to which the model will be written
-     */
-    void write(Form form, OutputStream outputStream);
+    private Set<FormDataItem> items = new HashSet<FormDataItem>();
     
     
-    void write(Collection<Form> forms, OutputStream outputStream);
+    public FormData(String type, String name) {
+        super(type, name);
+    }
+    
+
+    @Override
+    public boolean isSimpleType() {
+        return false;
+    }
     
     
-    void writeData(FormData data, OutputStream out);
+    public void addItem(FormDataItem item) {
+        if (item == null)
+            return;
+        items.add(item);
+    }
     
-    void writeData(Collection<FormData> data, OutputStream out);
     
+    public Set<FormDataItem> getItems() {
+        return items;
+    }
+
 }

@@ -25,9 +25,6 @@
 
 package cz.zcu.kiv.formgen.core;
 
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Vector;
 import cz.zcu.kiv.formgen.model.Form;
 
 
@@ -79,7 +76,7 @@ public abstract class AbstractParser<T> {
      * @param cls - the class
      * @return collection of annotated fields
      */
-    protected Collection<Field> formItemFields(Class<?> cls) {
+    /*protected Collection<Field> formItemFields(Class<?> cls) {
         Vector<Field> vector = new Vector<Field>();
         
         for (Field f : cls.getDeclaredFields()) {
@@ -88,6 +85,6 @@ public abstract class AbstractParser<T> {
         }
         
         return vector;
-    }
+    }*/
 
 }

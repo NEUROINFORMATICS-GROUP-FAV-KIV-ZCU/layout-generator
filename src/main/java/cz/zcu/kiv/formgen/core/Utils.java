@@ -25,8 +25,12 @@
 
 package cz.zcu.kiv.formgen.core;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +52,54 @@ public class Utils {
             logger.warn("The parameterized type does not have exactly one type parameter.");
             return null;
         }
+    }
+    
+    
+    /**
+     * Extracts the given annotation from the object.
+     * 
+     * @param object the object
+     * @param annotationClass class of the annotation to be extracted
+     * @return extracted annotation or null
+     */
+    public static <A extends Annotation> A annotation(Object object, Class<A> annotationClass) {
+        return object.getClass().getAnnotation(annotationClass);
+    }
+    
+    
+    /**
+     * Returns collection of fields annotated by the {@link cz.zcu.kiv.formgen.annotation.FormItem FormItem} annotation.
+     * 
+     * @param cls - the class
+     * @return collection of annotated fields
+     */
+    public static Collection<Field> formItemFields(Class<?> cls) {
+        Collection<Field> collection = new Vector<Field>();
+        
+        for (Field f : cls.getDeclaredFields()) {
+            if (f.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.FormItem.class))
+                collection.add(f);
+        }
+        
+        return collection;
+    }
+    
+    
+    public static Object fieldValue(Field field, Object obj) {
+        field.setAccessible(true);
+        Object value = null;
+        
+        try {
+            value = field.get(obj);
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return value;
     }
 
 }

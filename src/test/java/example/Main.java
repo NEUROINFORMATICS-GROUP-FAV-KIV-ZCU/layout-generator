@@ -29,15 +29,21 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import cz.zcu.kiv.formgen.FormDataGenerator;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.Reader;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.core.ObjectBuilder;
-import cz.zcu.kiv.formgen.core.SimpleFormDataGenerator;
+import cz.zcu.kiv.formgen.core.OldFormDataGenerator;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
+import cz.zcu.kiv.formgen.core.SimpleFormDataGenerator;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormData;
+import cz.zcu.kiv.formgen.model.FormDataItem;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormItemContainer;
@@ -88,18 +94,18 @@ public class Main {
         person.addAddress(new Address("Prague", "Brnenska", 415));
         person.setBirth(new Date());
         
-        FormDataGenerator generator = new SimpleFormDataGenerator();
+        FormDataGenerator generator = new OldFormDataGenerator();
         generator.load(person);
-        Form form = generator.getForm("Person");
+        Form form = generator.getForm("Person_1");
         
         Writer writer = new OdmlWriter();
-        OutputStream stream = new FileOutputStream("pokus.odml");
+        OutputStream stream = new FileOutputStream("odml/pokus.odml");
         writer.write(form, stream);
         stream.close();
         
         
         /* load back */
-        InputStream in = new FileInputStream("pokus.odml");
+        InputStream in = new FileInputStream("odml/pokus.odml");
         Reader reader = new OdmlReader();
         form = reader.read(in);
         
@@ -114,6 +120,36 @@ public class Main {
         System.out.println("******* Person built *********");
         System.out.println(tmp.toString());
         System.out.println("************************");
+        
+        
+        
+        /* collection of data */
+        
+        /*List<Object> list = new ArrayList<Object>(3);
+        list.add(new Address("Pilsen", "Zluticka", 26));
+        list.add(new Address("Pilsen", "Manesova", 78));
+        list.add(new Address("Pilsen", "Klatovska", 333));
+        generator = new SimpleFormDataGenerator();
+        generator.loadObjects(list);
+        Collection<Form> forms = generator.getForms();
+        System.out.println("pocet: " + forms.size());
+        stream = new FileOutputStream("odml/data.odml");
+        writer.write(forms, stream);
+        stream.close();*/
+        
+        List<Object> list = new ArrayList<Object>(3);
+        Person osoba = new Person(88, "Pepa", 18, new Date());
+        osoba.addAddress(new Address("Pilsen", "Zluticka", 26));
+        osoba.addAddress(new Address("Pilsen", "Manesova", 78));
+        osoba.addAddress(new Address("Pilsen", "Klatovska", 333));
+        list.add(osoba);
+        
+        SimpleFormDataGenerator gen = new SimpleFormDataGenerator();
+        gen.loadObjects(list);
+        Collection<FormData> forms = gen.getFormData();
+        stream = new FileOutputStream("odml/data.odml");
+        writer.writeData(forms, stream);
+        stream.close();
     }
     
 

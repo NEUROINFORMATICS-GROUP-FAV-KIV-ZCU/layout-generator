@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,40 +19,46 @@
  *
  ***********************************************************************************************************************
  *
- * Writer.java, 25. 11. 2013 18:53:13 Jakub Krauz
+ * FormDataField.java, 2. 4. 2014 10:48:41 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
-
-import java.io.OutputStream;
-import java.util.Collection;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.model.FormData;
+package cz.zcu.kiv.formgen.model;
 
 
 /**
- * Enables serialization of the specified internal model to the output stream.
- * 
+ *
  * @author Jakub Krauz
  */
-public interface Writer {
+public class FormDataField extends AbstractFormDataItem implements FormDataItem {
     
+    private Object value;
+    
+    
+    public FormDataField(String type, String name) {
+        super(type, name);
+    }
+
     
     /**
-     * Writes the serialization of the internal model to the output stream.
-     * 
-     * @param form - the internal model
-     * @param outputStream - the stream to which the model will be written
+     * @return the value
      */
-    void write(Form form, OutputStream outputStream);
+    public Object getValue() {
+        return value;
+    }
+
     
-    
-    void write(Collection<Form> forms, OutputStream outputStream);
-    
-    
-    void writeData(FormData data, OutputStream out);
-    
-    void writeData(Collection<FormData> data, OutputStream out);
-    
+    /**
+     * @param value the value to set
+     */
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+
+    @Override
+    public boolean isSimpleType() {
+        return true;
+    }
+
 }

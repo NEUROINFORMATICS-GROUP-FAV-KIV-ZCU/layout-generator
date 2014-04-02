@@ -32,6 +32,9 @@ import org.slf4j.LoggerFactory;
 import cz.zcu.kiv.formgen.core.TypeMapper;
 import cz.zcu.kiv.formgen.model.FieldDatatype;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormData;
+import cz.zcu.kiv.formgen.model.FormDataField;
+import cz.zcu.kiv.formgen.model.FormDataItem;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormItemContainer;
@@ -94,6 +97,29 @@ public class Converter {
         Section root = new Section();
         for (Form form : forms)
             root.add(modelToOdml(form));
+        return root;
+    }
+    
+    
+    public Section dataToOdml(FormData data) {
+        Section section = null;
+        
+        try {
+            section = new Section(data.getName(), data.getType());
+            addItems(section, data.getItems());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return section;
+    }
+    
+    
+    public Section dataToOdml(Collection<FormData> data) {
+        Section root = new Section();
+        for (FormData d : data)
+            root.add(dataToOdml(d));
         return root;
     }
     
@@ -337,7 +363,22 @@ public class Converter {
                 lastId = item.getId();
         }
         
-    } 
+    }
+    
+    
+    private void addItems(Section section, Collection<FormDataItem> items) throws Exception {
+        for (FormDataItem item : items) {
+            if (item instanceof FormDataField) {
+                FormDataField field = (FormDataField) item;
+                section.addProperty(field.getName(), field.getValue());
+            } else {
+                FormData form = (FormData) item;
+                Section subsection = new Section(form.getName(), form.getType());
+                addItems(subsection, form.getItems());
+                section.add(subsection);
+            }
+        }
+    }
     
 
 }

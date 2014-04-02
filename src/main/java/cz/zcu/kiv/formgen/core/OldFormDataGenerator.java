@@ -19,52 +19,54 @@
  *
  ***********************************************************************************************************************
  *
- * SimpleFormDataGenerator.java, 2. 4. 2014 11:53:34 Jakub Krauz
+ * SimpleFormDataGenerator.java, 27. 2. 2014 12:44:53 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.core;
 
+import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import cz.zcu.kiv.formgen.FormDataGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
-import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
+ * Generates form with data from the given object model.
  *
  * @author Jakub Krauz
  */
-public class SimpleFormDataGenerator {
+public class OldFormDataGenerator extends AbstractGenerator<Object> implements FormDataGenerator {
+
     
-    private DataParser parser = new DataParser();
-    
-    private Set<FormData> data = new HashSet<FormData>();
-    
-    
-    
-    public void load(Object... objects) throws FormNotFoundException {
-        for (Object obj : objects) {
-            if (Utils.annotation(obj, cz.zcu.kiv.formgen.annotation.Form.class) != null)
-                data.add(parser.parse(obj));
-            /*else if (annotation(obj, cz.zcu.kiv.formgen.annotation.MultiForm.class) != null)
-                load(obj, true);*/
-            else
-                throw new FormNotFoundException();
-        }
+    /**
+     * Constructs new generator using the given {@link ModelProvider} object.
+     * @param modelProvider object that provides a concrete model implementation
+     */
+    public OldFormDataGenerator() {
+        super(new ObjectParser());
     }
     
+
     
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.FormDataGenerator#loadObjects(java.util.Collection<java.lang.Object>)
+     */
+    @Override
     public void loadObjects(Collection<Object> collection) throws FormNotFoundException {
         for (Object object : collection)
             load(object);
     }
 
 
-    public Collection<FormData> getFormData() {
-        return data;
+
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.core.AbstractGenerator(Object, Class<A extends Annotation>)
+     */
+    @Override
+    protected <A extends Annotation> A annotation(Object object, Class<A> annotationClass) {
+        return object.getClass().getAnnotation(annotationClass);
     }
-   
+    
 
 }

@@ -110,7 +110,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
         Form form = createForm(formName, cls);
         form.setId(id++);
         
-        for (Field f : formItemFields(cls)) {
+        for (Field f : Utils.formItemFields(cls)) {
             if (mapper.isSimpleType(f.getType())) {
                 FormItem item = createFormField(f);
                 item.setId(id++);
