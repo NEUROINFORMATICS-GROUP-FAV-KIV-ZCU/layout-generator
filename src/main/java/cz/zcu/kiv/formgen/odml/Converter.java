@@ -219,6 +219,8 @@ public class Converter {
             if (form.getLabel() != null)
                 section.addProperty("label", form.getLabel());
             section.addProperty("required", form.isRequired());
+            if (form.getCardinality() != null)
+                section.addProperty("cardinality", form.getCardinality().getValue());
         }
         
         addItems(section, form.getItems());
@@ -242,6 +244,8 @@ public class Converter {
             section.addProperty("id", field.getId());
         if (field.getLabel() != null)
             section.addProperty("label", field.getLabel());
+        if (field.getCardinality() != null)
+            section.addProperty("cardinality", field.getCardinality().getValue());
         section.addProperty("required", field.isRequired());
         section.addProperty("datatype", field.getDatatype().toString());
         

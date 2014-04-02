@@ -36,7 +36,7 @@ import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormItemContainer;
-import cz.zcu.kiv.formgen.model.FormSet;
+import cz.zcu.kiv.formgen.model.constraints.Cardinality;
 
 
 /**
@@ -117,7 +117,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
                 form.addItem(item);
             }
             else if (Collection.class.isAssignableFrom(f.getType())) {
-                FormItemContainer set = createFormSet(f, id++);
+                FormItem set = createFormSet(f, id++);
                 form.addItem(set);
                 id = set.getId() + 1;
             } else {
@@ -146,8 +146,10 @@ public class ClassParser extends AbstractParser<Class<?>> {
      */
     protected Form createForm(String name, Class<?> cls) {
         Form form = new Form(name);
-        form.setDataReference(cls.getName());
+        form.setDataReference(cls.getSimpleName());
+        form.setCardinality(Cardinality.SINGLE_VALUE);
         
+        // determine label of the form
         String label = cls.getSimpleName();
         if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
             cz.zcu.kiv.formgen.annotation.Form annot = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class);
@@ -156,6 +158,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
         }
         form.setLabel(label);        
         
+        // description
         if (cls.isAnnotationPresent(FormDescription.class)) {
             FormDescription description = cls.getAnnotation(FormDescription.class);
             form.setDescription(description.value());
@@ -176,6 +179,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
     protected FormItem createFormField(Field field) {
         FormField formField = new FormField(field.getName(), mapper.mapType(field.getType()),
                 mapper.mapDatatype(field.getType()));
+        formField.setCardinality(Cardinality.SINGLE_VALUE);
         
         cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
         String label = formItemAnnot.label();
@@ -223,7 +227,7 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @param id the ID assigned to the new form set
      * @return the newly created set object, or null if the collection is not parameterized
      */
-    protected FormItemContainer createFormSet(Field field, int id) {
+    protected FormItem createFormSet(Field field, int id) {
         
         // check whether the collection type is parameterized
         if (!(field.getGenericType() instanceof ParameterizedType)) {
@@ -232,26 +236,24 @@ public class ClassParser extends AbstractParser<Class<?>> {
         }
             
         Class<?> clazz = Utils.genericParameter((ParameterizedType) field.getGenericType());
-        FormItemContainer formSet = new FormSet(field.getName(), mapper.mapType(clazz));
-        cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
-        String label = formItemAnnot.label();
-        formSet.setLabel(label.isEmpty() ? field.getName() : label);
-        formSet.setRequired(formItemAnnot.required());
-
+        FormItem item;
+ 
         // parse the content type
         if (mapper.isSimpleType(clazz)) {
-            FormField formField = new FormField(clazz.getSimpleName(), mapper.mapType(clazz),
+            item = new FormField(field.getName(), mapper.mapType(clazz),
                     mapper.mapDatatype(clazz));
-            formField.setId(id);
-            formSet.addItem(formField);
-            formSet.setId(id + 1);
+            item.setId(id);
         } else {
-            Form form = _parse(clazz, clazz.getSimpleName(), id);
-            formSet.addItem(form);
-            formSet.setId(form.highestItemId() + 1);
+            item = _parse(clazz, field.getName(), id);
         }
         
-        return formSet;
+        cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
+        String label = formItemAnnot.label();
+        item.setLabel(label.isEmpty() ? field.getName() : label);
+        item.setRequired(formItemAnnot.required());
+        item.setCardinality(Cardinality.UNRESTRICTED);
+        
+        return item;
     }
     
 
