@@ -67,9 +67,6 @@ public class FormField extends AbstractFormItem implements FormItem {
     /** Set of possible values. */
     private Object possibleValues[];
     
-    /** The input value. */
-    private Object value;
-    
 
 
     /**
@@ -243,26 +240,6 @@ public class FormField extends AbstractFormItem implements FormItem {
         return possibleValues;
     }
 
-
-    /**
-     * Gets the input value.
-     * 
-     * @return the input value (null if not set)
-     */
-    public Object getValue() {
-        return value;
-    }
-
-
-    /**
-     * Sets the input value.
-     * 
-     * @param value - the input value
-     */
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
     
     
 
@@ -277,7 +254,6 @@ public class FormField extends AbstractFormItem implements FormItem {
         result = prime * result + minLength;
         result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
         result = prime * result + Arrays.hashCode(possibleValues);
-        result = prime * result + ((value == null) ? 0 : value.hashCode());
         return result;
     }
 
@@ -302,9 +278,6 @@ public class FormField extends AbstractFormItem implements FormItem {
             if (other.minValue != null) { return false; }
         } else if (!minValue.equals(other.minValue)) { return false; }
         if (!Arrays.equals(possibleValues, other.possibleValues)) { return false; }
-        if (value == null) {
-            if (other.value != null) { return false; }
-        } else if (!value.equals(other.value)) { return false; }
         return true;
     }
 

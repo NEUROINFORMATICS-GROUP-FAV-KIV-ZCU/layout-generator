@@ -35,6 +35,8 @@ import java.util.Set;
  */
 public class FormData extends AbstractFormDataItem implements FormDataItem {
     
+    public static final String SET = "set";
+    
     
     private Set<FormDataItem> items = new HashSet<FormDataItem>();
     

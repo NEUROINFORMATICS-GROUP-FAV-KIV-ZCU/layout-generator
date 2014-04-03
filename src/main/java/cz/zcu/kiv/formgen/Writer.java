@@ -45,14 +45,14 @@ public interface Writer {
      * @param form - the internal model
      * @param outputStream - the stream to which the model will be written
      */
-    void write(Form form, OutputStream outputStream);
+    void writeLayout(Form form, OutputStream outputStream) throws LayoutGeneratorException;
     
     
-    void write(Collection<Form> forms, OutputStream outputStream);
+    void writeLayout(Collection<Form> forms, OutputStream outputStream) throws LayoutGeneratorException;
     
     
-    void writeData(FormData data, OutputStream out);
+    void writeData(FormData data, OutputStream out) throws LayoutGeneratorException;
     
-    void writeData(Collection<FormData> data, OutputStream out);
+    void writeData(Collection<FormData> data, OutputStream out) throws LayoutGeneratorException;
     
 }

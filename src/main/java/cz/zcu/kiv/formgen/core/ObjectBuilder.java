@@ -34,11 +34,9 @@ import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.model.FormField;
-import cz.zcu.kiv.formgen.model.FormItem;
-import cz.zcu.kiv.formgen.model.FormSet;
-import cz.zcu.kiv.formgen.model.Type;
+import cz.zcu.kiv.formgen.model.FormData;
+import cz.zcu.kiv.formgen.model.FormDataField;
+import cz.zcu.kiv.formgen.model.FormDataItem;
 
 
 /**
@@ -59,12 +57,12 @@ public class ObjectBuilder<T> {
     }
     
     
-    public T build(Form form) throws ObjectBuilderException {
+    public T build(FormData formData) throws ObjectBuilderException {
         T obj = null;
         
         try {
             obj = type.newInstance();
-            fill(obj, form);
+            fill(obj, formData);
         } catch (Exception e) {
             logger.error("Can not create instance of " + type.getCanonicalName(), e);
             throw new ObjectBuilderException("Can not create instance of " + type.getCanonicalName(), e);
@@ -76,16 +74,16 @@ public class ObjectBuilder<T> {
     
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected void fill(Object obj, Form form) throws SecurityException, NoSuchFieldException, 
+    protected void fill(Object obj, FormData formData) throws SecurityException, NoSuchFieldException, 
                         IllegalArgumentException, IllegalAccessException, InstantiationException, ObjectBuilderException {
         
-        for (FormItem item : form.getItems()) {
+        for (FormDataItem item : formData.getItems()) {
             
             Field field = obj.getClass().getDeclaredField(item.getName());
             field.setAccessible(true);
             
-            if (item instanceof FormField) {
-                Object value = ((FormField) item).getValue();
+            if (item instanceof FormDataField) {
+                Object value = ((FormDataField) item).getValue();
                 
                 // convert to appropriate number type
                 if (TypeMapper.isNumberType(field.getType()))
@@ -93,42 +91,46 @@ public class ObjectBuilder<T> {
                 
                 field.set(obj, value);
                 
-            } else if (item instanceof Form) {
+            } else if (item instanceof FormData) {
                 
-                Object o = field.getType().newInstance();
-                fill(o, (Form) item);
-                field.set(obj, o);
+                FormData data = (FormData) item;
                 
-            } else if (item instanceof FormSet) {
-                
-                if (!(field.getGenericType() instanceof ParameterizedType))
-                    throw new ObjectBuilderException("Cannot create a non-parameterized collection.");
-                Class<?> innerType = Utils.genericParameter((ParameterizedType) field.getGenericType());
-                if (innerType == null)
-                    throw new ObjectBuilderException("Cannot create collection.");
-                Collection collection = (Collection) field.get(obj);
-                if (collection == null) {
-                    collection = instantiateCollection((Class<? extends Collection>) field.getType());
-                    field.set(obj, collection);
-                }
-                
-                if (((FormSet) item).getInnerType() == Type.FORM) {
-                    for (FormItem inner : ((FormSet) item).getItems()) {
-                        Object o = innerType.newInstance();
-                        fill(o, (Form) inner);
-                        collection.add(o);
+                if (FormData.SET.equals(data.getType())) {
+                    if (!(field.getGenericType() instanceof ParameterizedType))
+                        throw new ObjectBuilderException("Cannot create a non-parameterized collection.");
+                    Class<?> innerType = Utils.genericParameter((ParameterizedType) field.getGenericType());
+                    if (innerType == null)
+                        throw new ObjectBuilderException("Cannot create collection.");
+                    Collection collection = (Collection) field.get(obj);
+                    if (collection == null) {
+                        collection = instantiateCollection((Class<? extends Collection>) field.getType());
+                        field.set(obj, collection);
+                    }
+                    
+                    if (data.getItems().iterator().next() instanceof FormData) {
+                        for (FormDataItem inner : data.getItems()) {
+                            Object o = innerType.newInstance();
+                            fill(o, (FormData) inner);
+                            collection.add(o);
+                        }
+                    } else {
+                        for (FormDataItem inner : data.getItems()) {
+                            Object value = ((FormDataField) inner).getValue();
+                            
+                            // convert to appropriate number type
+                            if (TypeMapper.isNumberType(innerType))
+                                value = toNumber(value, innerType);
+                            collection.add(value);
+                        }
                     }
                 } else {
-                    for (FormItem inner : ((FormSet) item).getItems()) {
-                        Object value = ((FormField) inner).getValue();
-                        // convert to appropriate number type
-                        if (TypeMapper.isNumberType(innerType))
-                            value = toNumber(value, innerType);
-                        collection.add(value);
-                    }
+                    Object o = field.getType().newInstance();
+                    fill(o, (FormData) item);
+                    field.set(obj, o);
                 }
                 
-            }  // end if
+                
+            }
             
         }  // end for
 

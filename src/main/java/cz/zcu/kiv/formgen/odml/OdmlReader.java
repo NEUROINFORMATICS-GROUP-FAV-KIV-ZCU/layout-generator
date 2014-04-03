@@ -26,11 +26,14 @@
 package cz.zcu.kiv.formgen.odml;
 
 import java.io.InputStream;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import odml.core.Section;
+import cz.zcu.kiv.formgen.LayoutGeneratorException;
 import cz.zcu.kiv.formgen.Reader;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
@@ -46,20 +49,40 @@ public class OdmlReader implements Reader {
      * @see cz.zcu.kiv.formgen.Reader#read(java.io.InputStream)
      */
     @Override
-    public Form read(InputStream stream) throws OdmlException {
+    public Form readLayout(InputStream stream) throws OdmlException {
         odml.core.Reader reader = new odml.core.Reader();
         Section root = null;
+        
         try {
             root = reader.load(stream);
         } catch (Exception e) {
             logger.error("Unable to load the odML document!", e);
             throw new OdmlException("Unable to load the odML document.", e);
         }
+        
         Converter converter = new Converter();
-        Section formSection;
-        if ((formSection = root.getSection(0)) == null)
+        Section formSection = root.getSection(0);
+        if (formSection == null)
             throw new OdmlException("The odML document does not contain any form.");
-        return converter.odmlDataToModel(formSection);
+        
+        return converter.odmlToLayoutModel(formSection);
+    }
+
+
+    @Override
+    public Set<FormData> readData(InputStream stream) throws LayoutGeneratorException {
+        odml.core.Reader reader = new odml.core.Reader();
+        Section root = null;
+        
+        try {
+            root = reader.load(stream);
+        } catch (Exception e) {
+            logger.error("Unable to load the odML document!", e);
+            throw new OdmlException("Unable to load the odML document.", e);
+        }
+        
+        Converter converter = new Converter();
+        return converter.odmlToDataModel(root);
     }
 
 }

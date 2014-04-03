@@ -33,12 +33,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import cz.zcu.kiv.formgen.FormDataGenerator;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.Reader;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.core.ObjectBuilder;
-import cz.zcu.kiv.formgen.core.OldFormDataGenerator;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.core.SimpleFormDataGenerator;
 import cz.zcu.kiv.formgen.model.Form;
@@ -68,7 +68,7 @@ public class Main {
             for (Form form : gen.getForms()) {
                 Writer writer = new OdmlWriter();
                 OutputStream stream = new FileOutputStream("odml/" + form.getName() + ".odml");
-                writer.write(form, stream);
+                writer.writeLayout(form, stream);
                 stream.close();
             }
         } catch (Exception e) {
@@ -94,20 +94,20 @@ public class Main {
         person.addAddress(new Address("Prague", "Brnenska", 415));
         person.setBirth(new Date());
         
-        FormDataGenerator generator = new OldFormDataGenerator();
+        SimpleFormDataGenerator generator = new SimpleFormDataGenerator();
         generator.load(person);
-        Form form = generator.getForm("Person_1");
+        Collection<FormData> formData = generator.getFormData();
         
         Writer writer = new OdmlWriter();
         OutputStream stream = new FileOutputStream("odml/pokus.odml");
-        writer.write(form, stream);
+        writer.writeData(formData, stream);
         stream.close();
         
         
         /* load back */
         InputStream in = new FileInputStream("odml/pokus.odml");
         Reader reader = new OdmlReader();
-        form = reader.read(in);
+        Set<FormData> data = reader.readData(in);
         
         System.out.println("******* Person *********");
         System.out.println(person.toString());
@@ -115,7 +115,7 @@ public class Main {
         
         /* build data object */
         ObjectBuilder<Person> builder = new ObjectBuilder<Person>(Person.class);
-        Person tmp = builder.build(form);
+        Person tmp = builder.build(data.iterator().next());
         
         System.out.println("******* Person built *********");
         System.out.println(tmp.toString());

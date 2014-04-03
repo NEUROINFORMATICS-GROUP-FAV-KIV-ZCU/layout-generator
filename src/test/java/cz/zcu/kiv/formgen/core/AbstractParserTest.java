@@ -57,7 +57,7 @@ public class AbstractParserTest {
         form.setId(id++);
         form.setLabel("Label of TestClass");
         if (root) {
-            form.setLayout(true);
+            //form.setLayout(true);
             form.setLayoutName(form.getName() + "-generated");
         }
         FormField field = new FormField("id", Type.TEXTBOX, FieldDatatype.INTEGER);
@@ -82,12 +82,12 @@ public class AbstractParserTest {
         Form form = new Form("TestClass");
         
         FormField field = new FormField("id", Type.TEXTBOX, FieldDatatype.INTEGER);
-        field.setValue((Integer) 2);
+        //field.setValue((Integer) 2);
         form.addItem(field);
         
         Form subform = new Form("foo");
         field = new FormField("fooItem", Type.TEXTBOX, FieldDatatype.INTEGER);
-        field.setValue(new Byte((byte) 3));
+        //field.setValue(new Byte((byte) 3));
         subform.addItem(field);
         form.addItem(subform);
         

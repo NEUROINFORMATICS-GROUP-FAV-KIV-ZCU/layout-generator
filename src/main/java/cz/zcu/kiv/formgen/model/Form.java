@@ -52,9 +52,6 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     /** The highest of IDs of contained items. */
     private int highestItemId = 0;
     
-    /** Does the form define layout? */
-    private boolean layout;
-    
     /** Name of the layout. */
     private String layoutName;
     
@@ -161,8 +158,6 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
      */
     public void setLayoutName(String name) {
         this.layoutName = name;
-        if (name != null)
-            this.layout = true;
     }
     
     
@@ -173,26 +168,6 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
      */
     public String getLayoutName() {
         return layoutName;
-    }
-
-
-    /**
-     * Indicates whether this form defines the layout.
-     * 
-     * @return true if the form defines layout, else false
-     */
-    public boolean isLayout() {
-        return layout;
-    }
-
-
-    /**
-     * Sets whether this form defines the layout.
-     * 
-     * @param layout - true means the form defines layout
-     */
-    public void setLayout(boolean layout) {
-        this.layout = layout;
     }
     
     
@@ -220,7 +195,6 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + highestItemId;
         result = prime * result + ((items == null) ? 0 : items.hashCode());
-        result = prime * result + (layout ? 1231 : 1237);
         result = prime * result + ((layoutName == null) ? 0 : layoutName.hashCode());
         return result;
     }
@@ -239,7 +213,6 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
         if (items == null) {
             if (other.items != null) { return false; }
         } else if (!items.equals(other.items)) { return false; }
-        if (layout != other.layout) { return false; }
         if (layoutName == null) {
             if (other.layoutName != null) { return false; }
         } else if (!layoutName.equals(other.layoutName)) { return false; }

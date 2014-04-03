@@ -26,10 +26,12 @@
 package cz.zcu.kiv.formgen.odml;
 
 import static org.junit.Assert.*;
+import java.util.Set;
 import odml.core.Section;
 import org.junit.Test;
 import cz.zcu.kiv.formgen.model.FieldDatatype;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormData;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.Type;
 
@@ -67,35 +69,35 @@ public class ConverterTest {
     
     
     @Test
-    public void testModelToOdml() {
-        Section section = converter.modelToOdml(createTestForm());
+    public void testModelToOdml() throws OdmlConvertException {
+        Section section = converter.layoutToOdml(createTestForm());
         assertEquals(createTestSection(), section);
     }
     
     
     @Test(expected = NullPointerException.class)
-    public void testModelToOdml_null() {
-        converter.modelToOdml((Form) null);
+    public void testModelToOdml_null() throws OdmlConvertException {
+        converter.layoutToOdml((Form) null);
     }
     
     
     @Test
     public void testOdmlDataToModel() throws OdmlConvertException {
-        Form form = converter.odmlDataToModel(createTestDataSection());
-        assertEquals(createTestDataForm(), form);
+        Set<FormData> data = converter.odmlToDataModel(createTestDataSection());
+        assertEquals(createTestDataForm(), data.toArray()[0]);
     }
     
     
     @Test(expected = NullPointerException.class)
     public void testOdmlDataToModel_null() throws OdmlConvertException {
-        converter.odmlDataToModel(null);
+        converter.odmlToDataModel(null);
     }
     
     
     
     private Form createTestForm() {
         Form form = new Form("form");
-        form.setLayout(true);
+        //form.setLayout(true);
         form.addItem(new FormField("field", Type.CHECKBOX, FieldDatatype.STRING));
         Form subform = new Form("subform");
         subform.addItem(new FormField("field2", Type.TEXTBOX, FieldDatatype.EMAIL));
@@ -134,14 +136,14 @@ public class ConverterTest {
     
     private Form createTestDataForm() {
         Form form = new Form("form");
-        form.setLayout(false);
+        //form.setLayout(false);
         Form subform = new Form("subform");
         FormField field = new FormField("textbox");
-        field.setValue("text");
+        //field.setValue("text");
         subform.addItem(field);
         form.addItem(subform);
         field = new FormField("checkbox");
-        field.setValue(Boolean.TRUE);
+        //field.setValue(Boolean.TRUE);
         form.addItem(field);
         return form;
     }

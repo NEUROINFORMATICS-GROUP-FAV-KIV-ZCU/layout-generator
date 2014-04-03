@@ -26,10 +26,14 @@
 package cz.zcu.kiv.formgen.core;
 
 import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import org.reflections.Reflections;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
+import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
@@ -37,16 +41,32 @@ import cz.zcu.kiv.formgen.FormNotFoundException;
  *
  * @author Jakub Krauz
  */
-public class SimpleLayoutGenerator extends AbstractGenerator<Class<?>> implements LayoutGenerator {
-
+public class SimpleLayoutGenerator implements LayoutGenerator {
     
-    /**
-     * Constructs new generator using the given {@link ModelProvider} object.
-     * @param modelProvider object that provides a concrete model implementation
+    /** The parser object. */
+    private ClassParser parser = new ClassParser();
+    
+    /** Map of created forms by their name. */
+    protected Map<String, Form> forms = new HashMap<String, Form>();
+
+   
+    
+    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.Generator#load(T...)
      */
-    public SimpleLayoutGenerator() {
-        super(new ClassParser());
+    @Override
+    public void load(Class<?>... classes) throws FormNotFoundException {
+        for (Class<?> cls : classes) {
+            if (annotation(cls, cz.zcu.kiv.formgen.annotation.Form.class) != null)
+                load(cls, false);
+            else if (annotation(cls, cz.zcu.kiv.formgen.annotation.MultiForm.class) != null)
+                load(cls, true);
+            else
+                throw new FormNotFoundException();
+        }
     }
+    
     
     
     @Override
@@ -87,11 +107,57 @@ public class SimpleLayoutGenerator extends AbstractGenerator<Class<?>> implement
         // "ReflectionsException: could not use param package ..."
         loadPackage(pack.getName());
     }
-
-
+    
+    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.Generator#getForm(java.lang.String)
+     */
     @Override
-    protected <A extends Annotation> A annotation(Class<?> cls, Class<A> annotationClass) {
+    public Form getForm(String name) {
+        return forms.get(name);
+    }
+
+
+    
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.Generator#getForms()
+     */
+    @Override
+    public Collection<Form> getForms() {
+        return forms.values();
+    }
+
+
+    private <A extends Annotation> A annotation(Class<?> cls, Class<A> annotationClass) {
         return cls.getAnnotation(annotationClass);
+    }
+    
+    
+    /**
+     * Loads the given class cls to the model. If the multiForm parameter is false, cls MUST
+     * be annotated with the {@link cz.zcu.kiv.formgen.annotation.Form Form} annotation.
+     * Otherwise (if multiForm is true), cls MUST be annotated with the
+     * {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation.
+     * 
+     * @param cls the class to be loaded
+     * @param multiForm if true, the class is a part of a multi-form
+     */
+    protected void load(Class<?> cls, boolean multiForm) {
+        if (multiForm) {
+            cz.zcu.kiv.formgen.annotation.MultiForm annotation = 
+                    annotation(cls, cz.zcu.kiv.formgen.annotation.MultiForm.class);
+            String name = annotation.value();
+            if (forms.containsKey(name))
+                parser.parse(cls, forms.get(name));
+            else {
+                Form form = parser.createMultiform(annotation);
+                parser.parse(cls, form);
+                forms.put(name, form);
+            }
+        } else {
+            Form form = parser.parse(cls);
+            forms.put(form.getName(), form);
+        }
     }
     
 

@@ -26,7 +26,9 @@
 package cz.zcu.kiv.formgen;
 
 import java.io.InputStream;
+import java.util.Set;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
@@ -45,6 +47,9 @@ public interface Reader {
      * @return internal model
      * @throws LayoutGeneratorException if an error occured while reading the serialization
      */
-    Form read(InputStream stream) throws LayoutGeneratorException;
+    Form readLayout(InputStream stream) throws LayoutGeneratorException;
+    
+    
+    Set<FormData> readData(InputStream stream) throws LayoutGeneratorException;
 
 }

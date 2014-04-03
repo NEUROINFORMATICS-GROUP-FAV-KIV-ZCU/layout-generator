@@ -41,37 +41,56 @@ public class OdmlWriter implements Writer {
     
     private Converter converter = new Converter();
 
+    
     @Override
-    public void write(Form form, OutputStream outputStream) {
+    public void writeLayout(Form form, OutputStream outputStream) throws OdmlException {
         Section root = new Section();
-        root.add(converter.modelToOdml(form));
-        odml.core.Writer writer = new odml.core.Writer(root);
-        writer.write(outputStream);
-    }
-
-    @Override
-    public void write(Collection<Form> forms, OutputStream outputStream) {
-        Section root = converter.modelToOdml(forms);
-        odml.core.Writer writer = new odml.core.Writer(root);
-        writer.write(outputStream);
+        
+        try {
+            root.add(converter.layoutToOdml(form));
+            odml.core.Writer writer = new odml.core.Writer(root);
+            writer.write(outputStream);
+        } catch (OdmlConvertException e) {
+            throw new OdmlException("Could not convert the internal model to odML.", e);
+        }
     }
 
     
+    @Override
+    public void writeLayout(Collection<Form> forms, OutputStream outputStream) throws OdmlException {
+        try {
+            Section root = converter.layoutToOdml(forms);
+            odml.core.Writer writer = new odml.core.Writer(root);
+            writer.write(outputStream);
+        } catch (OdmlConvertException e) {
+            throw new OdmlException("Could not convert the internal model to odML.", e);
+        }
+    }
+
     
     @Override
-    public void writeData(FormData data, OutputStream out) {
+    public void writeData(FormData data, OutputStream out) throws OdmlException {
         Section root = new Section();
-        root.add(converter.dataToOdml(data));
-        odml.core.Writer writer = new odml.core.Writer(root);
-        writer.write(out);
+        
+        try {
+            root.add(converter.dataToOdml(data));
+            odml.core.Writer writer = new odml.core.Writer(root);
+            writer.write(out);
+        } catch (OdmlConvertException e) {
+            throw new OdmlException("Could not convert the internal model to odML.", e);
+        }
     }
 
     
     @Override
-    public void writeData(Collection<FormData> data, OutputStream out) {
-        Section root = converter.dataToOdml(data);
-        odml.core.Writer writer = new odml.core.Writer(root);
-        writer.write(out);
+    public void writeData(Collection<FormData> data, OutputStream out) throws OdmlException {
+        try {
+            Section root = converter.dataToOdml(data);
+            odml.core.Writer writer = new odml.core.Writer(root);
+            writer.write(out);
+        } catch (OdmlConvertException e) {
+            throw new OdmlException("Could not convert the internal model to odML.", e);
+        }
     }
 
 }

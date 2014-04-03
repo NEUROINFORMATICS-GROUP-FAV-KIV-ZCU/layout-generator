@@ -44,10 +44,13 @@ import cz.zcu.kiv.formgen.model.constraints.Cardinality;
  *
  * @author Jakub Krauz
  */
-public class ClassParser extends AbstractParser<Class<?>> {
+public class ClassParser {
     
     /** Logger. */
     final Logger logger = LoggerFactory.getLogger(ClassParser.class);
+    
+    /** Type mapper object. */
+    private final TypeMapper mapper = new TypeMapper();
     
 
     
@@ -57,10 +60,8 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @param cls the Java class to be parsed
      * @return the newly created {@link Form} object
      */
-    @Override
     public Form parse(Class<?> cls) {
         Form form = _parse(cls, cls.getSimpleName(), 0);
-        form.setLayout(true);
         form.setLayoutName(form.getName() + "-generated");
         return form;
     }
@@ -74,7 +75,6 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @param cls the Java class to be parsed
      * @param form the model in which the parsed class is to be added
      */
-    @Override
     public void parse(Class<?> cls, Form form) {
         form.addItem(_parse(cls, cls.getSimpleName(), form.highestItemId() + 1));
     }
@@ -87,9 +87,8 @@ public class ClassParser extends AbstractParser<Class<?>> {
      * @param annotation the {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation
      * @return new form defined by the annotation
      */
-    @Override
     public Form createMultiform(cz.zcu.kiv.formgen.annotation.MultiForm annotation) {
-        Form form = super.createMultiform(annotation);
+        Form form = new Form(annotation.value());
         form.setId(0);
         form.setLayoutName(annotation.value() + "-generated");
         if (!annotation.label().isEmpty())

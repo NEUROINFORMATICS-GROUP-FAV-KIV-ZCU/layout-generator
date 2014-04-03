@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cz.zcu.kiv</groupId>
 	<artifactId>layout-generator</artifactId>
-	<version>0.0.8</version>
+	<version>0.0.9</version>
 	<name>Layout Generator</name>
 	<description>Tool for automatic generation of graphical layout from object-oriented data model.</description>
 
