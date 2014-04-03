@@ -37,6 +37,10 @@ import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormItemContainer;
 import cz.zcu.kiv.formgen.model.constraints.Cardinality;
+import cz.zcu.kiv.formgen.model.constraints.DefaultValue;
+import cz.zcu.kiv.formgen.model.constraints.Length;
+import cz.zcu.kiv.formgen.model.constraints.NumericalValue;
+import cz.zcu.kiv.formgen.model.constraints.PossibleValues;
 
 
 /**
@@ -188,25 +192,25 @@ public class ClassParser {
         if (field.isAnnotationPresent(FormItemRestriction.class)) {
             FormItemRestriction restriction = field.getAnnotation(FormItemRestriction.class);
             if (restriction.minLength() != -1)
-                formField.setMinLength(restriction.minLength());
+                formField.addConstraint(Length.MIN(restriction.minLength()));
             if (restriction.maxLength() != -1)
-                formField.setMaxLength(restriction.maxLength());
+                formField.addConstraint(Length.MAX(restriction.maxLength()));;
             if (!Double.isNaN(restriction.minValue())) {
                 if (TypeMapper.isIntegerType(field.getType()))
-                    formField.setMinValue((int) restriction.minValue());
+                    formField.addConstraint(NumericalValue.MIN((int) restriction.minValue()));
                 else
-                    formField.setMinValue(restriction.minValue());
+                    formField.addConstraint(NumericalValue.MIN(restriction.minValue()));
             }
             if (!Double.isNaN(restriction.maxValue())) {
                 if (TypeMapper.isIntegerType(field.getType()))
-                    formField.setMaxValue((int) restriction.maxValue());
+                    formField.addConstraint(NumericalValue.MAX((int) restriction.maxValue()));
                 else
-                    formField.setMaxValue(restriction.maxValue());
+                    formField.addConstraint(NumericalValue.MAX(restriction.maxValue()));
             }
             if (!restriction.defaultValue().isEmpty())
-                formField.setDefaultValue(restriction.defaultValue());
+                formField.addConstraint(new DefaultValue(restriction.defaultValue()));
             if (restriction.values().length > 1)
-                formField.setPossibleValues(restriction.values());
+                formField.addConstraint(new PossibleValues(restriction.values()));
         }
         
         return formField;

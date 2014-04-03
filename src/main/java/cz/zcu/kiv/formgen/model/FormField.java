@@ -25,7 +25,10 @@
 
 package cz.zcu.kiv.formgen.model;
 
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import cz.zcu.kiv.formgen.model.constraints.Constraint;
+import cz.zcu.kiv.formgen.model.constraints.PossibleValues;
 
 
 /**
@@ -49,23 +52,8 @@ public class FormField extends AbstractFormItem implements FormItem {
     /** Datatype of the input value. */
     private FieldDatatype datatype;
     
-    /** Minimal length of the input value. */
-    private int minLength = -1;
     
-    /** Maximal length of the input value. */
-    private int maxLength = -1;
-    
-    /** Minimal value (numeric datatypes only). */
-    private Number minValue;
-    
-    /** Maximal value (numeric datatypes only). */
-    private Number maxValue;
-    
-    /** Default input value. */
-    private Object defaultValue;
-    
-    /** Set of possible values. */
-    private Object possibleValues[];
+    private Set<Constraint> constraints = new HashSet<Constraint>();
     
 
 
@@ -113,171 +101,55 @@ public class FormField extends AbstractFormItem implements FormItem {
     public FieldDatatype getDatatype() {
         return datatype;
     }
-
-
-    /**
-     * Sets the minimum length of this form item.
-     * 
-     * @param value the minimum length
-     */
-    public void setMinLength(int value) {
-        this.minLength = value;
-    }
-
-
-    /**
-     * Gets the minimum length of this form item.
-     * 
-     * @return the minimum length
-     */
-    public int getMinLength() {
-        return minLength;
-    }
-
-
-    /**
-     * Sets the maximum length of this form item.
-     * 
-     * @param value the maximum length
-     */
-    public void setMaxLength(int value) {
-        this.maxLength = value;
-    }
-
-
-    /**
-     * Gets the maximum length of this form item.
-     * 
-     * @return the maximum length
-     */
-    public int getMaxLength() {
-        return maxLength;
-    }
-
-
-    /**
-     * Sets the minimum value permitted for this item (number fields only).
-     * 
-     * @param value the minimum value
-     */
-    public void setMinValue(Number value) {
-        this.minValue = value;
-    }
-
     
-    /**
-     * Gets the minimum value of the number field.
-     * 
-     * @return the minimum value
-     */
-    public Number getMinValue() {
-        return minValue;
-    }
-
-
-    /**
-     * Sets the maximum value permitted for this item (number fields only).
-     * 
-     * @param value the maximum value
-     */
-    public void setMaxValue(Number value) {
-        this.maxValue = value;
-    }
-
-
-    /**
-     * Gets the maximum value of the number field.
-     * 
-     * @return the maximum value
-     */
-    public Number getMaxValue() {
-        return maxValue;
-    }
-
-
-    /**
-     * Sets the default value of this field.
-     * 
-     * @param value the default value
-     */
-    public void setDefaultValue(Object value) {
-        this.defaultValue = value;
-    }
-
-
-    /**
-     * Gets the default value.
-     * 
-     * @return the default value
-     */
-    public Object getDefaultValue() {
-        return defaultValue;
-    }
-
-
-    /**
-     * Sets enumeration of possible values.
-     * 
-     * @param values possible values
-     */
-    public void setPossibleValues(Object[] values) {
-        this.possibleValues = values;
-        if (values == null)
-            this.type = Type.TEXTBOX;
-        else if (values.length <= COMBOBOX_MAX_ITEMS)
-            this.type = Type.COMBOBOX;
-        else
-            this.type = Type.CHOICE;
-    }
-
     
-    /**
-     * Gets the enumeration of possible values.
-     * 
-     * @return possible values
-     */
-    public Object[] getPossibleValues() {
-        return possibleValues;
+    public void addConstraint(Constraint constraint) {
+        if (constraint != null)
+            constraints.add(constraint);
+        
+        if (constraint instanceof PossibleValues) {
+            if (((PossibleValues) constraint).getValues().length <= COMBOBOX_MAX_ITEMS)
+                this.type = Type.COMBOBOX;
+            else
+                this.type = Type.CHOICE;
+        }
+    }
+    
+    
+    public Set<Constraint> getConstraints() {
+        return constraints;
     }
 
     
     
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
+        result = prime * result + ((constraints == null) ? 0 : constraints.hashCode());
         result = prime * result + ((datatype == null) ? 0 : datatype.hashCode());
-        result = prime * result + ((defaultValue == null) ? 0 : defaultValue.hashCode());
-        result = prime * result + maxLength;
-        result = prime * result + ((maxValue == null) ? 0 : maxValue.hashCode());
-        result = prime * result + minLength;
-        result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
-        result = prime * result + Arrays.hashCode(possibleValues);
         return result;
     }
 
 
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
         if (!super.equals(obj)) { return false; }
         if (getClass() != obj.getClass()) { return false; }
         FormField other = (FormField) obj;
+        if (constraints == null) {
+            if (other.constraints != null) { return false; }
+        } else if (!constraints.equals(other.constraints)) { return false; }
         if (datatype != other.datatype) { return false; }
-        if (defaultValue == null) {
-            if (other.defaultValue != null) { return false; }
-        } else if (!defaultValue.equals(other.defaultValue)) { return false; }
-        if (maxLength != other.maxLength) { return false; }
-        if (maxValue == null) {
-            if (other.maxValue != null) { return false; }
-        } else if (!maxValue.equals(other.maxValue)) { return false; }
-        if (minLength != other.minLength) { return false; }
-        if (minValue == null) {
-            if (other.minValue != null) { return false; }
-        } else if (!minValue.equals(other.minValue)) { return false; }
-        if (!Arrays.equals(possibleValues, other.possibleValues)) { return false; }
         return true;
     }
 

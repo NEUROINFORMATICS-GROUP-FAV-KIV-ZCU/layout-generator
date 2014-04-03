@@ -19,46 +19,55 @@
  *
  ***********************************************************************************************************************
  *
- * FormFieldTest.java, 3. 3. 2014 19:57:49 Jakub Krauz
+ * Value.java, 3. 4. 2014 18:19:08 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.model;
-
-import static org.junit.Assert.*;
-import org.junit.Test;
-import com.gargoylesoftware.base.testing.EqualsTester;
+package cz.zcu.kiv.formgen.model.constraints;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class FormFieldTest {
+public class NumericalValue implements Constraint {
+    
+    private String name;
+    
+    private Number value;
+    
+    
+    private NumericalValue(String name, Number value) {
+        this.name = name;
+        this.value = value;
+    }
+    
+    
+    public static NumericalValue MAX(Number value) {
+        return new NumericalValue("maxValue", value);
+    }
+    
+    
+    public static NumericalValue MIN(Number value) {
+        return new NumericalValue("minValue", value);
+    }
+    
 
-    
-    @Test
-    public void testEquals() {
-        FormField a = new FormField("name", Type.TEXTBOX, FieldDatatype.STRING);
-        FormField b = new FormField("name", Type.TEXTBOX, FieldDatatype.STRING);
-        FormField c = new FormField("name", Type.TEXTBOX, FieldDatatype.NUMBER);
-        FormField d = new FormField("name", Type.TEXTBOX, FieldDatatype.STRING) { /* trivial subclass */ };
-        
-        new EqualsTester(a, b, c, d);
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#name()
+     */
+    @Override
+    public String name() {
+        return name;
     }
-    
-    
-    
-    @Test
-    public void testSetPossibleValues() {
-        FormField field = new FormField("field", Type.TEXTBOX, FieldDatatype.INTEGER);
-        assertEquals(Type.TEXTBOX, field.getType());
-        /*field.setPossibleValues(new Object[] {1, 2, 3});
-        assertEquals(Type.COMBOBOX, field.getType());
-        field.setPossibleValues(new Object[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
-        assertEquals(Type.CHOICE, field.getType());
-        field.setPossibleValues(null);
-        assertEquals(Type.TEXTBOX, field.getType());*/
+
+
+    /* (non-Javadoc)
+     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#value()
+     */
+    @Override
+    public Object value() {
+        return (Object) value;
     }
-    
+
 }

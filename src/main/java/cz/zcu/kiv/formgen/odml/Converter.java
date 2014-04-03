@@ -41,6 +41,11 @@ import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
 import cz.zcu.kiv.formgen.model.FormItemContainer;
 import cz.zcu.kiv.formgen.model.Type;
+import cz.zcu.kiv.formgen.model.constraints.Constraint;
+import cz.zcu.kiv.formgen.model.constraints.DefaultValue;
+import cz.zcu.kiv.formgen.model.constraints.Length;
+import cz.zcu.kiv.formgen.model.constraints.NumericalValue;
+import cz.zcu.kiv.formgen.model.constraints.PossibleValues;
 import odml.core.Property;
 import odml.core.Section;
 
@@ -205,17 +210,17 @@ public class Converter {
             FormField field = new FormField(section.getName(), Type.fromString(section.getType()), 
                     FieldDatatype.fromString(section.getProperty("datatype").getText()));
             if ((p = section.getProperty("minLength")) != null)
-                field.setMinLength((Integer) p.getValue());
+                field.addConstraint(Length.MIN((Integer) p.getValue()));
             if ((p = section.getProperty("maxLength")) != null)
-                field.setMaxLength((Integer) p.getValue());
+                field.addConstraint(Length.MAX((Integer) p.getValue()));
             if ((p = section.getProperty("minValue")) != null)
-                field.setMinValue((Number) p.getValue());
+                field.addConstraint(NumericalValue.MIN((Number) p.getValue()));
             if ((p = section.getProperty("maxValue")) != null)
-                field.setMaxValue((Number) p.getValue());
+                field.addConstraint(NumericalValue.MAX((Number) p.getValue()));
             if ((p = section.getProperty("defaultValue")) != null)
-                field.setDefaultValue(p.getValue());
+                field.addConstraint(new DefaultValue(p.getValue()));
             if ((p = section.getProperty("values")) != null)
-                field.setPossibleValues(p.getValues().toArray());
+                field.addConstraint(new PossibleValues(p.getValues().toArray()));
             item = field;
         }
         
@@ -316,22 +321,16 @@ public class Converter {
         section.addProperty("required", field.isRequired());
         section.addProperty("datatype", field.getDatatype().toString());
         
-        // restrictions
-        if (field.getMinLength() > 0)
-            section.addProperty("minLength", field.getMinLength());
-        if (field.getMaxLength() > 0)
-            section.addProperty("maxLength", field.getMaxLength());
-        if (field.getMinValue() != null)
-            section.addProperty("minValue", field.getMinValue());
-        if (field.getMaxValue() != null)
-            section.addProperty("maxValue", field.getMaxValue());
-        if (field.getDefaultValue() != null)
-            section.addProperty("defaultValue", field.getDefaultValue());
-        if (field.getPossibleValues() != null) {
-            Property property = new Property("values");
-            for (Object value : field.getPossibleValues())
-                property.addValue(value);
-            section.add(property);
+        // constraints
+        for (Constraint constraint : field.getConstraints()) {
+            if (constraint instanceof PossibleValues) {
+                Property property = new Property("values");
+                for (Object value : ((PossibleValues) constraint).getValues())
+                    property.addValue(value);
+                section.add(property);
+            } else {
+                section.addProperty(constraint.name(), constraint.value());
+            }
         }
         
         return section;

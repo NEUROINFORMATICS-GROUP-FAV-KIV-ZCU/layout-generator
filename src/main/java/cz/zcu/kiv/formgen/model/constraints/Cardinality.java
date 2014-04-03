@@ -30,7 +30,7 @@ package cz.zcu.kiv.formgen.model.constraints;
  *
  * @author Jakub Krauz
  */
-public class Cardinality {
+public class Cardinality implements Constraint {
     
     public static final Cardinality SINGLE_VALUE = new Cardinality(1);
     
@@ -46,6 +46,18 @@ public class Cardinality {
     
     public int getValue() {
         return value;
+    }
+
+
+    @Override
+    public String name() {
+        return "cardinality";
+    }
+
+
+    @Override
+    public Object value() {
+        return (Object) value;
     }
 
 }
