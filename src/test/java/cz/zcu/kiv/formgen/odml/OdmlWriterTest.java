@@ -42,8 +42,10 @@ public class OdmlWriterTest {
     
     
     @Test
-    public void testWriteLayout_success() {
-        // TODO test
+    public void testWriteLayout_success() throws OdmlException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        writer.writeLayout(new Form("name"), out);
+        assertTrue(out.size() > 0);
     }
     
     
