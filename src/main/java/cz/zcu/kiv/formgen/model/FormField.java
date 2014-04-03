@@ -52,7 +52,7 @@ public class FormField extends AbstractFormItem implements FormItem {
     /** Datatype of the input value. */
     private FieldDatatype datatype;
     
-    
+    /** Set of constraints for this field. */
     private Set<Constraint> constraints = new HashSet<Constraint>();
     
 

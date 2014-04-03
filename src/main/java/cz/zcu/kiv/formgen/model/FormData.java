@@ -63,4 +63,32 @@ public class FormData extends AbstractFormDataItem implements FormDataItem {
         return items;
     }
 
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((items == null) ? 0 : items.hashCode());
+        return result;
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) { return true; }
+        if (!super.equals(obj)) { return false; }
+        if (getClass() != obj.getClass()) { return false; }
+        FormData other = (FormData) obj;
+        if (items == null) {
+            if (other.items != null) { return false; }
+        } else if (!items.equals(other.items)) { return false; }
+        return true;
+    }
+
 }
