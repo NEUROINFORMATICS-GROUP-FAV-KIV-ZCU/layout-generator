@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,40 +19,43 @@
  *
  ***********************************************************************************************************************
  *
- * Writer.java, 25. 11. 2013 18:53:13 Jakub Krauz
+ * FormDataTest.java, 3. 4. 2014 20:44:41 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.model;
 
-import java.io.OutputStream;
-import java.util.Collection;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.model.FormData;
+import static org.junit.Assert.*;
+import org.junit.Test;
+import com.gargoylesoftware.base.testing.EqualsTester;
 
 
 /**
- * Enables serialization of the specified internal model to the output stream.
- * 
+ *
  * @author Jakub Krauz
  */
-public interface Writer {
+public class FormDataTest {
     
     
-    /**
-     * Writes the serialization of the internal model to the output stream.
-     * 
-     * @param form - the internal model
-     * @param outputStream - the stream to which the model will be written
-     */
-    void writeLayout(Form form, OutputStream outputStream) throws LayoutGeneratorException;
+    @Test
+    public void testEquals() {
+        FormData a = new FormData("type", "name");
+        FormData b = new FormData("type", "name");
+        FormData c = new FormData("type", "anotherName");
+        FormData d = new FormData("type", "name") { /* trivial subclass */ };
+        
+        new EqualsTester(a, b, c, d);
+    }
     
     
-    void writeLayout(Collection<Form> forms, OutputStream outputStream) throws LayoutGeneratorException;
-    
-    
-    void writeData(FormData data, OutputStream outputSteam) throws LayoutGeneratorException;
-    
-    void writeData(Collection<FormData> data, OutputStream outputStream) throws LayoutGeneratorException;
-    
+    @Test
+    public void testAddingItems() {
+        FormData data = new FormData("type", "name");
+        assertEquals(0, data.getItems().size());
+        data.addItem(new FormDataField("type1", "name1"));
+        assertEquals(1, data.getItems().size());
+        data.addItem(new FormData("type2", "name2"));
+        assertEquals(2, data.getItems().size());
+    }
+
 }

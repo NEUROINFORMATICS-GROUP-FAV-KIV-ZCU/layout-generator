@@ -44,9 +44,13 @@ public class OdmlWriter implements Writer {
     
     @Override
     public void writeLayout(Form form, OutputStream outputStream) throws OdmlException {
-        Section root = new Section();
+        if (form == null)
+            return;
+        if (outputStream == null)
+            throw new NullPointerException("Output stream must not be null.");
         
         try {
+            Section root = new Section();
             root.add(converter.layoutToOdml(form));
             odml.core.Writer writer = new odml.core.Writer(root);
             writer.write(outputStream);
@@ -58,6 +62,11 @@ public class OdmlWriter implements Writer {
     
     @Override
     public void writeLayout(Collection<Form> forms, OutputStream outputStream) throws OdmlException {
+        if (forms == null)
+            return;
+        if (outputStream == null)
+            throw new NullPointerException("Output stream must not be null.");
+        
         try {
             Section root = converter.layoutToOdml(forms);
             odml.core.Writer writer = new odml.core.Writer(root);
@@ -69,13 +78,17 @@ public class OdmlWriter implements Writer {
 
     
     @Override
-    public void writeData(FormData data, OutputStream out) throws OdmlException {
-        Section root = new Section();
+    public void writeData(FormData data, OutputStream outputStream) throws OdmlException {
+        if (data == null)
+            return;
+        if (outputStream == null)
+            throw new NullPointerException("Output stream must not be null.");
         
         try {
+            Section root = new Section();
             root.add(converter.dataToOdml(data));
             odml.core.Writer writer = new odml.core.Writer(root);
-            writer.write(out);
+            writer.write(outputStream);
         } catch (OdmlConvertException e) {
             throw new OdmlException("Could not convert the internal model to odML.", e);
         }
@@ -83,11 +96,16 @@ public class OdmlWriter implements Writer {
 
     
     @Override
-    public void writeData(Collection<FormData> data, OutputStream out) throws OdmlException {
+    public void writeData(Collection<FormData> data, OutputStream outputStream) throws OdmlException {
+        if (data == null)
+            return;
+        if (outputStream == null)
+            throw new NullPointerException("Output stream must not be null.");
+        
         try {
             Section root = converter.dataToOdml(data);
             odml.core.Writer writer = new odml.core.Writer(root);
-            writer.write(out);
+            writer.write(outputStream);
         } catch (OdmlConvertException e) {
             throw new OdmlException("Could not convert the internal model to odML.", e);
         }

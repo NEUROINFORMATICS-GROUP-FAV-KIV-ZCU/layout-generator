@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,40 +19,34 @@
  *
  ***********************************************************************************************************************
  *
- * Writer.java, 25. 11. 2013 18:53:13 Jakub Krauz
+ * OdmlReaderTest.java, 27. 3. 2014 18:13:04 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen;
+package cz.zcu.kiv.formgen.odml;
 
-import java.io.OutputStream;
-import java.util.Collection;
-import cz.zcu.kiv.formgen.model.Form;
-import cz.zcu.kiv.formgen.model.FormData;
+import org.junit.Test;
 
 
 /**
- * Enables serialization of the specified internal model to the output stream.
- * 
+ *
  * @author Jakub Krauz
  */
-public interface Writer {
+public class OdmlReaderTest {
+    
+    private OdmlReader reader = new OdmlReader();
     
     
-    /**
-     * Writes the serialization of the internal model to the output stream.
-     * 
-     * @param form - the internal model
-     * @param outputStream - the stream to which the model will be written
-     */
-    void writeLayout(Form form, OutputStream outputStream) throws LayoutGeneratorException;
+    @Test
+    public void testRead_success() {
+        // TODO test
+    }
     
     
-    void writeLayout(Collection<Form> forms, OutputStream outputStream) throws LayoutGeneratorException;
+    @Test(expected = NullPointerException.class)
+    public void testRead_null() throws OdmlException {
+        reader.readLayout(null);
+    }
     
-    
-    void writeData(FormData data, OutputStream outputSteam) throws LayoutGeneratorException;
-    
-    void writeData(Collection<FormData> data, OutputStream outputStream) throws LayoutGeneratorException;
-    
+
 }

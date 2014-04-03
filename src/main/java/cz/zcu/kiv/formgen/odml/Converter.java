@@ -69,11 +69,12 @@ public class Converter {
      * @throws OdmlConvertException 
      */
     public Section layoutToOdml(Form form) throws OdmlConvertException {
-        Section section = null;
+        if (form == null)
+            return null;
         
         try {
             
-            section = new Section(form.getName(), Type.FORM.toString());
+            Section section = new Section(form.getName(), Type.FORM.toString());
 
             if (form.getDataReference() != null)
                 section.setReference(form.getDataReference());
@@ -86,12 +87,13 @@ public class Converter {
             
             addItems(section, form.getItems());
             
+            return section;
+            
         } catch (Exception e) {
             logger.error("Cannot create odML section.", e);
             throw new OdmlConvertException("Cannot create odML section.", e);
         }
         
-        return section;
     }
     
     
@@ -103,6 +105,9 @@ public class Converter {
      * @throws OdmlConvertException 
      */
     public Section layoutToOdml(Collection<Form> forms) throws OdmlConvertException {
+        if (forms == null)
+            return null;
+        
         Section root = new Section();
         for (Form form : forms)
             root.add(layoutToOdml(form));
@@ -118,17 +123,18 @@ public class Converter {
      * @throws OdmlConvertException 
      */
     public Section dataToOdml(FormData data) throws OdmlConvertException {
-        Section section = null;
+        if (data == null)
+            return null;
         
         try {
-            section = new Section(data.getName(), data.getType());
+            Section section = new Section(data.getName(), data.getType());
             addItems(section, data.getItems());
+            return section;
         } catch (Exception e) {
             logger.error("Cannot create odML section.", e);
             throw new OdmlConvertException("Cannot create odML section.", e);
         }
         
-        return section;
     }
     
     
@@ -140,6 +146,9 @@ public class Converter {
      * @throws OdmlConvertException 
      */
     public Section dataToOdml(Collection<FormData> data) throws OdmlConvertException {
+        if (data == null)
+            return null;
+        
         Section root = new Section();
         for (FormData d : data)
             root.add(dataToOdml(d));
@@ -155,6 +164,9 @@ public class Converter {
      * @throws OdmlConvertException
      */
     public Form odmlToLayoutModel(Section section) throws OdmlConvertException {
+        if (section == null)
+            return null;
+        
         logger.debug("Converting form \"{}\"", section.getName());
         FormItem form = convertLayout(section);
         
@@ -172,6 +184,9 @@ public class Converter {
      * @throws OdmlConvertException 
      */
     public Set<FormData> odmlToDataModel(Section odmlRoot) throws OdmlConvertException {
+        if (odmlRoot == null)
+            return null;
+        
         Set<FormData> data = new HashSet<FormData>();
         
         if (odmlRoot.getSections() == null) {
@@ -188,10 +203,7 @@ public class Converter {
         return data;
     }
     
-    
-    
-    
-    
+
     
     /**
      * Converts the given section to a form item object.
