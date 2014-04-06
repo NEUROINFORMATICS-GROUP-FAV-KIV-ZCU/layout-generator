@@ -39,7 +39,6 @@ import cz.zcu.kiv.formgen.model.FormDataField;
 import cz.zcu.kiv.formgen.model.FormDataItem;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
-import cz.zcu.kiv.formgen.model.FormItemContainer;
 import cz.zcu.kiv.formgen.model.Type;
 import cz.zcu.kiv.formgen.model.constraints.Constraint;
 import cz.zcu.kiv.formgen.model.constraints.DefaultValue;
@@ -245,10 +244,10 @@ public class Converter {
 
         
         // subsections
-        if ((item.getType() == Type.FORM || item.getType() == Type.SET)) {
+        if (item instanceof Form) {
             if (section.getSections() != null) {
                 for (Section s : section.getSections())
-                    ((FormItemContainer) item).addItem(convertLayout(s));
+                    ((Form) item).addItem(convertLayout(s));
             }
         }
         

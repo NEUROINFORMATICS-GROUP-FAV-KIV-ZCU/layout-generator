@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jakub Krauz
  */
-public class Form extends AbstractFormItem implements FormItem, FormItemContainer {
+public class Form extends AbstractFormItem implements FormItem {
     
     /** Logger. */
     final Logger logger = LoggerFactory.getLogger(Form.class);
@@ -73,7 +73,11 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     
     
     
-    @Override
+    /**
+     * Adds the given item to the end of this form.
+     * 
+     * @param item - the item to be added
+     */
     public void addItem(FormItem item) {
         if (item == null) {
             logger.debug("Form \"{}\": attempt to add a null item.", this.name);
@@ -91,19 +95,32 @@ public class Form extends AbstractFormItem implements FormItem, FormItemContaine
     }
     
     
-    @Override 
+    /**
+     * Gets all items of the form.
+     * 
+     * @return vector of contained items
+     */ 
     public Vector<FormItem> getItems() {
         return items;
     }
     
     
-    @Override
+    /**
+     * Returns the number of contained items.
+     * 
+     * @return number of items
+     */
     public int countItems() {
         return items.size();
     }
     
     
-    @Override
+    /**
+     * Returns item on the given position (indexed from 0) or null.
+     * 
+     * @param index - the index of the position
+     * @return item on the specified position or null
+     */
     public FormItem getItemAt(int position) {
         try {
             return items.get(position);

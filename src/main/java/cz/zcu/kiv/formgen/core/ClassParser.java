@@ -35,7 +35,6 @@ import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
-import cz.zcu.kiv.formgen.model.FormItemContainer;
 import cz.zcu.kiv.formgen.model.constraints.Cardinality;
 import cz.zcu.kiv.formgen.model.constraints.DefaultValue;
 import cz.zcu.kiv.formgen.model.constraints.Length;
