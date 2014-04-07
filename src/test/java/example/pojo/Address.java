@@ -27,6 +27,7 @@ package example.pojo;
 
 import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
+import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 
@@ -34,6 +35,9 @@ import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 @Form
 @FormDescription("formular pro zadavani adresy")
 public class Address {
+    
+    @FormId
+    private int id;
     
     @FormItem(label = "mesto", required = true)
     private String town;
@@ -50,11 +54,16 @@ public class Address {
     
     
     public Address() {
-        this(null, null, -1);
+        this(0);
+    }
+    
+    public Address(int id) {
+        this(id, null, null, -1);
     }
     
     
-    public Address(String town, String street, int number) {
+    public Address(int id, String town, String street, int number) {
+        this.id = id;
         this.town = town;
         this.street = street;
         this.number = number;

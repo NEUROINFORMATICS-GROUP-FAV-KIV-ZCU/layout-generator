@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
+import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 
@@ -38,6 +39,7 @@ import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
 @FormDescription("Form used to add persons.")
 public class Person {
 
+    @FormId
     private int id;
     
     @FormItem(label = "jmeno", required = true)
@@ -61,9 +63,12 @@ public class Person {
     private Date birth;
     
     
-    
     public Person() {
-        this(0, null, 0, null);
+        this(0);
+    }
+    
+    public Person(int id) {
+        this(id, null, 0, null);
     }
     
     

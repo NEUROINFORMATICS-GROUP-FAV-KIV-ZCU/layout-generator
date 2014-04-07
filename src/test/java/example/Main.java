@@ -79,14 +79,14 @@ public class Main {
     
     private static void data() throws Exception {
         Person person = new Person(0, "Thomas", 31, null);
-        Address address = new Address("Pilsen", "Zluticka", 26);
+        Address address = new Address(1, "Pilsen", "Zluticka", 26);
         Pokus pokus = new Pokus();
         pokus.setShortNumber((short) 20);
         pokus.setBajt((byte) 44);
         address.setPokus(pokus);
         person.setAddress(address);
         person.addAddress(address);
-        person.addAddress(new Address("Prague", "Brnenska", 415));
+        person.addAddress(new Address(2, "Prague", "Brnenska", 415));
         person.setBirth(new Date());
         
         SimpleFormDataGenerator generator = new SimpleFormDataGenerator();
@@ -134,9 +134,9 @@ public class Main {
         
         List<Object> list = new ArrayList<Object>(3);
         Person osoba = new Person(88, "Pepa", 18, new Date());
-        osoba.addAddress(new Address("Pilsen", "Zluticka", 26));
-        osoba.addAddress(new Address("Pilsen", "Manesova", 78));
-        osoba.addAddress(new Address("Pilsen", "Klatovska", 333));
+        osoba.addAddress(new Address(1, "Pilsen", "Zluticka", 26));
+        osoba.addAddress(new Address(2, "Pilsen", "Manesova", 78));
+        osoba.addAddress(new Address(3, "Pilsen", "Klatovska", 333));
         list.add(osoba);
         
         SimpleFormDataGenerator gen = new SimpleFormDataGenerator();

@@ -37,6 +37,7 @@ public class FormData extends AbstractFormDataItem implements FormDataItem {
     
     public static final String SET = "set";
     
+    private Object id;
     
     private Set<FormDataItem> items = new HashSet<FormDataItem>();
     
@@ -89,6 +90,24 @@ public class FormData extends AbstractFormDataItem implements FormDataItem {
             if (other.items != null) { return false; }
         } else if (!items.equals(other.items)) { return false; }
         return true;
+    }
+
+
+    
+    /**
+     * @return the id
+     */
+    public Object getId() {
+        return id;
+    }
+
+
+    
+    /**
+     * @param id the id to set
+     */
+    public void setId(Object id) {
+        this.id = id;
     }
 
 }

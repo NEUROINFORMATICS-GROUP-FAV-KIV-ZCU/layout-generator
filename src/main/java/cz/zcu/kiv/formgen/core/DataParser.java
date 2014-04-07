@@ -27,6 +27,7 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormData;
 import cz.zcu.kiv.formgen.model.FormDataField;
@@ -62,6 +63,22 @@ public class DataParser {
             return null;
         
         FormData form = new FormData(obj.getClass().getSimpleName(), formName);
+        
+        for (Field f : obj.getClass().getDeclaredFields()) {
+            if (f.isAnnotationPresent(FormId.class)) {
+                f.setAccessible(true);
+                try {
+                    form.setId(f.get(obj));
+                } catch (IllegalArgumentException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
         
         for (Field f : Utils.formItemFields(obj.getClass())) {
             if (mapper.isSimpleType(f.getType())) {
