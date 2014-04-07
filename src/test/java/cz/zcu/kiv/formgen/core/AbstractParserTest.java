@@ -69,7 +69,7 @@ public class AbstractParserTest {
         subform.setId(id++);
         subform.setLabel("item label");
         field = new FormField("fooItem", Type.TEXTBOX, FieldDatatype.INTEGER);
-        field.setLabel("fooItem");
+        field.setLabel("Foo item");
         field.setId(id++);
         subform.addItem(field);
         form.addItem(subform);
