@@ -152,7 +152,7 @@ public class ClassParser {
         form.setCardinality(Cardinality.SINGLE_VALUE);
         
         // determine label of the form
-        String label = cls.getSimpleName();
+        String label = guessLabel(cls.getSimpleName());
         if (cls.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.Form.class)) {
             cz.zcu.kiv.formgen.annotation.Form annot = cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class);
             if (!annot.label().isEmpty())
@@ -185,7 +185,7 @@ public class ClassParser {
         
         cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
         String label = formItemAnnot.label();
-        formField.setLabel(label.isEmpty() ? field.getName() : label);
+        formField.setLabel(label.isEmpty() ? guessLabel(field.getName()) : label);
         formField.setRequired(formItemAnnot.required());
         
         if (field.isAnnotationPresent(FormItemRestriction.class)) {
@@ -256,6 +256,34 @@ public class ClassParser {
         item.setCardinality(Cardinality.UNRESTRICTED);
         
         return item;
+    }
+    
+    
+    
+    /**
+     * Creates the label string from a name in camelCase notation.
+     * 
+     * @param name - the name of an item
+     * @return created label string
+     */
+    private String guessLabel(String name) {
+        // first letter must be lowercase
+        if (Character.isUpperCase(name.charAt(0)))
+            name = Character.toLowerCase(name.charAt(0)) + name.substring(1);
+        
+        // split the name in camelCase notation to individual words
+        String[] words = name.split("(?=\\p{Upper})");
+        
+        // build the label from individual words separated by space
+        StringBuilder buf = new StringBuilder(name.length() + words.length - 1);
+        buf.append(Character.toUpperCase(words[0].charAt(0)));  // first letter in upper case
+        buf.append(words[0].substring(1));  // rest of the first word
+        for (int i = 1; i < words.length; i++) {
+            buf.append(' ');
+            buf.append(words[i].toLowerCase());
+        }
+        
+        return buf.toString();
     }
     
 
