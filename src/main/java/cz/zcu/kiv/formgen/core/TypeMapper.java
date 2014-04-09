@@ -111,7 +111,6 @@ public class TypeMapper {
         TYPES.put(String.class, Type.TEXTBOX);
         TYPES.put(java.util.Date.class, Type.TEXTBOX);
         TYPES.put(java.sql.Date.class, Type.TEXTBOX);
-        TYPES.put(java.util.Collection.class, Type.SET);
     }
     
     

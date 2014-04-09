@@ -25,7 +25,7 @@
 
 package cz.zcu.kiv.formgen;
 
-import java.util.Collection;
+import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
@@ -33,15 +33,7 @@ import java.util.Collection;
  *
  * @author Jakub Krauz
  */
-public interface FormDataGenerator extends Generator<Object> {
+public interface DataGenerator extends Generator<Object, FormData> {
     
-    
-    /**
-     * Parses all objects in the collection and creates an appropriate model.
-     * 
-     * @param collection - the collection of objects to be parsed
-     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found in any of parsed objects
-     */
-    void loadObjects(Collection<Object> collection) throws FormNotFoundException;
 
 }

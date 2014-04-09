@@ -39,7 +39,7 @@ import cz.zcu.kiv.formgen.Reader;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.core.ObjectBuilder;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
-import cz.zcu.kiv.formgen.core.SimpleFormDataGenerator;
+import cz.zcu.kiv.formgen.core.SimpleDataGenerator;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormData;
 import cz.zcu.kiv.formgen.odml.OdmlReader;
@@ -60,7 +60,7 @@ public class Main {
         try {
             gen.loadPackage("example.pojo");
             //gen.loadClass("example.pojo.Pokus");
-            for (Form form : gen.getForms()) {
+            for (Form form : gen.getLoadedModel()) {
                 Writer writer = new OdmlWriter();
                 OutputStream stream = new FileOutputStream("odml/" + form.getName() + ".odml");
                 writer.writeLayout(form, stream);
@@ -89,9 +89,9 @@ public class Main {
         person.addAddress(new Address(2, "Prague", "Brnenska", 415));
         person.setBirth(new Date());
         
-        SimpleFormDataGenerator generator = new SimpleFormDataGenerator();
+        SimpleDataGenerator generator = new SimpleDataGenerator();
         generator.load(person);
-        Collection<FormData> formData = generator.getFormData();
+        Collection<FormData> formData = generator.getLoadedModel();
         
         Writer writer = new OdmlWriter();
         OutputStream stream = new FileOutputStream("odml/pokus.odml");
@@ -139,9 +139,9 @@ public class Main {
         osoba.addAddress(new Address(3, "Pilsen", "Klatovska", 333));
         list.add(osoba);
         
-        SimpleFormDataGenerator gen = new SimpleFormDataGenerator();
-        gen.loadObjects(list);
-        Collection<FormData> forms = gen.getFormData();
+        SimpleDataGenerator gen = new SimpleDataGenerator();
+        gen.load(list);
+        Collection<FormData> forms = gen.getLoadedModel();
         stream = new FileOutputStream("odml/data.odml");
         writer.writeData(forms, stream);
         stream.close();

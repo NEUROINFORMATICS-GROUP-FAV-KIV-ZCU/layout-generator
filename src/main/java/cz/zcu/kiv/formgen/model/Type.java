@@ -38,8 +38,7 @@ public enum Type {
     CHECKBOX   ("checkbox"),
     COMBOBOX   ("combobox"),
     CHOICE     ("choice"),
-    IMAGE      ("image"),
-    SET        ("set");
+    IMAGE      ("image");
     
     
     
@@ -68,8 +67,6 @@ public enum Type {
             return CHOICE;
         if (IMAGE.toString().equals(value))
             return IMAGE;
-        if (SET.toString().equals(value))
-            return SET;
         return null;
     }
 

@@ -45,10 +45,10 @@ public class SimpleLayoutGeneratorTest {
         generator = new SimpleLayoutGenerator();
         generator.loadClass("example.pojo.Person");
         
-        assertNull(generator.getForm("xx"));
-        assertEquals(1, generator.getForms().size());
+        assertNull(generator.getLoadedForm("xx"));
+        assertEquals(1, generator.getLoadedModel().size());
         
-        Form form = generator.getForm("Person");
+        Form form = generator.getLoadedForm("Person");
         assertNotNull(form);
     }
     
@@ -58,8 +58,8 @@ public class SimpleLayoutGeneratorTest {
         generator = new SimpleLayoutGenerator();
         generator.loadPackage("example.pojo");
         
-        assertEquals(2, generator.getForms().size());
-        assertNotNull(generator.getForm("Person"));
+        assertEquals(2, generator.getLoadedModel().size());
+        assertNotNull(generator.getLoadedForm("Person"));
     }
 
 }

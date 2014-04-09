@@ -28,6 +28,7 @@ package cz.zcu.kiv.formgen.core;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import cz.zcu.kiv.formgen.DataGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.model.FormData;
 
@@ -36,34 +37,52 @@ import cz.zcu.kiv.formgen.model.FormData;
  *
  * @author Jakub Krauz
  */
-public class SimpleFormDataGenerator {
+public class SimpleDataGenerator implements DataGenerator {
     
     private DataParser parser = new DataParser();
     
-    private Set<FormData> data = new HashSet<FormData>();
+    private Set<FormData> loadedData = new HashSet<FormData>();
     
     
-    
-    public void load(Object... objects) throws FormNotFoundException {
-        for (Object obj : objects) {
-            if (Utils.annotation(obj, cz.zcu.kiv.formgen.annotation.Form.class) != null)
-                data.add(parser.parse(obj));
-            /*else if (annotation(obj, cz.zcu.kiv.formgen.annotation.MultiForm.class) != null)
-                load(obj, true);*/
-            else
-                throw new FormNotFoundException();
+
+    @Override
+    public FormData load(Object object) throws FormNotFoundException {
+        FormData data = null;
+        
+        if (Utils.annotation(object, cz.zcu.kiv.formgen.annotation.Form.class) != null) {
+            data = parser.parse(object);
+            loadedData.add(data);
+        } else {
+            throw new FormNotFoundException();
         }
-    }
-    
-    
-    public void loadObjects(Collection<Object> collection) throws FormNotFoundException {
-        for (Object object : collection)
-            load(object);
-    }
-
-
-    public Collection<FormData> getFormData() {
+        
         return data;
+    }
+
+
+    
+    @Override
+    public Collection<FormData> load(Collection<Object> objects) throws FormNotFoundException {
+        Collection<FormData> data = new HashSet<FormData>(objects.size());
+        
+        for (Object obj : objects)
+            data.add(load(obj));
+        
+        return data;
+    }
+
+
+    
+    @Override
+    public Collection<FormData> getLoadedModel() {
+        return loadedData;
+    }
+    
+    
+    
+    @Override
+    public void clearModel() {
+        loadedData.clear();
     }
    
 

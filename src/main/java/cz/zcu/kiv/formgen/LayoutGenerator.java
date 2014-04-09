@@ -25,13 +25,16 @@
 
 package cz.zcu.kiv.formgen;
 
+import java.util.Collection;
+import cz.zcu.kiv.formgen.model.Form;
+
 
 /**
  * Interface that enables user to control the layout-generator tool.
  *
  * @author Jakub Krauz
  */
-public interface LayoutGenerator extends Generator<Class<?>> {
+public interface LayoutGenerator extends Generator<Class<?>, Form> {
     
     
     /**
@@ -41,7 +44,11 @@ public interface LayoutGenerator extends Generator<Class<?>> {
      * @throws ClassNotFoundException if the class with the given name cannot be found
      * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on the given class
      */
-    void loadClass(String... names) throws ClassNotFoundException, FormNotFoundException;
+    Form loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
+    
+    Collection<Form> loadClasses(String[] names) throws ClassNotFoundException, FormNotFoundException;
+    
+    Collection<Form> loadClasses(Collection<String> names) throws ClassNotFoundException, FormNotFoundException;
     
     
     /**
@@ -50,7 +57,7 @@ public interface LayoutGenerator extends Generator<Class<?>> {
      * @param name - name of the package to be parsed
      * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on any class in the package
      */
-    void loadPackage(String name) throws FormNotFoundException;
+    Collection<Form> loadPackage(String name) throws FormNotFoundException;
     
     
     /**
@@ -59,6 +66,15 @@ public interface LayoutGenerator extends Generator<Class<?>> {
      * @param pack - the package to be parsed
      * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on any class in the package
      */
-    void loadPackage(Package pack) throws FormNotFoundException;
+    Collection<Form> loadPackage(Package pack) throws FormNotFoundException;
+    
+    
+    /**
+     * Gets the form model with the given name.
+     * 
+     * @param name - name of the form model
+     * @return requested form model
+     */
+    Form getLoadedForm(String name);
     
 }

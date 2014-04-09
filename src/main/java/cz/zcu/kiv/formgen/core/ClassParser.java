@@ -101,22 +101,22 @@ public class ClassParser {
     
     
     
-    /**
+    /*
      * Recursively parses the given class and its members and adds them to an existing {@link Form} model.
      * 
      * @param cls the Java class to be parsed
      * @param form the model in which the parsed class is to be added
      * @return the updated form model
      */
-    protected Form _parse(Class<?> cls, String formName, int id) {
+    private Form _parse(Class<?> cls, String formName, int id) {
         Form form = createForm(formName, cls);
         form.setId(id++);
         
         for (Field f : Utils.formItemFields(cls)) {
             if (mapper.isSimpleType(f.getType())) {
-                FormItem item = createFormField(f);
+                FormField item = createFormField(f);
                 item.setId(id++);
-                form.addItem(item);
+                form.addItem((FormItem) item);
             }
             else if (Collection.class.isAssignableFrom(f.getType())) {
                 FormItem set = createFormSet(f, id++);
@@ -146,7 +146,7 @@ public class ClassParser {
      * @param cls the Java class representing the form to be created
      * @return the newly created form
      */
-    protected Form createForm(String name, Class<?> cls) {
+    private Form createForm(String name, Class<?> cls) {
         Form form = new Form(name);
         form.setDataReference(cls.getSimpleName());
         form.setCardinality(Cardinality.SINGLE_VALUE);
@@ -178,7 +178,7 @@ public class ClassParser {
      * @param field the Java field representing the form item to be created
      * @return the newly created form item object
      */
-    protected FormItem createFormField(Field field) {
+    private FormField createFormField(Field field) {
         FormField formField = new FormField(field.getName(), mapper.mapType(field.getType()),
                 mapper.mapDatatype(field.getType()));
         formField.setCardinality(Cardinality.SINGLE_VALUE);
@@ -229,7 +229,7 @@ public class ClassParser {
      * @param id the ID assigned to the new form set
      * @return the newly created set object, or null if the collection is not parameterized
      */
-    protected FormItem createFormSet(Field field, int id) {
+    private FormItem createFormSet(Field field, int id) {
         
         // check whether the collection type is parameterized
         if (!(field.getGenericType() instanceof ParameterizedType)) {
@@ -242,14 +242,14 @@ public class ClassParser {
  
         // parse the content type
         if (mapper.isSimpleType(clazz)) {
-            item = new FormField(field.getName(), mapper.mapType(clazz),
-                    mapper.mapDatatype(clazz));
+            item = new FormField(field.getName(), mapper.mapType(clazz), mapper.mapDatatype(clazz));
             item.setId(id);
         } else {
             item = _parse(clazz, field.getName(), id);
         }
         
-        cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
+        cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = 
+                field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
         String label = formItemAnnot.label();
         item.setLabel(label.isEmpty() ? field.getName() : label);
         item.setRequired(formItemAnnot.required());

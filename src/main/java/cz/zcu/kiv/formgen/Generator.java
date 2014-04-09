@@ -26,7 +26,6 @@
 package cz.zcu.kiv.formgen;
 
 import java.util.Collection;
-import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
@@ -34,7 +33,10 @@ import cz.zcu.kiv.formgen.model.Form;
  *
  * @author Jakub Krauz
  */
-public interface Generator<T> {
+public interface Generator<T, U> {
+    
+    
+    U load(T object) throws FormNotFoundException;
     
     
     /**
@@ -43,16 +45,7 @@ public interface Generator<T> {
      * @param objects - object(s) to be parsed
      * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found in any of parsed objects
      */
-    void load(T... objects) throws FormNotFoundException;
-    
-    
-    /**
-     * Gets the form model with the given name.
-     * 
-     * @param name - name of the form model
-     * @return requested form model
-     */
-    Form getForm(String name);
+    Collection<U> load(Collection<T> objects) throws FormNotFoundException;
     
     
     /**
@@ -60,6 +53,9 @@ public interface Generator<T> {
      * 
      * @return all form models
      */
-    Collection<Form> getForms();
+    Collection<U> getLoadedModel();
+    
+    
+    void clearModel();
 
 }

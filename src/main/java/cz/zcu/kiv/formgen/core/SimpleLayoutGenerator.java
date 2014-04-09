@@ -28,6 +28,7 @@ package cz.zcu.kiv.formgen.core;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.reflections.Reflections;
@@ -48,84 +49,114 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     
     /** Map of created forms by their name. */
     protected Map<String, Form> forms = new HashMap<String, Form>();
-
-   
     
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.Generator#load(T...)
-     */
+    
     @Override
-    public void load(Class<?>... classes) throws FormNotFoundException {
-        for (Class<?> cls : classes) {
-            if (annotation(cls, cz.zcu.kiv.formgen.annotation.Form.class) != null)
-                load(cls, false);
-            else if (annotation(cls, cz.zcu.kiv.formgen.annotation.MultiForm.class) != null)
-                load(cls, true);
-            else
-                throw new FormNotFoundException();
-        }
+    public Form load(Class<?> cls) throws FormNotFoundException {
+        if (annotation(cls, cz.zcu.kiv.formgen.annotation.Form.class) != null)
+            return load(cls, false);
+        else if (annotation(cls, cz.zcu.kiv.formgen.annotation.MultiForm.class) != null)
+            return load(cls, true);
+        else
+            throw new FormNotFoundException();
     }
-    
-    
-    
+
+
+
     @Override
-    public void loadClass(String... names) throws ClassNotFoundException, FormNotFoundException {
-        Class<?>[] classes = new Class<?>[names.length];
-        for (int i = 0; i < classes.length; i++)
-            classes[i] = Class.forName(names[i]);
-        load(classes);
+    public Collection<Form> load(Collection<Class<?>> classes) throws FormNotFoundException {
+        Collection<Form> loaded = new HashSet<Form>(classes.size());
+        for (Class<?> cls : classes)
+            loaded.add(load(cls));
+        return loaded;
     }
     
 
+
+    @Override
+    public Form loadClass(String name) throws ClassNotFoundException, FormNotFoundException {
+        return load(Class.forName(name));
+    }
+
+
+
+    @Override
+    public Collection<Form> loadClasses(String[] names) throws ClassNotFoundException, FormNotFoundException {
+        Collection<Class<?>> classes = new HashSet<Class<?>>(names.length);
+        for (int i = 0; i < names.length; i++)
+            classes.add(Class.forName(names[i]));
+        return load(classes);
+    }
+
+
+
+    @Override
+    public Collection<Form> loadClasses(Collection<String> names) throws ClassNotFoundException, FormNotFoundException {
+        Collection<Class<?>> classes = new HashSet<Class<?>>(names.size());
+        for (String name : names)
+            classes.add(Class.forName(name));
+        return load(classes);
+    }
+    
+
     
     @Override
-    public void loadPackage(String name) throws FormNotFoundException {
+    public Collection<Form> loadPackage(String name) throws FormNotFoundException {
+        Collection<Form> loaded;
         Reflections reflections = new Reflections(name);
         Set<Class<?>> classes;
         
         /* simple forms */
         classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.Form.class);
+        loaded = new HashSet<Form>(classes.size());
         for (Class<?> cls : classes) {
-            load(cls, false);
+            loaded.add(load(cls, false));
         }
         
         /* multiple (cross-class) forms */
         classes = reflections.getTypesAnnotatedWith(cz.zcu.kiv.formgen.annotation.MultiForm.class);
         for (Class<?> cls : classes) {
-            load(cls, true);
+            loaded.add(load(cls, true));
         }
+        
+        return loaded;
     }
 
 
+    
     @Override
-    public void loadPackage(Package pack) throws FormNotFoundException {
+    public Collection<Form> loadPackage(Package pack) throws FormNotFoundException {
         if (pack == null)
-            return;
+            return null;
         
         // note: calling "new Reflections(Package);" can lead to 
         // "ReflectionsException: could not use param package ..."
-        loadPackage(pack.getName());
+        return loadPackage(pack.getName());
     }
     
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.Generator#getForm(java.lang.String)
-     */
-    @Override
-    public Form getForm(String name) {
-        return forms.get(name);
-    }
-
-
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.Generator#getForms()
-     */
     @Override
-    public Collection<Form> getForms() {
+    public Collection<Form> getLoadedModel() {
         return forms.values();
     }
+    
+
+
+    @Override
+    public Form getLoadedForm(String name) {
+        return forms.get(name);
+    }
+    
+    
+    
+    @Override
+    public void clearModel() {
+        forms.clear();
+    }
+    
+
 
 
     private <A extends Annotation> A annotation(Class<?> cls, Class<A> annotationClass) {
@@ -142,23 +173,29 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
      * @param cls the class to be loaded
      * @param multiForm if true, the class is a part of a multi-form
      */
-    protected void load(Class<?> cls, boolean multiForm) {
+    protected Form load(Class<?> cls, boolean multiForm) {
+        Form form;
+        
         if (multiForm) {
             cz.zcu.kiv.formgen.annotation.MultiForm annotation = 
                     annotation(cls, cz.zcu.kiv.formgen.annotation.MultiForm.class);
             String name = annotation.value();
-            if (forms.containsKey(name))
-                parser.parse(cls, forms.get(name));
-            else {
-                Form form = parser.createMultiform(annotation);
+            if (forms.containsKey(name)) {
+                form = forms.get(name);
+                parser.parse(cls, form);
+            } else {
+                form = parser.createMultiform(annotation);
                 parser.parse(cls, form);
                 forms.put(name, form);
             }
         } else {
-            Form form = parser.parse(cls);
+            form = parser.parse(cls);
             forms.put(form.getName(), form);
         }
+        
+        return form;
     }
+
     
 
 }
