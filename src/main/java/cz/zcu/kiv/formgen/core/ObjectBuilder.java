@@ -43,21 +43,13 @@ import cz.zcu.kiv.formgen.model.FormDataItem;
  *
  * @author Jakub Krauz
  */
-public class ObjectBuilder<T> {
+public class ObjectBuilder {
     
     /** Logger. */
     final Logger logger = LoggerFactory.getLogger(ObjectBuilder.class);
     
-    /** Type of the object being built. */
-    private Class<T> type;
     
-    
-    public ObjectBuilder(Class<T> type) {
-        this.type = type;
-    }
-    
-    
-    public T build(FormData formData) throws ObjectBuilderException {
+    public <T> T build(FormData formData, Class<T> type) throws ObjectBuilderException {
         T obj = null;
         
         try {

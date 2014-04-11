@@ -109,8 +109,8 @@ public class Main {
         System.out.println("************************");
         
         /* build data object */
-        ObjectBuilder<Person> builder = new ObjectBuilder<Person>(Person.class);
-        Person tmp = builder.build(data.iterator().next());
+        ObjectBuilder builder = new ObjectBuilder();
+        Person tmp = builder.build(data.iterator().next(), Person.class);
         
         System.out.println("******* Person built *********");
         System.out.println(tmp.toString());
