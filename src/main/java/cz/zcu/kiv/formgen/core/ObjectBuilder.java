@@ -56,8 +56,9 @@ public class ObjectBuilder {
             obj = type.newInstance();
             fill(obj, formData);
         } catch (Exception e) {
-            logger.error("Can not create instance of " + type.getCanonicalName(), e);
-            throw new ObjectBuilderException("Can not create instance of " + type.getCanonicalName(), e);
+            final String message = "Can not create instance of " + type.getName();
+            logger.error(message, e);
+            throw new ObjectBuilderException(message, e);
         }
         
         return obj;

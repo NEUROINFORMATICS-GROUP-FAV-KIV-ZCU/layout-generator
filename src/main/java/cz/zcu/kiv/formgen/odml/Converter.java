@@ -128,7 +128,8 @@ public class Converter {
         try {
             Section section = new Section(data.getName(), data.getType());
             if (data.getId() != null)
-                section.setReference(data.getId().toString());
+                //section.setReference(data.getId().toString());
+                section.addProperty("id", data.getId().toString());
             addItems(section, data.getItems());
             return section;
         } catch (Exception e) {
@@ -396,7 +397,8 @@ public class Converter {
                 FormData form = (FormData) item;
                 Section subsection = new Section(form.getName(), form.getType());
                 if (form.getId() != null)
-                    subsection.setReference(form.getId().toString());
+                    //subsection.setReference(form.getId().toString());
+                    subsection.addProperty("id", form.getId().toString());
                 addItems(subsection, form.getItems());
                 section.add(subsection);
             } else {
