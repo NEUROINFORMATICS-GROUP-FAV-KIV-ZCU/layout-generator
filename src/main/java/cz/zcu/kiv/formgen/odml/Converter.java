@@ -83,6 +83,10 @@ public class Converter {
                 section.addProperty("label", form.getLabel());
             if (form.getLayoutName() != null)
                 section.addProperty("layoutName", form.getLayoutName());
+            if (form.getMajorPreviewField() != null)
+                section.addProperty("previewMajor", form.getMajorPreviewField().getName());
+            if (form.getMinorPreviewField() != null)
+                section.addProperty("previewMinor", form.getMinorPreviewField().getName());
             
             addItems(section, form.getItems());
             
@@ -188,6 +192,8 @@ public class Converter {
     public Set<FormData> odmlToDataModel(Section odmlRoot) throws OdmlConvertException {
         if (odmlRoot == null)
             return null;
+        
+        // TODO property id se nemapuje na field
         
         Set<FormData> data = new HashSet<FormData>();
         
@@ -308,6 +314,10 @@ public class Converter {
         section.addProperty("required", form.isRequired());
         if (form.getCardinality() != null)
             section.addProperty("cardinality", form.getCardinality().getValue());
+        if (form.getMajorPreviewField() != null)
+            section.addProperty("previewMajor", form.getMajorPreviewField().getName());
+        if (form.getMinorPreviewField() != null)
+            section.addProperty("previewMinor", form.getMinorPreviewField().getName());
         
         addItems(section, form.getItems());
         

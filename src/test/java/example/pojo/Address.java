@@ -30,6 +30,7 @@ import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
+import cz.zcu.kiv.formgen.annotation.PreviewLevel;
 
 
 @Form
@@ -39,10 +40,10 @@ public class Address {
     @FormId
     private int id;
     
-    @FormItem(label = "mesto", required = true)
+    @FormItem(label = "mesto", required = true, preview = PreviewLevel.MAJOR)
     private String town;
     
-    @FormItem(required = true)
+    @FormItem(required = true, preview = PreviewLevel.MINOR)
     private String street;
     
     @FormItem(required = true)

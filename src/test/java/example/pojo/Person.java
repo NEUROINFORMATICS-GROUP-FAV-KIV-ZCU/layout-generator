@@ -33,6 +33,7 @@ import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
+import cz.zcu.kiv.formgen.annotation.PreviewLevel;
 
 
 @Form
@@ -42,7 +43,7 @@ public class Person {
     @FormId
     private int id;
     
-    @FormItem(label = "jmeno", required = true)
+    @FormItem(label = "jmeno", required = true, preview = PreviewLevel.MAJOR)
     @FormItemRestriction(minLength = 2, maxLength = 15)
     private String name;
     

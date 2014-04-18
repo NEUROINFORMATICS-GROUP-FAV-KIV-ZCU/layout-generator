@@ -91,7 +91,7 @@ public class ObjectBuilder {
                 if (FormData.SET.equals(data.getType())) {
                     if (!(field.getGenericType() instanceof ParameterizedType))
                         throw new ObjectBuilderException("Cannot create a non-parameterized collection.");
-                    Class<?> innerType = Utils.genericParameter((ParameterizedType) field.getGenericType());
+                    Class<?> innerType = ReflectionUtils.genericParameter((ParameterizedType) field.getGenericType());
                     if (innerType == null)
                         throw new ObjectBuilderException("Cannot create collection.");
                     Collection collection = (Collection) field.get(obj);

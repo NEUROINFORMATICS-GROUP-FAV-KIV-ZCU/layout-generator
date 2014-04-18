@@ -4,7 +4,7 @@
  *
  * ==========================================
  *
- * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -19,33 +19,19 @@
  *
  ***********************************************************************************************************************
  *
- * FormItem.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * PreviewLevel.java, 18. 4. 2014 18:43:11 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 
 /**
- * This annotations marks POJO members that should be transformed to form items.
  *
  * @author Jakub Krauz
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface FormItem {
+public enum PreviewLevel {
     
-    /** Label of the form item. */
-    String label() default "";
-    
-    /** True marks the form item requierd, i.e. it must be filled. */
-    boolean required() default false;
-    
-    PreviewLevel preview() default PreviewLevel.NONE;
+    MAJOR, MINOR, NONE
 
 }

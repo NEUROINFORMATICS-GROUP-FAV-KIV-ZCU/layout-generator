@@ -49,7 +49,7 @@ public class SimpleDataGenerator implements DataGenerator {
     public FormData load(Object object) throws FormNotFoundException {
         FormData data = null;
         
-        if (Utils.annotation(object, cz.zcu.kiv.formgen.annotation.Form.class) != null) {
+        if (ReflectionUtils.annotation(object, cz.zcu.kiv.formgen.annotation.Form.class) != null) {
             data = parser.parse(object);
             loadedData.add(data);
         } else {

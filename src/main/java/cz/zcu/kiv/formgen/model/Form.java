@@ -57,6 +57,8 @@ public class Form extends AbstractFormItem implements FormItem {
     
     private String dataReference;
     
+    private FormField[] preview = new FormField[2];
+    
     /** Contained items. */
     private Vector<FormItem> items = new Vector<FormItem>();
     
@@ -201,6 +203,26 @@ public class Form extends AbstractFormItem implements FormItem {
      */
     public void setDataReference(String dataReference) {
         this.dataReference = dataReference;
+    }
+    
+    
+    public FormField getMajorPreviewField() {
+        return preview[0];
+    }
+    
+    
+    public void setMajorPreviewField(FormField field) {
+        preview[0] = field;
+    }
+    
+    
+    public FormField getMinorPreviewField() {
+        return preview[1];
+    }
+    
+    
+    public void setMinorPreviewField(FormField field) {
+        preview[1] = field;
     }
 
 

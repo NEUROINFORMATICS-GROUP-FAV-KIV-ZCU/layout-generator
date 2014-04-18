@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * Utils.java, 3. 3. 2014 18:14:28 Jakub Krauz
+ * ReflectionUtils.java, 3. 3. 2014 18:14:28 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -27,10 +27,11 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Vector;
+import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,9 +40,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Jakub Krauz
  */
-public class Utils {
+public class ReflectionUtils {
     
-    static final Logger logger = LoggerFactory.getLogger(Utils.class);
+    static final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
     
     
     public static Class<?> genericParameter(ParameterizedType type) {
@@ -67,17 +68,47 @@ public class Utils {
     }
     
     
+    public static Collection<Field> allFields(Class<?> cls) {
+        Collection<Field> collection = new HashSet<Field>();
+        
+        while (cls != null) {
+            for (Field f : cls.getDeclaredFields())
+                collection.add(f);
+            cls = cls.getSuperclass();
+        }
+        
+        return collection;
+    }
+    
+    
     /**
-     * Returns collection of fields annotated by the {@link cz.zcu.kiv.formgen.annotation.FormItem FormItem} annotation.
+     * Returns the first field of the class cls marked with the given annotation or null.
      * 
      * @param cls - the class
+     * @param annotationClass - the class of the annotation
+     * @return an annotated field or null
+     */
+    public static Field annotatedField(Class<?> cls, Class<? extends Annotation> annotationClass) {
+        for (Field f : allFields(cls)) {
+            if (f.isAnnotationPresent(annotationClass))
+                return f;
+        }
+        return null;
+    }
+    
+    
+    /**
+     * Returns collection containing fields of class cls marked with the given annotation.
+     * 
+     * @param cls - the class
+     * @param annotationClass - the class of the annotation
      * @return collection of annotated fields
      */
-    public static Collection<Field> formItemFields(Class<?> cls) {
-        Collection<Field> collection = new Vector<Field>();
+    public static Collection<Field> annotatedFields(Class<?> cls, Class<? extends Annotation> annotationClass) {
+        Collection<Field> collection = new HashSet<Field>();
         
-        for (Field f : cls.getDeclaredFields()) {
-            if (f.isAnnotationPresent(cz.zcu.kiv.formgen.annotation.FormItem.class))
+        for (Field f : allFields(cls)) {
+            if (f.isAnnotationPresent(annotationClass))
                 collection.add(f);
         }
         
@@ -86,17 +117,17 @@ public class Utils {
     
     
     public static Object fieldValue(Field field, Object obj) {
-        field.setAccessible(true);
+        // check and set the accessibility 
+        if (!Modifier.isPublic(field.getModifiers()))
+            field.setAccessible(true);
+        
         Object value = null;
         
+        // try to get the value
         try {
             value = field.get(obj);
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error("Cannot read the value of given field.", e);
         }
         
         return value;

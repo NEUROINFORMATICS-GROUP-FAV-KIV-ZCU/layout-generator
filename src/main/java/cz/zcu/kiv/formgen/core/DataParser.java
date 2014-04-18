@@ -27,6 +27,8 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormData;
@@ -41,7 +43,10 @@ import cz.zcu.kiv.formgen.model.FormDataItem;
 public class DataParser {
     
     /** Type mapper object. */
-    protected TypeMapper mapper = new TypeMapper();
+    private final TypeMapper mapper = new TypeMapper();
+    
+    /** Logger. */
+    final Logger logger = LoggerFactory.getLogger(DataParser.class);
     
     // TODO jen testovaci
     private int counter = 0;
@@ -64,23 +69,13 @@ public class DataParser {
         
         FormData form = new FormData(obj.getClass().getSimpleName(), formName);
         
-        for (Field f : obj.getClass().getDeclaredFields()) {
-            if (f.isAnnotationPresent(FormId.class)) {
-                f.setAccessible(true);
-                try {
-                    form.setId(f.get(obj));
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                break;
-            }
+        Field idField = ReflectionUtils.annotatedField(obj.getClass(), FormId.class);
+        if (idField != null) {
+            idField.setAccessible(true);
+            form.setId(ReflectionUtils.fieldValue(idField, obj));
         }
         
-        for (Field f : Utils.formItemFields(obj.getClass())) {
+        for (Field f : ReflectionUtils.annotatedFields(obj.getClass(), cz.zcu.kiv.formgen.annotation.FormItem.class)) {
             if (mapper.isSimpleType(f.getType())) {
                 FormDataItem item = createDataField(f, obj);
                 form.addItem(item);
@@ -88,7 +83,7 @@ public class DataParser {
                 FormDataItem set = createDataSet(f, obj);
                 form.addItem(set);
             } else {
-                FormData subform = _parse(Utils.fieldValue(f, obj), f.getName());
+                FormData subform = _parse(ReflectionUtils.fieldValue(f, obj), f.getName());
                 form.addItem(subform);
             }
         }
@@ -100,7 +95,7 @@ public class DataParser {
     private FormDataItem createDataSet(Field field, Object obj) {
         String name = field.getName();
         
-        Collection<?> collection = (Collection<?>) Utils.fieldValue(field, obj);
+        Collection<?> collection = (Collection<?>) ReflectionUtils.fieldValue(field, obj);
         if (collection == null || collection.isEmpty())
             return null;
         
@@ -124,7 +119,7 @@ public class DataParser {
 
 
     private FormDataField createDataField(Field f, Object obj) {
-        Object value = Utils.fieldValue(f, obj);
+        Object value = ReflectionUtils.fieldValue(f, obj);
         FormDataField dataField = new FormDataField(f.getType().getSimpleName(), f.getName());
         dataField.setValue(value);
         return dataField;
