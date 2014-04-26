@@ -51,8 +51,8 @@ public class Person {
     private int age;
     
     @FormItem
-    //private Set<Address> addresses = new HashSet<Address>();
-    private Set<Address> addresses;
+    private Set<Address> addresses = new HashSet<Address>();
+    //private Set<Address> addresses;
     
     @FormItem
     private boolean clever;

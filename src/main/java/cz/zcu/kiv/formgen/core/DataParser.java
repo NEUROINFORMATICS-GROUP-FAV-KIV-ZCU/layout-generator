@@ -51,6 +51,8 @@ public class DataParser {
     // TODO jen testovaci
     private int counter = 0;
     
+    private boolean includeReferences;
+    
     
     /**
      * Parses the given POJO and creates a new {@link FormData} model.
@@ -58,7 +60,8 @@ public class DataParser {
      * @param obj - the POJO to be parsed
      * @return the newly created {@link Form} object
      */
-    public FormData parse(Object obj) {
+    public FormData parse(Object obj, boolean includeReferences) {
+        this.includeReferences = includeReferences;
         return _parse(obj, obj.getClass().getSimpleName() + "_" + (++counter));
     }
     
@@ -72,7 +75,7 @@ public class DataParser {
         Field idField = ReflectionUtils.annotatedField(obj.getClass(), FormId.class);
         if (idField != null) {
             idField.setAccessible(true);
-            form.setId(ReflectionUtils.fieldValue(idField, obj));
+            form.setId(ReflectionUtils.value(idField, obj));
         }
         
         for (Field f : ReflectionUtils.annotatedFields(obj.getClass(), cz.zcu.kiv.formgen.annotation.FormItem.class)) {
@@ -82,8 +85,11 @@ public class DataParser {
             } else if (Collection.class.isAssignableFrom(f.getType())) {
                 FormDataItem set = createDataSet(f, obj);
                 form.addItem(set);
+            } else if (!includeReferences) {
+                FormData reference = createDataReference(f, obj);
+                form.addItem(reference);
             } else {
-                FormData subform = _parse(ReflectionUtils.fieldValue(f, obj), f.getName());
+                FormData subform = _parse(ReflectionUtils.value(f, obj), f.getName());
                 form.addItem(subform);
             }
         }
@@ -95,7 +101,7 @@ public class DataParser {
     private FormDataItem createDataSet(Field field, Object obj) {
         String name = field.getName();
         
-        Collection<?> collection = (Collection<?>) ReflectionUtils.fieldValue(field, obj);
+        Collection<?> collection = (Collection<?>) ReflectionUtils.value(field, obj);
         if (collection == null || collection.isEmpty())
             return null;
         
@@ -107,6 +113,12 @@ public class DataParser {
                 FormDataField formField = new FormDataField(o.getClass().getSimpleName(), name + "[" + index++ + "]");
                 formField.setValue(o);
                 dataSet.addItem(formField);
+            } else if (!includeReferences) {
+                FormData reference = new FormData(o.getClass().getSimpleName(), name + "[" + index++ + "]");
+                Field idField = ReflectionUtils.annotatedField(o.getClass(), FormId.class);
+                Object id = ReflectionUtils.value(idField, o);
+                reference.setId(id);
+                dataSet.addItem(reference);
             } else {
                 FormData form = _parse(o, name + "[" + index++ + "]");
                 dataSet.addItem(form);   
@@ -119,10 +131,25 @@ public class DataParser {
 
 
     private FormDataField createDataField(Field f, Object obj) {
-        Object value = ReflectionUtils.fieldValue(f, obj);
+        Object value = ReflectionUtils.value(f, obj);
         FormDataField dataField = new FormDataField(f.getType().getSimpleName(), f.getName());
         dataField.setValue(value);
         return dataField;
+    }
+    
+    
+    private FormData createDataReference(Field field, Object obj) {
+        Object value = ReflectionUtils.value(field, obj);
+        if (value != null) {
+            FormData reference = new FormData(field.getType().getSimpleName(), field.getName());
+            Field idField = ReflectionUtils.annotatedField(value.getClass(), FormId.class);
+            Object id = ReflectionUtils.value(idField, value);
+            reference.setId(id);
+            return reference;
+        } else {
+            // TODO logger
+            return null;
+        }
     }
    
 

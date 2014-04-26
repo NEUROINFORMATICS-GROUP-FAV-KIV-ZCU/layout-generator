@@ -25,6 +25,7 @@
 
 package cz.zcu.kiv.formgen;
 
+import java.util.Collection;
 import cz.zcu.kiv.formgen.model.FormData;
 
 
@@ -35,5 +36,8 @@ import cz.zcu.kiv.formgen.model.FormData;
  */
 public interface DataGenerator extends Generator<Object, FormData> {
     
+    FormData load(Object dataEntity, boolean includeReferences);
+    
+    Collection<FormData> load(Collection<Object> data, boolean includeReferences);
 
 }

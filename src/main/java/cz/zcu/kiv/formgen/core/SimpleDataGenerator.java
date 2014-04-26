@@ -46,29 +46,35 @@ public class SimpleDataGenerator implements DataGenerator {
     
 
     @Override
-    public FormData load(Object object) throws FormNotFoundException {
-        FormData data = null;
-        
-        if (ReflectionUtils.annotation(object, cz.zcu.kiv.formgen.annotation.Form.class) != null) {
-            data = parser.parse(object);
-            loadedData.add(data);
-        } else {
-            throw new FormNotFoundException();
-        }
-        
-        return data;
+    public FormData load(Object dataEntity) {
+        return load(dataEntity, true);
     }
 
 
     
     @Override
-    public Collection<FormData> load(Collection<Object> objects) throws FormNotFoundException {
-        Collection<FormData> data = new HashSet<FormData>(objects.size());
-        
-        for (Object obj : objects)
-            data.add(load(obj));
-        
+    public Collection<FormData> load(Collection<Object> data) {
+        return load(data, true);
+    }
+    
+    
+    @Override
+    public FormData load(Object dataEntity, boolean includeReferences) {
+        FormData data =  parser.parse(dataEntity, includeReferences);
+        loadedData.add(data);
         return data;
+    }
+
+
+
+    @Override
+    public Collection<FormData> load(Collection<Object> data, boolean includeReferences) {
+        Collection<FormData> model = new HashSet<FormData>(data.size());
+        
+        for (Object obj : data)
+            model.add(load(obj, includeReferences));
+        
+        return model;
     }
 
 

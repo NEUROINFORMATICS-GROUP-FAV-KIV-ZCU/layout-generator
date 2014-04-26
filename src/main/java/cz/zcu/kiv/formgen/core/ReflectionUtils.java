@@ -27,6 +27,7 @@ package cz.zcu.kiv.formgen.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -116,21 +117,41 @@ public class ReflectionUtils {
     }
     
     
-    public static Object fieldValue(Field field, Object obj) {
-        // check and set the accessibility 
-        if (!Modifier.isPublic(field.getModifiers()))
-            field.setAccessible(true);
+    public static Object value(Field field, Object obj) {
+        if (field == null || obj == null)
+            return null;
         
-        Object value = null;
-        
-        // try to get the value
+        // first try to get the value using the getter method
         try {
-            value = field.get(obj);
+            Method getter = obj.getClass().getMethod(getterName(field));
+            return getter.invoke(obj);
+            
         } catch (Exception e) {
-            logger.error("Cannot read the value of given field.", e);
+            // try to get the value directly
+            logger.info("Cannot read the value using the getter method " + getterName(field));
+            
+            // check and set the accessibility 
+            if (!Modifier.isPublic(field.getModifiers()))
+                field.setAccessible(true);
+            try {
+                return field.get(obj);
+            } catch (Exception e2) {
+                logger.error("Cannot read the value of given field.", e2);
+            }
         }
         
-        return value;
+        return null;
+    }
+    
+    
+    private static String getterName(Field field) {
+        String prefix;
+        if (Boolean.TYPE.equals(field.getType()) || Boolean.class.equals(field.getType()))
+            prefix = "is";
+        else
+            prefix = "get";
+        
+        return prefix + Character.toUpperCase(field.getName().charAt(0)) + field.getName().substring(1);
     }
 
 }

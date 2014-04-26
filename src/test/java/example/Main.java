@@ -90,7 +90,7 @@ public class Main {
         person.setBirth(new Date());
         
         SimpleDataGenerator generator = new SimpleDataGenerator();
-        generator.load(person);
+        generator.load(person, false);
         Collection<FormData> formData = generator.getLoadedModel();
         
         Writer writer = new OdmlWriter();
