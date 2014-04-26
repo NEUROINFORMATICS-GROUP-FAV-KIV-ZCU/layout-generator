@@ -26,6 +26,7 @@
 package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,9 +49,7 @@ public class DataParser {
     /** Logger. */
     final Logger logger = LoggerFactory.getLogger(DataParser.class);
     
-    // TODO jen testovaci
-    private int counter = 0;
-    
+    /** Parse referenced objects as well? */
     private boolean includeReferences;
     
     
@@ -62,7 +61,7 @@ public class DataParser {
      */
     public FormData parse(Object obj, boolean includeReferences) {
         this.includeReferences = includeReferences;
-        return _parse(obj, obj.getClass().getSimpleName() + "_" + (++counter));
+        return _parse(obj, obj.getClass().getSimpleName() + "_" + getId(obj).toString());
     }
     
     
@@ -108,16 +107,15 @@ public class DataParser {
         FormData dataSet = new FormData("set", field.getName());
 
         int index = 0;
+        Class<?> type = ReflectionUtils.genericParameter((ParameterizedType) field.getGenericType());
         for (Object o : collection) {
             if (mapper.isSimpleType(o.getClass())) {
-                FormDataField formField = new FormDataField(o.getClass().getSimpleName(), name + "[" + index++ + "]");
+                FormDataField formField = new FormDataField(type.getSimpleName(), name + "[" + index++ + "]");
                 formField.setValue(o);
                 dataSet.addItem(formField);
             } else if (!includeReferences) {
-                FormData reference = new FormData(o.getClass().getSimpleName(), name + "[" + index++ + "]");
-                Field idField = ReflectionUtils.annotatedField(o.getClass(), FormId.class);
-                Object id = ReflectionUtils.value(idField, o);
-                reference.setId(id);
+                FormData reference = new FormData(type.getSimpleName(), name + "[" + index++ + "]");
+                reference.setId(getId(o));
                 dataSet.addItem(reference);
             } else {
                 FormData form = _parse(o, name + "[" + index++ + "]");
@@ -142,14 +140,18 @@ public class DataParser {
         Object value = ReflectionUtils.value(field, obj);
         if (value != null) {
             FormData reference = new FormData(field.getType().getSimpleName(), field.getName());
-            Field idField = ReflectionUtils.annotatedField(value.getClass(), FormId.class);
-            Object id = ReflectionUtils.value(idField, value);
-            reference.setId(id);
+            reference.setId(getId(value));
             return reference;
         } else {
             // TODO logger
             return null;
         }
+    }
+    
+    
+    private Object getId(Object entity) {
+        Field idField = ReflectionUtils.annotatedField(entity.getClass(), FormId.class);
+        return ReflectionUtils.value(idField, entity);
     }
    
 

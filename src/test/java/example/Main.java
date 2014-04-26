@@ -78,7 +78,7 @@ public class Main {
     
     
     private static void data() throws Exception {
-        Person person = new Person(0, "Thomas", 31, null);
+        Person person = new Person(99, "Thomas", 31, null);
         Address address = new Address(1, "Pilsen", "Zluticka", 26);
         Pokus pokus = new Pokus();
         pokus.setShortNumber((short) 20);
