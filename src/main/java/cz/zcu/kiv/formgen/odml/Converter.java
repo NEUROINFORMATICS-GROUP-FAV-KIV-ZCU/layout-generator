@@ -132,7 +132,6 @@ public class Converter {
         try {
             Section section = new Section(data.getName(), data.getType());
             if (data.getId() != null)
-                //section.setReference(data.getId().toString());
                 section.addProperty("id", data.getId().toString());
             addItems(section, data.getItems());
             return section;
@@ -192,8 +191,6 @@ public class Converter {
     public Set<FormData> odmlToDataModel(Section odmlRoot) throws OdmlConvertException {
         if (odmlRoot == null)
             return null;
-        
-        // TODO property id se nemapuje na field
         
         Set<FormData> data = new HashSet<FormData>();
         
@@ -268,7 +265,9 @@ public class Converter {
         FormData data = new FormData(section.getType(), section.getName());
         
         for (Property property : section.getProperties()) {
-            if (property.getValues().size() == 1) {
+            if (property.getName().equals("id")) {
+                data.setId(property.getValue());
+            } else if (property.getValues().size() == 1) {
                 FormDataField field = new FormDataField(property.getType(), property.getName());
                 field.setValue(property.getValue());
                 data.addItem((FormDataItem) field);
@@ -407,7 +406,6 @@ public class Converter {
                 FormData form = (FormData) item;
                 Section subsection = new Section(form.getName(), form.getType());
                 if (form.getId() != null)
-                    //subsection.setReference(form.getId().toString());
                     subsection.addProperty("id", form.getId().toString());
                 addItems(subsection, form.getItems());
                 section.add(subsection);

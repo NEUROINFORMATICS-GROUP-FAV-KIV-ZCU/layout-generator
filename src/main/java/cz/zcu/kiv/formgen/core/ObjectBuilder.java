@@ -49,19 +49,9 @@ public class ObjectBuilder {
     final Logger logger = LoggerFactory.getLogger(ObjectBuilder.class);
     
     
+    @SuppressWarnings("unchecked")
     public <T> T build(FormData formData, Class<T> type) throws ObjectBuilderException {
-        T obj = null;
-        
-        try {
-            obj = type.newInstance();
-            fill(obj, formData);
-        } catch (Exception e) {
-            final String message = "Can not create instance of " + type.getName();
-            logger.error(message, e);
-            throw new ObjectBuilderException(message, e);
-        }
-        
-        return obj;
+        return (T) createInstance(type, formData);
     }
     
     
@@ -89,6 +79,7 @@ public class ObjectBuilder {
                 FormData data = (FormData) item;
                 
                 if (FormData.SET.equals(data.getType())) {
+                    // create collection
                     if (!(field.getGenericType() instanceof ParameterizedType))
                         throw new ObjectBuilderException("Cannot create a non-parameterized collection.");
                     Class<?> innerType = ReflectionUtils.genericParameter((ParameterizedType) field.getGenericType());
@@ -101,15 +92,11 @@ public class ObjectBuilder {
                     }
                     
                     if (data.getItems().iterator().next() instanceof FormData) {
-                        for (FormDataItem inner : data.getItems()) {
-                            Object o = innerType.newInstance();
-                            fill(o, (FormData) inner);
-                            collection.add(o);
-                        }
+                        for (FormDataItem inner : data.getItems())
+                            collection.add(createInstance(innerType, (FormData) inner));
                     } else {
                         for (FormDataItem inner : data.getItems()) {
                             Object value = ((FormDataField) inner).getValue();
-                            
                             // convert to appropriate number type
                             if (TypeMapper.isNumberType(innerType))
                                 value = toNumber(value, innerType);
@@ -117,9 +104,7 @@ public class ObjectBuilder {
                         }
                     }
                 } else {
-                    Object o = field.getType().newInstance();
-                    fill(o, (FormData) item);
-                    field.set(obj, o);
+                    field.set(obj, createInstance(field.getType(), (FormData) item));
                 }
                 
                 
@@ -177,6 +162,23 @@ public class ObjectBuilder {
             return new ArrayList();
         
         return null;
+    }
+    
+    
+    
+    protected Object createInstance(Class<?> type, FormData data) throws ObjectBuilderException {
+        Object instance = null;
+        
+        try {
+            instance = type.newInstance();
+            fill(instance, data);
+        } catch (Exception e) {
+            final String message = "Cannot create instance of " + type.getName();
+            logger.error(message, e);
+            throw new ObjectBuilderException(message, e);
+        }
+        
+        return instance;
     }
 
     

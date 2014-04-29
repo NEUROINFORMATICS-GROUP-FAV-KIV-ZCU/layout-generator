@@ -161,7 +161,8 @@ public class Person {
         builder.append("\nage: " + age);
         builder.append("\nclever: " + clever);
         builder.append("\nbirth: " + birth);
-        builder.append("\naddress: " + address.toString());
+        if (address != null)
+            builder.append("\naddress: " + address.toString());
         builder.append("\naddresses:");
         for (Address a : addresses)
             builder.append("\n    " + a.toString());
