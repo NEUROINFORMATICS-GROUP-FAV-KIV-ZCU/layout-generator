@@ -19,14 +19,12 @@
  *
  ***********************************************************************************************************************
  *
- * PersistentObjectBuilder.java, 29. 4. 2014 15:45:05 Jakub Krauz
+ * ObjectBuilder.java, 29. 4. 2014 16:57:13 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.core;
+package cz.zcu.kiv.formgen;
 
-import cz.zcu.kiv.formgen.ObjectBuilderException;
-import cz.zcu.kiv.formgen.PersistentObjectProvider;
 import cz.zcu.kiv.formgen.model.FormData;
 
 
@@ -34,33 +32,8 @@ import cz.zcu.kiv.formgen.model.FormData;
  *
  * @author Jakub Krauz
  */
-public class PersistentObjectBuilder<PK> extends SimpleObjectBuilder {
+public interface ObjectBuilder {
     
-    private PersistentObjectProvider<PK> provider;
-
-    
-    /**
-     * 
-     */
-    public PersistentObjectBuilder(PersistentObjectProvider<PK> provider) {
-        this.provider = provider;
-    }
-    
-    
-    
-    @Override
-    protected Object createInstance(Class<?> type, FormData data) throws ObjectBuilderException {
-        if (data.getId() != null) {
-            try {
-                return provider.getById(type, (PK) data.getId());
-            } catch (Exception e) {
-                final String message = "Cannot get persistent object " + type.getName();
-                logger.error(message, e);
-                throw new ObjectBuilderException(message, e);
-            }
-        } else {
-            return super.createInstance(type, data);
-        }
-    }
+    <T> T build(FormData data, Class<T> type) throws ObjectBuilderException;
 
 }

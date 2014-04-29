@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import cz.zcu.kiv.formgen.ObjectBuilder;
+import cz.zcu.kiv.formgen.ObjectBuilderException;
 import cz.zcu.kiv.formgen.model.FormData;
 import cz.zcu.kiv.formgen.model.FormDataField;
 import cz.zcu.kiv.formgen.model.FormDataItem;
@@ -43,10 +45,10 @@ import cz.zcu.kiv.formgen.model.FormDataItem;
  *
  * @author Jakub Krauz
  */
-public class ObjectBuilder {
+public class SimpleObjectBuilder implements ObjectBuilder {
     
     /** Logger. */
-    final Logger logger = LoggerFactory.getLogger(ObjectBuilder.class);
+    final Logger logger = LoggerFactory.getLogger(SimpleObjectBuilder.class);
     
     
     @SuppressWarnings("unchecked")

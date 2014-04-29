@@ -23,9 +23,8 @@
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.core;
+package cz.zcu.kiv.formgen;
 
-import cz.zcu.kiv.formgen.LayoutGeneratorException;
 
 
 /**
