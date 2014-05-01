@@ -34,6 +34,8 @@ import cz.zcu.kiv.formgen.model.FormData;
  */
 public interface ObjectBuilder {
     
-    <T> T build(FormData data, Class<T> type) throws ObjectBuilderException;
+    Object build(FormData data, Class<?> type) throws ObjectBuilderException;
+
+    <T> T buildTyped(FormData data, Class<T> type) throws ObjectBuilderException;
 
 }

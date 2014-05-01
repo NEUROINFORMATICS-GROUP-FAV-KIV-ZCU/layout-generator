@@ -35,9 +35,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import cz.zcu.kiv.formgen.LayoutGenerator;
+import cz.zcu.kiv.formgen.PersistentObjectException;
+import cz.zcu.kiv.formgen.PersistentObjectProvider;
 import cz.zcu.kiv.formgen.Reader;
 import cz.zcu.kiv.formgen.Writer;
-import cz.zcu.kiv.formgen.core.ObjectBuilder;
+import cz.zcu.kiv.formgen.core.SimpleObjectBuilder;
+import cz.zcu.kiv.formgen.core.PersistentObjectBuilder;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.core.SimpleDataGenerator;
 import cz.zcu.kiv.formgen.model.Form;
@@ -100,7 +103,7 @@ public class Main {
         
         
         /* load back */
-        InputStream in = new FileInputStream("odml/pokus.odml");
+        InputStream in = new FileInputStream("odml/pokus2.odml");
         Reader reader = new OdmlReader();
         Set<FormData> data = reader.readData(in);
         
@@ -109,8 +112,9 @@ public class Main {
         System.out.println("************************");
         
         /* build data object */
-        ObjectBuilder builder = new ObjectBuilder();
-        Person tmp = builder.build(data.iterator().next(), Person.class);
+        //ObjectBuilder builder = new ObjectBuilder();
+        SimpleObjectBuilder builder = new PersistentObjectBuilder<Integer>(new SampleProvider());
+        Person tmp = builder.buildTyped(data.iterator().next(), Person.class);
         
         System.out.println("******* Person built *********");
         System.out.println(tmp.toString());
@@ -145,6 +149,27 @@ public class Main {
         stream = new FileOutputStream("odml/data.odml");
         writer.writeData(forms, stream);
         stream.close();
+    }
+    
+    
+    
+    private static class SampleProvider implements PersistentObjectProvider<Integer> {
+
+        @Override
+        public Object getById(Class<?> cls, Integer id) throws PersistentObjectException {
+            Object o = null;
+            
+            if (cls.equals(Person.class)) {
+                o = new Person(id, "jmeno-" + id, id, null);
+            } else if (cls.equals(Address.class)) {
+                o = new Address(id, "town-" + id, "street-" + id, id);
+            } else if (cls.equals(Pokus.class)) {
+                o = new Pokus();
+            }
+            
+            return o;
+        }
+        
     }
     
 

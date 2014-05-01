@@ -51,8 +51,13 @@ public class SimpleObjectBuilder implements ObjectBuilder {
     final Logger logger = LoggerFactory.getLogger(SimpleObjectBuilder.class);
     
     
+    public Object build(FormData formData, Class<?> type) throws ObjectBuilderException {
+        return createInstance(type, formData);
+    }
+    
+    
     @SuppressWarnings("unchecked")
-    public <T> T build(FormData formData, Class<T> type) throws ObjectBuilderException {
+    public <T> T buildTyped(FormData formData, Class<T> type) throws ObjectBuilderException {
         return (T) createInstance(type, formData);
     }
     
