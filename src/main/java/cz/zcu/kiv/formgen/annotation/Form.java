@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -32,9 +32,9 @@ import java.lang.annotation.Target;
 
 
 /**
- * This annotation is used to mark POJO classes that should be transformed
- * to a form. Every annotated class is transformed to a separate form.
- * If you want to compose a form from several classes see {@link MultiForm}.
+ * This annotation is used to mark POJO classes for which the tool will
+ * generate a form. Every annotated class is transformed to a separate form.
+ * If you want to compose a form from several classes, use {@link MultiForm}.
  *
  * @author Jakub Krauz
  */

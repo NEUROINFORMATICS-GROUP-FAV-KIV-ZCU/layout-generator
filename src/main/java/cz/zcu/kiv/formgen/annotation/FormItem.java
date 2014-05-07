@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -32,7 +32,8 @@ import java.lang.annotation.Target;
 
 
 /**
- * This annotations marks POJO members that should be transformed to form items.
+ * This annotation is used to mark fields that should be included
+ * in a generated form template.
  *
  * @author Jakub Krauz
  */
@@ -43,9 +44,14 @@ public @interface FormItem {
     /** Label of the form item. */
     String label() default "";
     
-    /** True marks the form item requierd, i.e. it must be filled. */
+    /** Whether the item must be filled, or can be left blank. */
     boolean required() default false;
     
+    /**
+     * Sets the preview of a data record. Every form can have
+     * one {@link PreviewLevel#MAJOR MAJOR} preview item and
+     * one {@link PreviewLevel#MINOR MINOR} preview item.
+     */
     PreviewLevel preview() default PreviewLevel.NONE;
 
 }

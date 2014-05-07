@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -32,7 +32,9 @@ import java.lang.annotation.Target;
 
 
 /**
- *
+ * This annotation marks the ID field of a data entity. It is necessary
+ * for the form data transfer.
+ * 
  * @author Jakub Krauz
  */
 @Retention(RetentionPolicy.RUNTIME)

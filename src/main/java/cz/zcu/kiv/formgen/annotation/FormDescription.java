@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -32,8 +32,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * This annotation is used to add a description to a form defined by the annotated
- * POJO class.
+ * Defines a description of a form that will be generated from the annotated class.
  *
  * @author Jakub Krauz
  */

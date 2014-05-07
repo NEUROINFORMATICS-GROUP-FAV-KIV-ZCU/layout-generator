@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * This annotation is used to add restrictions to form items.
+ * Adds restrictions to form items.
  *
  * @author Jakub Krauz
  */
@@ -40,16 +40,16 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface FormItemRestriction {
     
-    /** The minimum length of the field. */
+    /** The minimum length of the input value. */
     int minLength() default -1;
     
-    /** The maximum length of the field. */
+    /** The maximum length of the input value. */
     int maxLength() default -1;
     
-    /** The minimum value (for numbers only). */
+    /** The minimum numeric value (for numbers only). */
     double minValue() default Double.NaN;
     
-    /** The maximum value (for numbers only). */
+    /** The maximum numeric value (for numbers only). */
     double maxValue() default Double.NaN;
     
     /** Default value (for text items only). */

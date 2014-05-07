@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,6 +27,14 @@ package cz.zcu.kiv.formgen.annotation;
 
 
 /**
+ * Enumeration of possible preview levels.
+ * 
+ * <p>
+ * Preview level of a form item is used to determine which values will
+ * be shown in a list of data records. Every data entity should have
+ * one MAJOR level preview item and one MINOR level preview item. The others
+ * should have the NONE preview level.
+ * </p>
  *
  * @author Jakub Krauz
  */

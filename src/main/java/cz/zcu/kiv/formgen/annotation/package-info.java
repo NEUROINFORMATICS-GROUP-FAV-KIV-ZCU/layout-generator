@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -24,7 +24,7 @@
  **********************************************************************************************************************/
 
 /**
- * Contains annotations used to mark POJO objects that should be processed.
+ * Contains data model annotations.
  * 
  * @author Jakub Krauz
  */

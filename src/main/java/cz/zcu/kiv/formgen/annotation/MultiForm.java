@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * MultipleForm.java, 22. 2. 2014 17:25:57 Jakub Krauz
+ * MultiForm.java, 22. 2. 2014 17:25:57 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -32,8 +32,8 @@ import java.lang.annotation.Target;
 
 
 /**
- * This annotation is used to mark several POJO classes that should be transformed
- * to one (multiple) form. Note the diference from {@link Form} which maps one class
+ * This annotation is used to mark several POJO classes for which the tool will generate
+ * just one (multiple) form. Note the diference from {@link Form} which maps one class
  * to one form.
  *
  * @author Jakub Krauz
@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
 public @interface MultiForm {
     
     /** Name of the form. It identifies the form, i.e. it must have exactly the same
-     * value for all classes that shall be transformed to one form. */
+     * value for all classes that will be included in the same form. */
     String value();
     
     /** Label of the form. */
