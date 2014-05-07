@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -26,22 +26,33 @@
 package cz.zcu.kiv.formgen;
 
 
-
 /**
- *
+ * Exception indicating an error in {@link ObjectBuilder}.
+ * 
  * @author Jakub Krauz
  */
-public class ObjectBuilderException extends LayoutGeneratorException {
-    
+public class ObjectBuilderException extends TemplateGeneratorException {
 
+    /** Default serial version UID. */
     private static final long serialVersionUID = 1L;
 
 
+    /**
+     * Creates a new exception with the specified detail message.
+     * 
+     * @param message The detail message.
+     */
     public ObjectBuilderException(String message) {
         super(message);
     }
-    
-    
+
+
+    /**
+     * Creates a new exception with the specified detail message and cause.
+     * 
+     * @param message The detail message.
+     * @param cause The cause.
+     */
     public ObjectBuilderException(String message, Throwable cause) {
         super(message, cause);
     }

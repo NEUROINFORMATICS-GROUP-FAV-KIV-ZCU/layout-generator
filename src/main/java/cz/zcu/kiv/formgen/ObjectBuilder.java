@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -29,13 +29,37 @@ import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
- *
+ * Provides the facility to build data objects from a corresponding {@link FormData} model.
+ * 
  * @author Jakub Krauz
  */
 public interface ObjectBuilder {
+
     
+    /**
+     * Builds a data object of the given <code>type</code> from the given {@link FormData} object.
+     * 
+     * @param data The FormData model object.
+     * @param type The runtime class of the data object to be built.
+     * @return The built data object.
+     * @throws ObjectBuilderException If the data object cannot be built.
+     */
     Object build(FormData data, Class<?> type) throws ObjectBuilderException;
 
+
+    /**
+     * Builds a data object of the given <code>type</code> from the given {@link FormData} object.
+     * <p>
+     * This method is similar to {@link #build(FormData, Class)} except this one returns the
+     * data object typed to its instantiating class instead of the java.lang.Object class. This
+     * requires the class to be known at compile time.
+     * </p>
+     * 
+     * @param data The FormData model object.
+     * @param type The runtime class of the data object to be built.
+     * @return The built data object.
+     * @throws ObjectBuilderException If the data object cannot be built.
+     */
     <T> T buildTyped(FormData data, Class<T> type) throws ObjectBuilderException;
 
 }

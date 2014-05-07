@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,11 +27,20 @@ package cz.zcu.kiv.formgen;
 
 
 /**
+ * Retrieves persistent objects.
  *
  * @author Jakub Krauz
  */
 public interface PersistentObjectProvider<PK> {
     
+    /**
+     * Retrieves a persistent object by its ID.
+     * 
+     * @param cls The runtime class of the persistent object.
+     * @param id The ID of the persistent object.
+     * @return The required persistent object.
+     * @throws PersistentObjectException If the required persistent object cannot be retrieved.
+     */
     Object getById(Class<?> cls, PK id) throws PersistentObjectException;
 
 }

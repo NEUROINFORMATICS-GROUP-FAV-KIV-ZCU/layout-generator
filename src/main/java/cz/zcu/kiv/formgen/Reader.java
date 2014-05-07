@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -32,7 +32,7 @@ import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
- * Reader of the model from a transport serialization format.
+ * Reads an internal {@link Form} or {@link FormData} model from a transport format.
  *
  * @author Jakub Krauz
  */
@@ -40,16 +40,24 @@ public interface Reader {
     
     
     /**
-     * Reads the serialization from the specified input stream and
-     * returns the internal model.
+     * Reads the form layout serialization from the specified input stream and
+     * returns the internal {@link Form} model.
      * 
-     * @param stream - input stream with the serialization
-     * @return internal model
-     * @throws LayoutGeneratorException if an error occured while reading the serialization
+     * @param stream Input stream with the serialization.
+     * @return The {@link Form} object.
+     * @throws TemplateGeneratorException If an error occured while reading the serialization.
      */
-    Form readLayout(InputStream stream) throws LayoutGeneratorException;
+    Form readLayout(InputStream stream) throws TemplateGeneratorException;
     
     
-    Set<FormData> readData(InputStream stream) throws LayoutGeneratorException;
+    /**
+     * Reads the form data serialization from the specified input stream and
+     * returns the internal {@link FormData} model.
+     * 
+     * @param stream Input stream with the serialization.
+     * @return The corresponsing {@link FormData} objects.
+     * @throws TemplateGeneratorException If an error occured while reading the serialization.
+     */
+    Set<FormData> readData(InputStream stream) throws TemplateGeneratorException;
 
 }

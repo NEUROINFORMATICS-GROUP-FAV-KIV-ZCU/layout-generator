@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * LayoutGeneratorException.java, 2. 3. 2014 20:54:16 Jakub Krauz
+ * TemplateGeneratorException.java, 2. 3. 2014 20:54:16 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -32,31 +32,29 @@ package cz.zcu.kiv.formgen;
  *
  * @author Jakub Krauz
  */
-public class LayoutGeneratorException extends Exception {
+public class TemplateGeneratorException extends Exception {
     
     /** The serial version UID (default value). */
     protected static final long serialVersionUID = 1L;
 
 
     /**
-     * Constructor.
      * Creates a new exception with the specified detail message.
      * 
-     * @param message - the detail message
+     * @param message The detail message
      */
-    public LayoutGeneratorException(String message) {
+    public TemplateGeneratorException(String message) {
         super(message);
     }
     
     
     /**
-     * Constructor.
      * Creates a new exception with the specified detail message and cause.
      * 
-     * @param message - the detail message
-     * @param cause - the cause
+     * @param message The detail message.
+     * @param cause The cause.
      */
-    public LayoutGeneratorException(String message, Throwable cause) {
+    public TemplateGeneratorException(String message, Throwable cause) {
         super(message, cause);
     }
 

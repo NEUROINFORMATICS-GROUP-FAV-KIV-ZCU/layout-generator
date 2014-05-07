@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -29,33 +29,47 @@ import java.util.Collection;
 
 
 /**
- * Interface that enables to control the generator tool.
- *
+ * Enables to control the generator tool.
+ * 
  * @author Jakub Krauz
  */
 public interface Generator<T, U> {
-    
-    
-    U load(T object) throws FormNotFoundException;
-    
-    
+
+
     /**
-     * Parses the given object(s) and creates an appropriate model.
+     * Parses the given object and creates an appropriate model.
      * 
-     * @param objects - object(s) to be parsed
-     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found in any of parsed objects
+     * @param object The object to be parsed.
+     * @return The created model.
+     * @throws FormNotFoundException If the {@link cz.zcu.kiv.formgen.annotation.Form @Form}
+     *          annotation was not found.
+     */
+    U load(T object) throws FormNotFoundException;
+
+
+    /**
+     * Parses the given collection of objects and creates an appropriate model.
+     * 
+     * @param objects The collection of objects to be parsed.
+     * @return The created model.
+     * @throws FormNotFoundException If no {@link cz.zcu.kiv.formgen.annotation.Form @Form}
+     *          was found in any of parsed objects.
      */
     Collection<U> load(Collection<T> objects) throws FormNotFoundException;
-    
-    
+
+
     /**
-     * Gets all form models.
+     * Gets all model obejcts loaded since the construction of this object or since
+     * the last call of {@link #clearModel()}.
      * 
-     * @return all form models
+     * @return The complete loaded model.
      */
     Collection<U> getLoadedModel();
-    
-    
+
+
+    /**
+     * Clear the loaded model.
+     */
     void clearModel();
 
 }

@@ -25,14 +25,14 @@
 
 package cz.zcu.kiv.formgen.odml;
 
-import cz.zcu.kiv.formgen.LayoutGeneratorException;
+import cz.zcu.kiv.formgen.TemplateGeneratorException;
 
 
 /**
  *
  * @author Jakub Krauz
  */
-public class OdmlException extends LayoutGeneratorException {
+public class OdmlException extends TemplateGeneratorException {
     
 
     private static final long serialVersionUID = 1L;

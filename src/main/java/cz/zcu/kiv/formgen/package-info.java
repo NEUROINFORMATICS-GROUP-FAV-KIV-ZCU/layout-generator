@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -24,8 +24,11 @@
  **********************************************************************************************************************/
 
 /**
- * This package contains mainly interfaces that define control of the tool.
- * Subpackages contain implementations.
+ * The root package of the layout-generator library.
+ * <p>
+ * This package defines the public API of the library.
+ * Its subpackages contain specific implementations of provided interfaces.
+ * </p>
  * 
  * @author Jakub Krauz
  */

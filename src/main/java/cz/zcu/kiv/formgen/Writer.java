@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -32,7 +32,7 @@ import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
- * Enables serialization of the specified internal model to the output stream.
+ * Writes a serialization of the {@link Form} or {@link FormData} model to an output stream.
  * 
  * @author Jakub Krauz
  */
@@ -40,19 +40,42 @@ public interface Writer {
     
     
     /**
-     * Writes the serialization of the internal model to the output stream.
+     * Writes the serialization of {@link Form} to the output stream.
      * 
-     * @param form - the internal model
-     * @param outputStream - the stream to which the model will be written
+     * @param form The {@link Form} model object.
+     * @param outputStream The output stream to which the serialization will be written.
+     * @throws TemplateGeneratorException If the serialization cannot be written to the output stream.
      */
-    void writeLayout(Form form, OutputStream outputStream) throws LayoutGeneratorException;
+    void writeLayout(Form form, OutputStream outputStream) throws TemplateGeneratorException;
     
     
-    void writeLayout(Collection<Form> forms, OutputStream outputStream) throws LayoutGeneratorException;
+    /**
+     * Writes the serialization of a collection of {@link Form} objects to the output stream.
+     * 
+     * @param forms Collection of {@link Form} objects.
+     * @param outputStream The output stream to which the serialization will be written.
+     * @throws TemplateGeneratorException If the serialization cannot be written to the output stream.
+     */
+    void writeLayout(Collection<Form> forms, OutputStream outputStream) throws TemplateGeneratorException;
     
     
-    void writeData(FormData data, OutputStream outputSteam) throws LayoutGeneratorException;
+    /**
+     * Writes the serialization of {@link FormData} to the output stream.
+     * 
+     * @param data The {@link FormData} model object.
+     * @param outputSteam The output stream to which the serialization will be written.
+     * @throws TemplateGeneratorException If the serialization cannot be written to the output stream.
+     */
+    void writeData(FormData data, OutputStream outputSteam) throws TemplateGeneratorException;
     
-    void writeData(Collection<FormData> data, OutputStream outputStream) throws LayoutGeneratorException;
+    
+    /**
+     * Writes the serialization of a collection of {@link FormData} objects to the output stream.
+     * 
+     * @param data The collection of {@link FormData} model objects.
+     * @param outputSteam The output stream to which the serialization will be written.
+     * @throws TemplateGeneratorException If the serialization cannot be written to the output stream.
+     */
+    void writeData(Collection<FormData> data, OutputStream outputStream) throws TemplateGeneratorException;
     
 }

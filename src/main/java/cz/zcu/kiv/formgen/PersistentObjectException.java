@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,16 +27,21 @@ package cz.zcu.kiv.formgen;
 
 
 /**
- *
+ * Exception thrown by {@link PersistentObjectProvider} if the required persistent
+ * object cannot be obtained.
+ * 
  * @author Jakub Krauz
  */
-public class PersistentObjectException extends LayoutGeneratorException {
+public class PersistentObjectException extends TemplateGeneratorException {
 
+    /** Serial version UID. */
     private static final long serialVersionUID = 6137436728780251071L;
 
 
     /**
-     * @param message
+     * Creates a new exception with the specified detail message.
+     * 
+     * @param message The detail message.
      */
     public PersistentObjectException(String message) {
         super(message);
@@ -44,8 +49,10 @@ public class PersistentObjectException extends LayoutGeneratorException {
 
 
     /**
-     * @param message
-     * @param cause
+     * Creates a new exception with the specified detail message and cause.
+     * 
+     * @param message The detail message.
+     * @param cause The cause.
      */
     public PersistentObjectException(String message, Throwable cause) {
         super(message, cause);

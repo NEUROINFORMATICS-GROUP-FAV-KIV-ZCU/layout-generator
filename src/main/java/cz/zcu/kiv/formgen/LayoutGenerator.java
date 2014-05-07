@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * FormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * LayoutGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -30,51 +30,80 @@ import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
- * Interface that enables user to control the layout-generator tool.
- *
+ * Controlls the process of form layouts generation.
+ * 
  * @author Jakub Krauz
  */
 public interface LayoutGenerator extends Generator<Class<?>, Form> {
-    
-    
+
+
     /**
-     * Parses the class with given name and creates appropriate model.
+     * Parses a class with the given name and creates an appropriate form model.
      * 
-     * @param names - name(s) of the class(es)
-     * @throws ClassNotFoundException if the class with the given name cannot be found
-     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on the given class
+     * @param name The fully-qualified name of a class to be parsed.
+     * @return The created {@link Form}.
+     * @throws ClassNotFoundException If the class with the given name cannot be found.
+     * @throws FormNotFoundException If the {@link cz.zcu.kiv.formgen.annotation.Form @Form}
+     *          annotation was not found in the given class.
      */
-    Form loadClass(String name) throws ClassNotFoundException, FormNotFoundException;
-    
-    Collection<Form> loadClasses(String[] names) throws ClassNotFoundException, FormNotFoundException;
-    
-    Collection<Form> loadClasses(Collection<String> names) throws ClassNotFoundException, FormNotFoundException;
-    
-    
+    Form loadClass(String name) throws ClassNotFoundException,
+                                       FormNotFoundException;
+
+
     /**
-     * Parses all classes in the given package.
+     * Parses all classes with the given names and creates appropriate form models.
      * 
-     * @param name - name of the package to be parsed
-     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on any class in the package
+     * @param names Array of fully-qualified names of classes to be parsed.
+     * @return Created {@link Form} objects.
+     * @throws ClassNotFoundException If any of the given classes cannot be found.
+     * @throws FormNotFoundException If the {@link cz.zcu.kiv.formgen.annotation.Form @Form}
+     *          annotation was not found in any of the given classes.
+     */
+    Collection<Form> loadClasses(String[] names) throws ClassNotFoundException,
+                                                        FormNotFoundException;
+
+
+    /**
+     * Parses all classes with the given names and creates appropriate form models.
+     * 
+     * @param names Collection of fully-qualified names of classes to be parsed.
+     * @return Created {@link Form} objects.
+     * @throws ClassNotFoundException If any of the given classes cannot be found.
+     * @throws FormNotFoundException If the {@link cz.zcu.kiv.formgen.annotation.Form @Form}
+     *          annotation was not found in any of the given classes.
+     */
+    Collection<Form> loadClasses(Collection<String> names) throws ClassNotFoundException,
+                                                                  FormNotFoundException;
+
+
+    /**
+     * Parses all classes in a package of the given name.
+     * 
+     * @param name Name of the package.
+     * @return Created {@link Form} objects.
+     * @throws FormNotFoundException If no class with the {@link cz.zcu.kiv.formgen.annotation.Form @Form}
+     *          annotation was found in the package.
      */
     Collection<Form> loadPackage(String name) throws FormNotFoundException;
-    
-    
+
+
     /**
      * Parses all classes in the given package.
      * 
-     * @param pack - the package to be parsed
-     * @throws FormNotFoundException if no {@link cz.zcu.kiv.formgen.annotation.Form @Form} was found on any class in the package
+     * @param pack The package to be parsed.
+     * @return Created {@link Form} objects.
+     * @throws FormNotFoundException If no class with the {@link cz.zcu.kiv.formgen.annotation.Form @Form}
+     *          annotation was found in the package.
      */
     Collection<Form> loadPackage(Package pack) throws FormNotFoundException;
-    
-    
+
+
     /**
-     * Gets the form model with the given name.
+     * Gets the {@link Form} model with the given name.
      * 
-     * @param name - name of the form model
-     * @return requested form model
+     * @param name Name of the form.
+     * @return Requested form model or null if not found.
      */
     Form getLoadedForm(String name);
-    
+
 }
