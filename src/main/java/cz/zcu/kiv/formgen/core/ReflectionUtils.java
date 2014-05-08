@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -38,14 +38,23 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * Provides some convenience methods to help with the Java Reflection API.
  *
  * @author Jakub Krauz
  */
 public class ReflectionUtils {
     
+    /** Logger. */
     static final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
     
     
+    /**
+     * Returns the generic parameter of a parameterized type, which must have just
+     * one such parameter. Otherwise null is returned.
+     * 
+     * @param type The parameterized type.
+     * @return The generic parameter or null.
+     */
     public static Class<?> genericParameter(ParameterizedType type) {
         Type[] parameters = type.getActualTypeArguments();
         if (parameters.length == 1 && parameters[0] instanceof Class) {
@@ -58,17 +67,12 @@ public class ReflectionUtils {
     
     
     /**
-     * Extracts the given annotation from the object.
+     * Returns collection of all member fields of the given class, i.e. declared
+     * in this class or in any of its superclasses.
      * 
-     * @param object the object
-     * @param annotationClass class of the annotation to be extracted
-     * @return extracted annotation or null
+     * @param cls The class object.
+     * @return Collection of all member fields.
      */
-    public static <A extends Annotation> A annotation(Object object, Class<A> annotationClass) {
-        return object.getClass().getAnnotation(annotationClass);
-    }
-    
-    
     public static Collection<Field> allFields(Class<?> cls) {
         Collection<Field> collection = new HashSet<Field>();
         
@@ -83,11 +87,12 @@ public class ReflectionUtils {
     
     
     /**
-     * Returns the first field of the class cls marked with the given annotation or null.
+     * Returns the first field of <code>cls</code> marked with the given annotation,
+     * or null if no such field can be found.
      * 
-     * @param cls - the class
-     * @param annotationClass - the class of the annotation
-     * @return an annotated field or null
+     * @param cls The class object.
+     * @param annotationClass The field annotation.
+     * @return Annotated field, or null if not found.
      */
     public static Field annotatedField(Class<?> cls, Class<? extends Annotation> annotationClass) {
         for (Field f : allFields(cls)) {
@@ -99,11 +104,11 @@ public class ReflectionUtils {
     
     
     /**
-     * Returns collection containing fields of class cls marked with the given annotation.
+     * Returns collection containing fields of <code>cls</code> marked with the given annotation.
      * 
-     * @param cls - the class
-     * @param annotationClass - the class of the annotation
-     * @return collection of annotated fields
+     * @param cls The class object.
+     * @param annotationClass The field annotation.
+     * @return Collection of annotated fields.
      */
     public static Collection<Field> annotatedFields(Class<?> cls, Class<? extends Annotation> annotationClass) {
         Collection<Field> collection = new HashSet<Field>();
@@ -117,6 +122,18 @@ public class ReflectionUtils {
     }
     
     
+    /**
+     * Retrieves the value of the given <code>field</code> in <code>obj</code>.
+     * 
+     * <p>
+     * Note that the instantiating class of <code>obj</code> must contain <code>field</code>
+     * as its member. Otherwise null is returned.
+     * </p>
+     * 
+     * @param field The field value of which will be returned.
+     * @param obj The object.
+     * @return The value of the field, or null if it cannot be retrieved.
+     */
     public static Object value(Field field, Object obj) {
         if (field == null || obj == null)
             return null;
@@ -133,6 +150,7 @@ public class ReflectionUtils {
             // check and set the accessibility 
             if (!Modifier.isPublic(field.getModifiers()))
                 field.setAccessible(true);
+            
             try {
                 return field.get(obj);
             } catch (Exception e2) {
@@ -144,6 +162,12 @@ public class ReflectionUtils {
     }
     
     
+    /**
+     * Constructs a conventional name of a getter method for the given <code>field</code>.
+     * 
+     * @param field The field for which the getter's name will be constructed. 
+     * @return Name of the getter method.
+     */
     private static String getterName(Field field) {
         String prefix;
         if (Boolean.TYPE.equals(field.getType()) || Boolean.class.equals(field.getType()))

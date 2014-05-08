@@ -2,7 +2,7 @@
  * 
  * This file is part of the layout-generator project
  * 
- * ==========================================
+ * =================================================
  * 
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  * 
@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
+import cz.zcu.kiv.formgen.annotation.MultiForm;
 import cz.zcu.kiv.formgen.annotation.PreviewLevel;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
@@ -44,7 +45,7 @@ import cz.zcu.kiv.formgen.model.constraints.PossibleValues;
 
 
 /**
- * Parses Java classes using reflection and creates an appropriate model.
+ * Parses class objects using reflection and creates corresponding {@link Form} model.
  * 
  * @author Jakub Krauz
  */
@@ -58,10 +59,10 @@ public class ClassParser {
 
 
     /**
-     * Parses the given class and creates a new {@link Form} model.
+     * Parses the given class and creates a new {@link Form} object.
      * 
-     * @param cls the Java class to be parsed
-     * @return the newly created {@link Form} object
+     * @param cls The class object to be parsed.
+     * @return The newly created {@link Form} object.
      */
     public Form parse(Class<?> cls) {
         Form form = _parse(cls, cls.getSimpleName(), 0);
@@ -71,11 +72,11 @@ public class ClassParser {
 
 
     /**
-     * Parses the given class and adds it as a subform to an existing {@link Form} model
-     * (used for multiple-class forms).
+     * Parses the given class and adds the corresponding {@link Form} object
+     * as a subform to the existing model (used for multiple-class forms).
      * 
-     * @param cls the Java class to be parsed
-     * @param form the model in which the parsed class is to be added
+     * @param cls The class object to be parsed.
+     * @param form The model to which the parsed class will be added.
      */
     public void parse(Class<?> cls, Form form) {
         form.addItem(_parse(cls, cls.getSimpleName(), form.highestItemId() + 1));
@@ -83,12 +84,12 @@ public class ClassParser {
 
 
     /**
-     * Creates a multi-form object defined by the annotation.
+     * Creates a multi-form object defined by the given annotation.
      * 
-     * @param annotation the {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation
-     * @return new form defined by the annotation
+     * @param annotation The {@link MultiForm MultiForm} annotation.
+     * @return New form defined by the annotation.
      */
-    public Form createMultiform(cz.zcu.kiv.formgen.annotation.MultiForm annotation) {
+    public Form createMultiform(MultiForm annotation) {
         Form form = new Form(annotation.value());
         form.setId(0);
         form.setLayoutName(annotation.value() + "-generated");
@@ -98,13 +99,20 @@ public class ClassParser {
     }
 
 
-    /* Recursively parses the given class and its members and adds them to an existing {@link Form} model.
+    /**
+     * Recursively parses the given class object and creates a new {@link Form} model.
      * 
-     * @param cls the Java class to be parsed
+     * <p>
+     * All fields annotated with the {@link cz.zcu.kiv.formgen.annotation.FormItem @FormItem}
+     * annotation are added to the form as its items. Referenced objects are parsed the same
+     * way and corresponding {@link Form} objects are added as subforms.
+     * </p>
      * 
-     * @param form the model in which the parsed class is to be added
-     * 
-     * @return the updated form model */
+     * @param cls The class object to be parsed.
+     * @param formName Name of the form to be created.
+     * @param id ID of the form.
+     * @return The newly created {@link Form}.
+     */
     private Form _parse(Class<?> cls, String formName, int id) {
         Form form = createForm(formName, cls);
         form.setId(id++);
@@ -139,11 +147,11 @@ public class ClassParser {
 
 
     /**
-     * Creates a new {@link Form} representing the given class using the {@link ModelProvider} object.
-     * The provider object is set in the constructor (see {@link #ClassParser(ModelProvider)}.
+     * Creates a new {@link Form} representing the given class.
      * 
-     * @param cls the Java class representing the form to be created
-     * @return the newly created form
+     * @param name Name of the form.
+     * @param cls The class object.
+     * @return The newly created {@link Form}.
      */
     private Form createForm(String name, Class<?> cls) {
         Form form = new Form(name);
@@ -171,12 +179,11 @@ public class ClassParser {
 
 
     /**
-     * Creates a new {@link FormField} representing the given field using the {@link ModelProvider} object.
-     * The provider object is set in the constructor (see {@link #ClassParser(ModelProvider)}.
+     * Creates a new {@link FormField} representing the given class field.
      * 
-     * @param field - the Java field representing the form item to be created
-     * @param id - the ID of the item
-     * @return the newly created form item object
+     * @param field The class field.
+     * @param id ID of the {@link FormField} to be created.
+     * @return The newly created form field.
      */
     private FormField createFormField(Field field, int id) {
         FormField formField = new FormField(field.getName(), mapper.mapType(field.getType()),
@@ -220,20 +227,17 @@ public class ClassParser {
 
 
     /**
-     * <p>
-     * Creates a new {@link FormItemContainer} representing the given field (that must be a collection) using the
-     * {@link ModelProvider} object. The provider object is set in the constructor (see
-     * {@link #ClassParser(ModelProvider)}.
-     * </p>
+     * Creates a new {@link FormItem} representing the given field which
+     * must be a collection.
      * 
      * <p>
-     * Note that the Collection should be parameterized so as the method can determine items of the collection.
-     * Otherwise null is returned.
+     * Note that the collection should be parameterized so as the method
+     * can determine items of the collection. Otherwise null is returned.
      * </p>
      * 
-     * @param field the Java field (of Collection type) representing the set to be created
-     * @param id the ID assigned to the new form set
-     * @return the newly created set object, or null if the collection is not parameterized
+     * @param field The class field (of Collection type).
+     * @param id ID of the form item.
+     * @return The newly created form item, or null if the collection is not parameterized.
      */
     private FormItem createFormSet(Field field, int id) {
 
@@ -243,8 +247,7 @@ public class ClassParser {
             return null;
         }
 
-        Class<?> clazz = ReflectionUtils.genericParameter((ParameterizedType) field
-                .getGenericType());
+        Class<?> clazz = ReflectionUtils.genericParameter((ParameterizedType) field.getGenericType());
         FormItem item;
 
         // parse the content type
@@ -267,10 +270,16 @@ public class ClassParser {
 
 
     /**
-     * Creates the label string from a name in camelCase notation.
+     * Creates a user-friendly string from a camelCase notation.
      * 
-     * @param name - the name of an item
-     * @return created label string
+     * <p>
+     * The returned string starts with an uppercase letter and individual words
+     * are separated by spaces.
+     * For example: "camelCaseName" is converted to "Camel case name". 
+     * </p>
+     * 
+     * @param name The name in camelCase.
+     * @return User-friendly string.
      */
     private String guessLabel(String name) {
         // first letter must be lowercase
@@ -293,19 +302,13 @@ public class ClassParser {
     }
     
     
-    /*private Field previewField(Class<?> cls, PreviewLevel level) {
-        final Class<cz.zcu.kiv.formgen.annotation.FormItem> formItemClass = 
-                cz.zcu.kiv.formgen.annotation.FormItem.class;
-        
-        for (Field f : ReflectionUtils.annotatedFields(cls, formItemClass)) {
-            if (f.getAnnotation(formItemClass).preview() == level)
-                return f;
-        }
-        
-        return null;
-    }*/
-    
-    
+    /**
+     * Decides whether the given field is a preview field.
+     * 
+     * @param field The field.
+     * @return True if the field is a preview field (either {@link PreviewLevel#MAJOR MAJOR}
+     * or {@link PreviewLevel#MINOR MINOR}), false otherwise.
+     */
     private boolean isPreviewField(Field field) {
         cz.zcu.kiv.formgen.annotation.FormItem annot = 
                 field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);
@@ -316,6 +319,14 @@ public class ClassParser {
     }
     
     
+    /**
+     * Sets the given <code>formField</code> as the preview field of the given <code>form</code>.
+     * The <code>formField</code> represents the original class <code>field</code>.
+     * 
+     * @param form The form.
+     * @param formField The form field.
+     * @param field The original class field.
+     */
     private void setPreviewField(Form form, FormField formField, Field field) {
         cz.zcu.kiv.formgen.annotation.FormItem annot = 
                 field.getAnnotation(cz.zcu.kiv.formgen.annotation.FormItem.class);

@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,13 +19,12 @@
  *
  ***********************************************************************************************************************
  *
- * SimpleFormGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
+ * SimpleLayoutGenerator.java, 15. 11. 2013 17:36:16 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.core;
 
-import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,11 +33,12 @@ import java.util.Set;
 import org.reflections.Reflections;
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.FormNotFoundException;
+import cz.zcu.kiv.formgen.annotation.MultiForm;
 import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
- * Generates form layout from a POJO data model.
+ * Controls the process of form layouts generation.
  *
  * @author Jakub Krauz
  */
@@ -52,18 +52,23 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     
     
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Form load(Class<?> cls) throws FormNotFoundException {
-        if (annotation(cls, cz.zcu.kiv.formgen.annotation.Form.class) != null)
+        if (cls.getAnnotation(cz.zcu.kiv.formgen.annotation.Form.class) != null)
             return load(cls, false);
-        else if (annotation(cls, cz.zcu.kiv.formgen.annotation.MultiForm.class) != null)
+        else if (cls.getAnnotation(MultiForm.class) != null)
             return load(cls, true);
         else
             throw new FormNotFoundException();
     }
 
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Form> load(Collection<Class<?>> classes) throws FormNotFoundException {
         Collection<Form> loaded = new HashSet<Form>(classes.size());
@@ -73,14 +78,18 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     }
     
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Form loadClass(String name) throws ClassNotFoundException, FormNotFoundException {
         return load(Class.forName(name));
     }
 
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Form> loadClasses(String[] names) throws ClassNotFoundException, FormNotFoundException {
         Collection<Class<?>> classes = new HashSet<Class<?>>(names.length);
@@ -90,7 +99,9 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     }
 
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Form> loadClasses(Collection<String> names) throws ClassNotFoundException, FormNotFoundException {
         Collection<Class<?>> classes = new HashSet<Class<?>>(names.size());
@@ -100,7 +111,9 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     }
     
 
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Form> loadPackage(String name) throws FormNotFoundException {
         Collection<Form> loaded;
@@ -124,7 +137,9 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     }
 
 
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Form> loadPackage(Package pack) throws FormNotFoundException {
         if (pack == null)
@@ -136,31 +151,30 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
     }
     
     
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Form> getLoadedModel() {
         return forms.values();
     }
     
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Form getLoadedForm(String name) {
         return forms.get(name);
     }
     
     
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clearModel() {
         forms.clear();
-    }
-    
-
-
-
-    private <A extends Annotation> A annotation(Class<?> cls, Class<A> annotationClass) {
-        return cls.getAnnotation(annotationClass);
     }
     
     
@@ -170,15 +184,15 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
      * Otherwise (if multiForm is true), cls MUST be annotated with the
      * {@link cz.zcu.kiv.formgen.annotation.MultiForm MultiForm} annotation.
      * 
-     * @param cls the class to be loaded
-     * @param multiForm if true, the class is a part of a multi-form
+     * @param cls The class to be loaded.
+     * @param multiForm If true, the class is a part of a multi-form.
      */
     protected Form load(Class<?> cls, boolean multiForm) {
         Form form;
         
         if (multiForm) {
             cz.zcu.kiv.formgen.annotation.MultiForm annotation = 
-                    annotation(cls, cz.zcu.kiv.formgen.annotation.MultiForm.class);
+                    cls.getAnnotation(cz.zcu.kiv.formgen.annotation.MultiForm.class);
             String name = annotation.value();
             if (forms.containsKey(name)) {
                 form = forms.get(name);
@@ -195,7 +209,5 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
         
         return form;
     }
-
-    
 
 }

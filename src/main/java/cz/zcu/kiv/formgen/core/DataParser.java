@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -31,14 +31,14 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cz.zcu.kiv.formgen.annotation.FormId;
-import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormData;
 import cz.zcu.kiv.formgen.model.FormDataField;
 import cz.zcu.kiv.formgen.model.FormDataItem;
 
 
 /**
- *
+ * Parses data objects using reflection and creates a corresponding {@link FormData} model.
+ * 
  * @author Jakub Krauz
  */
 public class DataParser {
@@ -54,10 +54,12 @@ public class DataParser {
     
     
     /**
-     * Parses the given POJO and creates a new {@link FormData} model.
+     * Parses the given data object and creates a new {@link FormData} model.
      * 
-     * @param obj - the POJO to be parsed
-     * @return the newly created {@link Form} object
+     * @param obj Data object to be parsed.
+     * @param includeReferences If true, the parser will parse referenced objects as well. Otherwise
+     *                           only their IDs are added.
+     * @return The newly created FormData object.
      */
     public FormData parse(Object obj, boolean includeReferences) {
         this.includeReferences = includeReferences;
@@ -65,11 +67,18 @@ public class DataParser {
     }
     
     
-    private FormData _parse(Object obj, String formName) {
+    /**
+     * Recursively parses the data object and creates a corresponding {@link FormData} model.
+     * 
+     * @param obj The data object to be parsed.
+     * @param name Name of the form data item.
+     * @return The newly created form data model.
+     */
+    private FormData _parse(Object obj, String name) {
         if (obj == null)
             return null;
         
-        FormData form = new FormData(obj.getClass().getSimpleName(), formName);
+        FormData form = new FormData(obj.getClass().getSimpleName(), name);
         
         Field idField = ReflectionUtils.annotatedField(obj.getClass(), FormId.class);
         if (idField != null) {
@@ -97,6 +106,13 @@ public class DataParser {
     }
     
 
+    /**
+     * Creates a data set, i.e. data item with multiple records of the same type.
+     * 
+     * @param field The field representing the set.
+     * @param obj The data object.
+     * @return The newly created data set.
+     */
     private FormDataItem createDataSet(Field field, Object obj) {
         String name = field.getName();
         
@@ -127,15 +143,28 @@ public class DataParser {
     }
 
 
-
-    private FormDataField createDataField(Field f, Object obj) {
-        Object value = ReflectionUtils.value(f, obj);
-        FormDataField dataField = new FormDataField(f.getType().getSimpleName(), f.getName());
+    /**
+     * Creates a new data field representing the given class <code>field</code>.
+     * 
+     * @param field The class field.
+     * @param obj The data object.
+     * @return The newly created data field.
+     */
+    private FormDataField createDataField(Field field, Object obj) {
+        Object value = ReflectionUtils.value(field, obj);
+        FormDataField dataField = new FormDataField(field.getType().getSimpleName(), field.getName());
         dataField.setValue(value);
         return dataField;
     }
     
     
+    /**
+     * Creates a new data reference, i.e. a form data item with the only ID property set.
+     * 
+     * @param field The class field.
+     * @param obj The data object.
+     * @return The newly created data reference.
+     */
     private FormData createDataReference(Field field, Object obj) {
         Object value = ReflectionUtils.value(field, obj);
         if (value != null) {
@@ -143,12 +172,18 @@ public class DataParser {
             reference.setId(getId(value));
             return reference;
         } else {
-            // TODO logger
+            logger.warn("Cannot create reference to a null value!");
             return null;
         }
     }
     
     
+    /**
+     * Returns ID of the given data object.
+     *  
+     * @param entity The data object.
+     * @return ID of the data object.
+     */
     private Object getId(Object entity) {
         Field idField = ReflectionUtils.annotatedField(entity.getClass(), FormId.class);
         return ReflectionUtils.value(idField, entity);

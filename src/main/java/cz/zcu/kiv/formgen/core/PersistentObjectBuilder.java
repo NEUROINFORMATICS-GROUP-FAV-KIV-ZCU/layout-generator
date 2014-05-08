@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -31,24 +31,40 @@ import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
- *
+ * Builds original data objects (POJOs) from {@link FormData} model.
+ * 
+ * <p>
+ * This builder adds support for persistent objects. If the {@link FormData} model
+ * contains a data item with ID, the corresponding object is not instantiated,
+ * but obtained from a {@link PersistentObjectProvider} instead. Otherwise
+ * the corresponding object is created the same way as with {@link SimpleObjectBuilder}.
+ * </p>
+ * 
  * @author Jakub Krauz
  */
 public class PersistentObjectBuilder<PK> extends SimpleObjectBuilder {
     
+    /** Provider of persistent objects. */
     private PersistentObjectProvider<PK> provider;
 
     
     /**
+     * Creates a new builder tied with the given persistent object provider.
      * 
+     * @param provider The provider of persistent objects.
      */
     public PersistentObjectBuilder(PersistentObjectProvider<PK> provider) {
         this.provider = provider;
     }
     
     
-    
+    /**
+     * Creates a new instance of the given type. If the <code>data</code> item contains ID,
+     * the instance is obtained using the persistent object {@link #provider}. Otherwise,
+     * it is instantiated and filled with data using {@link SimpleObjectBuilder#createInstance(Class, FormData)}.
+     */
     @Override
+    @SuppressWarnings("unchecked")
     protected Object createInstance(Class<?> type, FormData data) throws ObjectBuilderException {
         if (data.getId() != null) {
             try {

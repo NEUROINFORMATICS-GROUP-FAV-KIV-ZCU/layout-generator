@@ -2,7 +2,7 @@
  * 
  * This file is part of the layout-generator project
  * 
- * ==========================================
+ * =================================================
  * 
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  * 
@@ -24,6 +24,13 @@
  **********************************************************************************************************************/
 
 /**
+ * Contains the core of the library.
+ * 
+ * <p>
+ * This package contains objects responsible for transformation processes provided by the library.
+ * It includes class and object parsers, generators which provide a public facade to mentioned
+ * parsers, object builders, and some auxiliary objects.
+ * </p>
  * 
  * @author Jakub Krauz
  */

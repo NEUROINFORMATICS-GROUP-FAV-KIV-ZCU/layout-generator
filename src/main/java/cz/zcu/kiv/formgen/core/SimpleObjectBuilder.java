@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,13 +19,14 @@
  *
  ***********************************************************************************************************************
  *
- * ObjectBuilder.java, 1. 3. 2014 10:18:45 Jakub Krauz
+ * SimpleObjectBuilder.java, 1. 3. 2014 10:18:45 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.core;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +43,14 @@ import cz.zcu.kiv.formgen.model.FormDataItem;
 
 
 /**
- *
+ * Builds original data objects (POJOs) from {@link FormData} model.
+ * 
+ * <p>
+ * This builder instantiates all data objects itself according to the structure
+ * of the passed {@link FormData} model. If you need support for persistent objects
+ * referenced by IDs, see {@link PersistentObjectBuilder}.
+ * </p>
+ * 
  * @author Jakub Krauz
  */
 public class SimpleObjectBuilder implements ObjectBuilder {
@@ -51,26 +59,47 @@ public class SimpleObjectBuilder implements ObjectBuilder {
     final Logger logger = LoggerFactory.getLogger(SimpleObjectBuilder.class);
     
     
+    /**
+     * {@inheritDoc}
+     */
     public Object build(FormData formData, Class<?> type) throws ObjectBuilderException {
         return createInstance(type, formData);
     }
     
     
-    @SuppressWarnings("unchecked")
+    /**
+     * {@inheritDoc}
+     */
     public <T> T buildTyped(FormData formData, Class<T> type) throws ObjectBuilderException {
-        return (T) createInstance(type, formData);
+        try {
+            return type.cast(createInstance(type, formData));
+        } catch (ClassCastException e) {
+            throw new ObjectBuilderException("Build error.", e);
+        }
     }
     
     
-    
+    /**
+     * Fills the given object <code>obj</code> with values form <code>formData</code>.
+     * 
+     * @param obj The object to be filled with data.
+     * @param formData The model object representing the data.
+     * @throws NoSuchFieldException If the object being filled does not contain a field defined in {@link FormData}.
+     * @throws IllegalAccessException If the access to some of the object's field was refused.
+     * @throws ObjectBuilderException If another error occured.
+     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected void fill(Object obj, FormData formData) throws SecurityException, NoSuchFieldException, 
-                        IllegalArgumentException, IllegalAccessException, InstantiationException, ObjectBuilderException {
+    protected void fill(Object obj, FormData formData) throws NoSuchFieldException,
+                                                              IllegalAccessException,  
+                                                              ObjectBuilderException {
         
         for (FormDataItem item : formData.getItems()) {
             
             Field field = obj.getClass().getDeclaredField(item.getName());
-            field.setAccessible(true);
+            
+            // check accessibility of the field
+            if (!Modifier.isPublic(field.getModifiers()))
+                field.setAccessible(true);
             
             if (item instanceof FormDataField) {
                 Object value = ((FormDataField) item).getValue();
@@ -122,7 +151,15 @@ public class SimpleObjectBuilder implements ObjectBuilder {
     }
     
     
-    
+    /**
+     * Converts the given object <code>obj</code> to an instance of java.lang.Number.
+     * The concrete number class is determined by the <code>numberType</code> argument.
+     * 
+     * @param obj The object to be converted to number.
+     * @param numberType The required type of the result (descendant of java.lang.Number).
+     * @return The value of required number type.
+     * @throws NumberFormatException If the number cannot be parsed from the passed object.
+     */
     protected Number toNumber(Object obj, Class<?> numberType) throws NumberFormatException {
         Number value = null;
         Class<?> type = TypeMapper.toPrimitiveType(numberType);
@@ -160,19 +197,32 @@ public class SimpleObjectBuilder implements ObjectBuilder {
     }
     
     
-    
+    /**
+     * Instantiates a new collection.
+     * 
+     * @param type Required type of the collection (e.g. Set or List).
+     * @return The newly created collection.
+     * @throws ObjectBuilderException If the collection type is not supported.
+     */
     @SuppressWarnings("rawtypes")
-    protected Collection<?> instantiateCollection(Class<? extends Collection> type) {
+    protected Collection<?> instantiateCollection(Class<? extends Collection> type) throws ObjectBuilderException {
         if (type.equals(Set.class))
             return new HashSet();
         if (type.equals(List.class))
             return new ArrayList();
         
-        return null;
+        throw new ObjectBuilderException("Unsupported collection type.");
     }
     
     
-    
+    /**
+     * Creates a new instance of the given type and fills it with data from the passed {@link FormData} object.
+     * 
+     * @param type The type to be instantiated.
+     * @param data The data model.
+     * @return The newly instantiated object.
+     * @throws ObjectBuilderException If the instance cannot be created.
+     */
     protected Object createInstance(Class<?> type, FormData data) throws ObjectBuilderException {
         Object instance = null;
         

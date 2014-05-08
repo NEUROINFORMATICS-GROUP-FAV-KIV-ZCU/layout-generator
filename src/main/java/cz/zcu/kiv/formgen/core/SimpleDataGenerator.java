@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * SimpleFormDataGenerator.java, 2. 4. 2014 11:53:34 Jakub Krauz
+ * SimpleDataGenerator.java, 2. 4. 2014 11:53:34 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -33,30 +33,40 @@ import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
+ * Converts data objects to the internal {@link FormData} model.
  *
  * @author Jakub Krauz
  */
 public class SimpleDataGenerator implements DataGenerator {
     
+    /** Data parser object. */
     private DataParser parser = new DataParser();
     
+    /** Set of loaded data. */
     private Set<FormData> loadedData = new HashSet<FormData>();
     
     
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FormData load(Object dataEntity) {
         return load(dataEntity, true);
     }
 
 
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<FormData> load(Collection<Object> data) {
         return load(data, true);
     }
     
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FormData load(Object dataEntity, boolean includeReferences) {
         FormData data =  parser.parse(dataEntity, includeReferences);
@@ -65,7 +75,9 @@ public class SimpleDataGenerator implements DataGenerator {
     }
 
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<FormData> load(Collection<Object> data, boolean includeReferences) {
         Collection<FormData> model = new HashSet<FormData>(data.size());
@@ -77,14 +89,18 @@ public class SimpleDataGenerator implements DataGenerator {
     }
 
 
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<FormData> getLoadedModel() {
         return loadedData;
     }
     
     
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clearModel() {
         loadedData.clear();
