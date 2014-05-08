@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,20 +27,30 @@ package cz.zcu.kiv.formgen.model;
 
 
 /**
+ * Represents a simple data value, i.e. input related to a form field.
  *
  * @author Jakub Krauz
  */
 public class FormDataField extends AbstractFormDataItem implements FormDataItem {
     
+    /** The value. */
     private Object value;
     
     
+    /**
+     * Constructs a new data field with the given type and name.
+     * 
+     * @param type The type of the data field.
+     * @param name The name of the data field.
+     */
     public FormDataField(String type, String name) {
         super(type, name);
     }
 
     
     /**
+     * Returns the value.
+     * 
      * @return the value
      */
     public Object getValue() {
@@ -49,6 +59,8 @@ public class FormDataField extends AbstractFormDataItem implements FormDataItem 
 
     
     /**
+     * Sets the value.
+     * 
      * @param value the value to set
      */
     public void setValue(Object value) {
@@ -56,12 +68,16 @@ public class FormDataField extends AbstractFormDataItem implements FormDataItem 
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSimpleType() {
         return true;
     }
 
 
+    
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */

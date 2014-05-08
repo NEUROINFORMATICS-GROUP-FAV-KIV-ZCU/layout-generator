@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,13 +27,22 @@ package cz.zcu.kiv.formgen.model.constraints;
 
 
 /**
- *
+ * Common interface for all constraints.
+ * 
  * @author Jakub Krauz
  */
 public interface Constraint {
     
+    /**
+     * Returns name of the constraint (e.g. for serialization purposes).
+     * @return the name
+     */
     String name();
     
+    /**
+     * Returns value of the constraint (its meaning is determined by the concrete constraint type).
+     * @return the value
+     */
     Object value();
 
 }

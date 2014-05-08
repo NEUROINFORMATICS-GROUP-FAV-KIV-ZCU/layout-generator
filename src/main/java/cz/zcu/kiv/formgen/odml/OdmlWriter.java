@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -34,14 +34,24 @@ import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
- *
+ * The odML implementation of the {@link Writer} interface.
+ * 
+ * <p>
+ * OdmlWriter provides means to write {@link Form} or {@link FormData} models
+ * to an output stream using the odML serialization format.
+ * </p> 
+ * 
  * @author Jakub Krauz
  */
 public class OdmlWriter implements Writer {
     
+    /** The converter between odML and internal model. */
     private Converter converter = new Converter();
 
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeLayout(Form form, OutputStream outputStream) throws OdmlException {
         if (form == null)
@@ -60,6 +70,9 @@ public class OdmlWriter implements Writer {
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeLayout(Collection<Form> forms, OutputStream outputStream) throws OdmlException {
         if (forms == null)
@@ -77,6 +90,9 @@ public class OdmlWriter implements Writer {
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeData(FormData data, OutputStream outputStream) throws OdmlException {
         if (data == null)
@@ -95,6 +111,9 @@ public class OdmlWriter implements Writer {
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeData(Collection<FormData> data, OutputStream outputStream) throws OdmlException {
         if (data == null)
@@ -110,5 +129,6 @@ public class OdmlWriter implements Writer {
             throw new OdmlException("Could not convert the internal model to odML.", e);
         }
     }
+    
 
 }

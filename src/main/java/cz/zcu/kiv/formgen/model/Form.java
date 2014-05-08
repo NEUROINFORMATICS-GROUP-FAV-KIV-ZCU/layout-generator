@@ -2,7 +2,7 @@
  * 
  * This file is part of the layout-generator project
  * 
- * ==========================================
+ * =================================================
  * 
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  * 
@@ -25,6 +25,7 @@
 
 package cz.zcu.kiv.formgen.model;
 
+import java.util.Arrays;
 import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +35,8 @@ import org.slf4j.LoggerFactory;
  * Represents a form.
  * 
  * <p>
- * Form consists of items (type {@link FormField}) and subforms of the same type. Items and subforms can be added to the
- * form using {@link #addItem(FormField)} or {@link #addSubform(Form)} respectively. Every form has its name, which
+ * Form consists of fields (type {@link FormField}) and subforms of the same type. Fields and subforms can be added to the
+ * form using {@link #addItem(FormItem)}. Every form has its name, which
  * should be assigned during construction. A form can be assigned a description which is not compulsory.
  * </p>
  * 
@@ -55,8 +56,10 @@ public class Form extends AbstractFormItem implements FormItem {
     /** Name of the layout. */
     private String layoutName;
     
+    /** Reference to a data entity represented by this form. */
     private String dataReference;
     
+    /** Major and minor preview fields. */
     private FormField[] preview = new FormField[2];
     
     /** Contained items. */
@@ -65,9 +68,9 @@ public class Form extends AbstractFormItem implements FormItem {
     
     
     /**
-     * Constructor.
-     * Creates a new form object with the specified name.
-     * @param name
+     * Constructs a new form with the specified name.
+     * 
+     * @param name The name of the form.
      */
     public Form(String name) {
         super(name, Type.FORM);
@@ -78,7 +81,7 @@ public class Form extends AbstractFormItem implements FormItem {
     /**
      * Adds the given item to the end of this form.
      * 
-     * @param item - the item to be added
+     * @param item The item to be added.
      */
     public void addItem(FormItem item) {
         if (item == null) {
@@ -98,7 +101,7 @@ public class Form extends AbstractFormItem implements FormItem {
     
     
     /**
-     * Gets all items of the form.
+     * Returns vector with all items of this form.
      * 
      * @return vector of contained items
      */ 
@@ -131,12 +134,15 @@ public class Form extends AbstractFormItem implements FormItem {
         }
     }
     
-        
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setId(int id) {
         super.setId(id);
         if (id > highestItemId)
-            highestItemId = id;
+            highestItemId = id;  // update the highestItemId
     }
 
     
@@ -191,6 +197,8 @@ public class Form extends AbstractFormItem implements FormItem {
     
     
     /**
+     * Returns the reference to the related data entity.
+     * 
      * @return the dataReference
      */
     public String getDataReference() {
@@ -199,52 +207,85 @@ public class Form extends AbstractFormItem implements FormItem {
 
  
     /**
-     * @param dataReference the dataReference to set
+     * Sets the reference to the related data entity.
+     * 
+     * @param dataReference the dataReference to be set
      */
     public void setDataReference(String dataReference) {
         this.dataReference = dataReference;
     }
     
     
+    /**
+     * Returns the major preview field.
+     * 
+     * @return the major preview field
+     */
     public FormField getMajorPreviewField() {
         return preview[0];
     }
     
     
+    /**
+     * Sets the major preview field.
+     * 
+     * @param field the major preview field
+     */
     public void setMajorPreviewField(FormField field) {
         preview[0] = field;
     }
     
     
+    /**
+     * Returns the minor preview field.
+     * 
+     * @return the minor preview field
+     */
     public FormField getMinorPreviewField() {
         return preview[1];
     }
     
     
+    /**
+     * Sets the minor preview field.
+     * 
+     * @param field the minor preview field
+     */
     public void setMinorPreviewField(FormField field) {
         preview[1] = field;
     }
 
 
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
+        result = prime * result + ((dataReference == null) ? 0 : dataReference.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + highestItemId;
         result = prime * result + ((items == null) ? 0 : items.hashCode());
         result = prime * result + ((layoutName == null) ? 0 : layoutName.hashCode());
+        result = prime * result + Arrays.hashCode(preview);
         return result;
     }
 
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
         if (!super.equals(obj)) { return false; }
         if (getClass() != obj.getClass()) { return false; }
         Form other = (Form) obj;
+        if (dataReference == null) {
+            if (other.dataReference != null) { return false; }
+        } else if (!dataReference.equals(other.dataReference)) { return false; }
         if (description == null) {
             if (other.description != null) { return false; }
         } else if (!description.equals(other.description)) { return false; }
@@ -255,6 +296,7 @@ public class Form extends AbstractFormItem implements FormItem {
         if (layoutName == null) {
             if (other.layoutName != null) { return false; }
         } else if (!layoutName.equals(other.layoutName)) { return false; }
+        if (!Arrays.equals(preview, other.preview)) { return false; }
         return true;
     }
 

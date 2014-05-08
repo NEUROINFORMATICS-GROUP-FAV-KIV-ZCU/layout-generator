@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,25 +27,33 @@ package cz.zcu.kiv.formgen.model;
 
 
 /**
+ * Abstract implementation of the {@link FormDataItem} interface.
  *
  * @author Jakub Krauz
  */
 public abstract class AbstractFormDataItem implements FormDataItem {
     
+    /** Type of the data item. */
     protected String type;
     
+    /** Name of the data item. */
     protected String name;
     
     
-    
+    /**
+     * Creates a new data item with the given type and name.
+     * 
+     * @param type Type of the data item.
+     * @param name Name of the data item.
+     */
     protected AbstractFormDataItem(String type, String name) {
         this.type = type;
         this.name = name;
     }
     
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormDataItem#setType(java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setType(String type) {
@@ -53,8 +61,8 @@ public abstract class AbstractFormDataItem implements FormDataItem {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormDataItem#getType()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String getType() {
@@ -62,8 +70,8 @@ public abstract class AbstractFormDataItem implements FormDataItem {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormDataItem#setName(java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setName(String name) {
@@ -71,14 +79,15 @@ public abstract class AbstractFormDataItem implements FormDataItem {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormDataItem#getName()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String getName() {
         return name;
     }
 
+    
 
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()

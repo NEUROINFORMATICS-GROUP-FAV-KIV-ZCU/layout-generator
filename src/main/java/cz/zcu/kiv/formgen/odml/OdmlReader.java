@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -37,16 +37,24 @@ import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
+ * The odML implementation of the {@link Reader} interface.
+ * 
+ * <p>
+ * OdmlReader provides methods that enable reading {@link Form} or {@link FormData} models
+ * from their odML serialization format.
+ * </p>
  *
  * @author Jakub Krauz
  */
 public class OdmlReader implements Reader {
     
+    /** Logger. */
     final Logger logger = LoggerFactory.getLogger(OdmlReader.class);
 
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.Reader#read(java.io.InputStream)
+    /**
+     * {@inheritDoc} The serialization must be in the odML format, otherwise
+     * {@link OdmlException} is thrown.
      */
     @Override
     public Form readLayout(InputStream stream) throws OdmlException {
@@ -69,6 +77,10 @@ public class OdmlReader implements Reader {
     }
 
 
+    /**
+     * {@inheritDoc} The serialization must be in the odML format, otherwise
+     * {@link OdmlException} is thrown.
+     */
     @Override
     public Set<FormData> readData(InputStream stream) throws TemplateGeneratorException {
         odml.core.Reader reader = new odml.core.Reader();

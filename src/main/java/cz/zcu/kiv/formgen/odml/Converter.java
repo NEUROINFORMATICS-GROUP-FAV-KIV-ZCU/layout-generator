@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -50,7 +50,7 @@ import odml.core.Section;
 
 
 /**
- * Converts between internal form model and odML tree.
+ * Converts between internal model and corresponding odML tree.
  *
  * @author Jakub Krauz
  */
@@ -61,11 +61,11 @@ public class Converter {
     
     
     /**
-     * Converts from internal form-layout model to odML section tree.
+     * Converts the internal {@link Form} model to odML section tree.
      * 
-     * @param form - the internal model to be converted
-     * @return root section of odML tree
-     * @throws OdmlConvertException 
+     * @param form The internal model to be converted.
+     * @return corresponding odML section tree
+     * @throws OdmlConvertException If an error occurs during the conversion.
      */
     public Section layoutToOdml(Form form) throws OdmlConvertException {
         if (form == null)
@@ -101,11 +101,11 @@ public class Converter {
     
     
     /**
-     * Converts from internal form-layout model to odML section tree.
+     * Converts the internal {@link Form} model to odML section tree.
      * 
-     * @param forms - the internal model to be converted
-     * @return root section of the odML tree
-     * @throws OdmlConvertException 
+     * @param forms The internal model to be converted.
+     * @return corresponding odML tree
+     * @throws OdmlConvertException If an error occurs during the conversion.
      */
     public Section layoutToOdml(Collection<Form> forms) throws OdmlConvertException {
         if (forms == null)
@@ -119,11 +119,11 @@ public class Converter {
     
     
     /**
-     * Converts from internal form-data model to odML section tree.
+     * Converts the internal {@link FormData} model to odML section tree.
      * 
-     * @param data - the internal model to be converted
-     * @return root section of the odML tree
-     * @throws OdmlConvertException 
+     * @param data The internal model to be converted.
+     * @return corresponding odML tree
+     * @throws OdmlConvertException If an error occurs during the conversion.
      */
     public Section dataToOdml(FormData data) throws OdmlConvertException {
         if (data == null)
@@ -142,13 +142,13 @@ public class Converter {
         
     }
     
-    
+
     /**
-     * Converts from internal form-data model to odML section tree.
+     * Converts the internal {@link FormData} model to odML section tree.
      * 
-     * @param data - the internal model to be converted
-     * @return root section of the odML tree
-     * @throws OdmlConvertException 
+     * @param data The internal model to be converted.
+     * @return corresponding odML tree
+     * @throws OdmlConvertException If an error occurs during the conversion.
      */
     public Section dataToOdml(Collection<FormData> data) throws OdmlConvertException {
         if (data == null)
@@ -162,11 +162,11 @@ public class Converter {
     
     
     /**
-     * Converts from odML section tree to internal form-layout model.
+     * Converts odML section tree to internal {@link Form} model.
      * 
-     * @param section - the root section of the odML tree
-     * @return internal form-layout model
-     * @throws OdmlConvertException
+     * @param section The root section of the odML tree.
+     * @return corresponding form-layout model
+     * @throws OdmlConvertException If an error occurs during the conversion.
      */
     public Form odmlToLayoutModel(Section section) throws OdmlConvertException {
         if (section == null)
@@ -182,11 +182,11 @@ public class Converter {
     }
     
     /**
-     * Converts from odML section tree to internal form-data model.
+     * Converts odML section tree to internal {@link FormData} model.
      *  
-     * @param section - the root section of odML tree
-     * @return internal form model
-     * @throws OdmlConvertException 
+     * @param section The root section of odML tree.
+     * @return corresponding form-data model
+     * @throws OdmlConvertException If an error occurs during the conversion.
      */
     public Set<FormData> odmlToDataModel(Section odmlRoot) throws OdmlConvertException {
         if (odmlRoot == null)
@@ -213,8 +213,8 @@ public class Converter {
     /**
      * Converts the given section to a form item object.
      * 
-     * @param section - the section to be converted
-     * @return corresponding FormItem object
+     * @param section The section to be converted.
+     * @return corresponding form item
      */
     private FormItem convertLayout(Section section) {
         logger.trace("Converting section \"{}\"", section.getName());
@@ -261,6 +261,11 @@ public class Converter {
     }
     
     
+    /**
+     * Converts the given odML section to a form data object.
+     * @param section The section to be converted.
+     * @return corresponding form data object
+     */
     private FormData convertData(Section section) {
         FormData data = new FormData(section.getType(), section.getName());
         
@@ -293,11 +298,11 @@ public class Converter {
     
 
     /**
-     * Converts the given Form to odML section.
+     * Converts the given form to an odML section.
      * 
-     * @param form - the Form object to be converted
-     * @return corresponding section object
-     * @throws Exception if there was error when creating the section
+     * @param form The form to be converted.
+     * @return corresponding odML section
+     * @throws Exception If there was error creating the section.
      */
     private Section convert(Form form) throws Exception {
         Section section = new Section(form.getName(), Type.FORM.toString());
@@ -326,11 +331,11 @@ public class Converter {
     
     
     /**
-     * Converts the given FormField to odML section.
+     * Converts the given form field to odML section.
      * 
-     * @param field - the FormField object to be converted
-     * @return corresponding section object
-     * @throws Exception if there was error when creating the section
+     * @param field The form field to be converted.
+     * @return corresponding odML section
+     * @throws Exception If there was error creating the section.
      */
     private Section convert(FormField field) throws Exception {
         Section section = new Section(field.getName(), field.getType().toString());
@@ -362,11 +367,11 @@ public class Converter {
     
     
     /**
-     * Converts and adds the given form items to the section object.
+     * Converts the given vector of form items to odML objects and adds them to the section.
      * 
-     * @param section - the section
-     * @param items - items to be converted and added in the section
-     * @throws Exception if there was error when creating the section
+     * @param section The section.
+     * @param items Items to be converted and added to the section.
+     * @throws Exception If there was error creating an odML section.
      */
     private void addItems(Section section, Vector<FormItem> items) throws Exception {
         int lastId = -1;
@@ -392,6 +397,13 @@ public class Converter {
     }
     
     
+    /**
+     * Converts the given collection of data items to odML objects and adds them to the section.
+     * 
+     * @param section The section.
+     * @param items Collection of data items.
+     * @throws Exception If there was error creating an odML section.
+     */
     private void addItems(Section section, Collection<FormDataItem> items) throws Exception {
         for (FormDataItem item : items) {
             if (item instanceof FormDataField) {

@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,23 +27,30 @@ package cz.zcu.kiv.formgen.model.constraints;
 
 
 /**
+ * Enumeration of values acceptable as the only input possibilities.
  *
  * @author Jakub Krauz
  */
 public class PossibleValues implements Constraint {
     
+    /** Name of the constraint. */
     public static final String NAME = "possibleValues";
     
+    /** Array of possible values. */
     private Object[] values;
     
     
+    /**
+     * Constructs a new possible values constraint.
+     * @param values array of possible values
+     */
     public PossibleValues(Object[] values) {
         this.values = values;
     }
 
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#name()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String name() {
@@ -51,8 +58,8 @@ public class PossibleValues implements Constraint {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#value()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Object value() {
@@ -60,6 +67,10 @@ public class PossibleValues implements Constraint {
     }
     
     
+    /**
+     * Returns the array of possible values.
+     * @return array of possible values
+     */
     public Object[] getValues() {
         return values;
     }

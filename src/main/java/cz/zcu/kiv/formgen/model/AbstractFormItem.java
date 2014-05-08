@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -29,7 +29,7 @@ import cz.zcu.kiv.formgen.model.constraints.Cardinality;
 
 
 /**
- * Abstract implementation of {@link FormItem} interface.
+ * Abstract implementation of the {@link FormItem} interface.
  *
  * @author Jakub Krauz
  */
@@ -50,16 +50,16 @@ public abstract class AbstractFormItem implements FormItem {
     /** Required flag of the form item. */
     protected boolean required;
     
+    /** Cardinality of the form item. */
     protected Cardinality cardinality;
     
     
     
     /**
-     * Constructor.
-     * Sets the name and type of the form item.
+     * Constructs a new form item with the given name and type.
      * 
-     * @param name - the name of the form item
-     * @param type - the type of the form item
+     * @param name The name of the form item.
+     * @param type The type of the form item.
      */
     public AbstractFormItem(String name, Type type) {
         this.name = name;
@@ -67,8 +67,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
     
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#getType()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Type getType() {
@@ -76,8 +76,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#setType(cz.zcu.kiv.formgen.model.Type)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setType(Type type) {
@@ -85,8 +85,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
     
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#setId(int)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setId(int id) {
@@ -94,8 +94,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#getId()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public int getId() {
@@ -103,8 +103,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
     
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#setName(java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setName(String name) {
@@ -112,8 +112,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
     
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#getName()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String getName() {
@@ -121,8 +121,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#setLabel(java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setLabel(String label) {
@@ -130,8 +130,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#getLabel()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String getLabel() {
@@ -139,8 +139,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#setRequired(boolean)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setRequired(boolean required) {
@@ -148,8 +148,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#isRequired()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public boolean isRequired() {
@@ -157,8 +157,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
     
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#setCardinality(cz.zcu.kiv.formgen.model.constraints.Cardinality)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setCardinality(Cardinality cardinality) {
@@ -166,8 +166,8 @@ public abstract class AbstractFormItem implements FormItem {
     }
     
     
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.FormItem#getCardinality()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Cardinality getCardinality() {
@@ -176,10 +176,14 @@ public abstract class AbstractFormItem implements FormItem {
 
 
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((cardinality == null) ? 0 : cardinality.hashCode());
         result = prime * result + id;
         result = prime * result + ((label == null) ? 0 : label.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -189,12 +193,18 @@ public abstract class AbstractFormItem implements FormItem {
     }
 
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
         if (obj == null) { return false; }
         if (getClass() != obj.getClass()) { return false; }
         AbstractFormItem other = (AbstractFormItem) obj;
+        if (cardinality == null) {
+            if (other.cardinality != null) { return false; }
+        } else if (!cardinality.equals(other.cardinality)) { return false; }
         if (id != other.id) { return false; }
         if (label == null) {
             if (other.label != null) { return false; }

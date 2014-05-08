@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,20 +27,30 @@ package cz.zcu.kiv.formgen.odml;
 
 
 /**
+ * Exception used to indicate an error during the conversion between the internal model and odML tree.
  *
  * @author Jakub Krauz
  */
 public class OdmlConvertException extends OdmlException {
-    
+   
+    /** Serial version UID. */
+    private static final long serialVersionUID = -8732984010841567357L;
 
-    private static final long serialVersionUID = 1L;
 
-    
+    /**
+     * Constructs a new exception with the given detail message.
+     * @param message the detail message
+     */
     public OdmlConvertException(String message) {
         super(message);
     }
     
     
+    /**
+     * Constructs a new exception with the given detail message and cause.
+     * @param message the detail message
+     * @param cause the cause
+     */
     public OdmlConvertException(String message, Throwable cause) {
         super(message, cause);
     }

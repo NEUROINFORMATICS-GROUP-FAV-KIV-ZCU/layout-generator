@@ -2,7 +2,7 @@
  * 
  * This file is part of the layout-generator project
  * 
- * ==========================================
+ * =================================================
  * 
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  * 
@@ -24,6 +24,7 @@
  **********************************************************************************************************************/
 
 /**
+ * Constraints for form items.
  * 
  * @author Jakub Krauz
  */

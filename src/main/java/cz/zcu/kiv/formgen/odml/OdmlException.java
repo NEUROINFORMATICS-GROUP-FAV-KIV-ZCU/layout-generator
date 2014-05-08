@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -29,20 +29,30 @@ import cz.zcu.kiv.formgen.TemplateGeneratorException;
 
 
 /**
+ * Indicates an error in the odML module.
  *
  * @author Jakub Krauz
  */
 public class OdmlException extends TemplateGeneratorException {
     
+    /** Serial version UID. */
+    private static final long serialVersionUID = 3033277123646906874L;
 
-    private static final long serialVersionUID = 1L;
 
-
+    /**
+     * Constructs a new exception with the given detail messsage.
+     * @param message the detail message
+     */
     public OdmlException(String message) {
         super(message);
     }
     
     
+    /**
+     * Constructs a new exception with the given detail message and cause.
+     * @param message the detail message
+     * @param cause the cause
+     */
     public OdmlException(String message, Throwable cause) {
         super(message, cause);
     }

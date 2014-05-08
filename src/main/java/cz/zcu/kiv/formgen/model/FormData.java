@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -30,29 +30,47 @@ import java.util.Set;
 
 
 /**
+ * Represents a data record related to some form.
  *
  * @author Jakub Krauz
  */
 public class FormData extends AbstractFormDataItem implements FormDataItem {
     
+    /** The type for set of values. */
     public static final String SET = "set";
     
+    /** ID of the record. */
     private Object id;
     
+    /** Items contained in this data record. */
     private Set<FormDataItem> items = new HashSet<FormDataItem>();
     
     
+    /**
+     * Constructs a new data record with the given type and name.
+     * 
+     * @param type The type of the data record.
+     * @param name The name of the data record.
+     */
     public FormData(String type, String name) {
         super(type, name);
     }
     
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSimpleType() {
         return false;
     }
     
     
+    /**
+     * Adds a new data item to this record.
+     * 
+     * @param item The data item to be added.
+     */
     public void addItem(FormDataItem item) {
         if (item == null)
             return;
@@ -60,10 +78,36 @@ public class FormData extends AbstractFormDataItem implements FormDataItem {
     }
     
     
+    /**
+     * Returns all data items contained in this record.
+     * 
+     * @return set of contained data items
+     */
     public Set<FormDataItem> getItems() {
         return items;
     }
+    
+    
+    /**
+     * Returns this record's ID.
+     * 
+     * @return the ID
+     */
+    public Object getId() {
+        return id;
+    }
 
+
+    /**
+     * Sets the ID of this record.
+     * 
+     * @param id the ID to set
+     */
+    public void setId(Object id) {
+        this.id = id;
+    }
+
+    
 
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
@@ -72,6 +116,7 @@ public class FormData extends AbstractFormDataItem implements FormDataItem {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((items == null) ? 0 : items.hashCode());
         return result;
     }
@@ -86,28 +131,13 @@ public class FormData extends AbstractFormDataItem implements FormDataItem {
         if (!super.equals(obj)) { return false; }
         if (getClass() != obj.getClass()) { return false; }
         FormData other = (FormData) obj;
+        if (id == null) {
+            if (other.id != null) { return false; }
+        } else if (!id.equals(other.id)) { return false; }
         if (items == null) {
             if (other.items != null) { return false; }
         } else if (!items.equals(other.items)) { return false; }
         return true;
-    }
-
-
-    
-    /**
-     * @return the id
-     */
-    public Object getId() {
-        return id;
-    }
-
-
-    
-    /**
-     * @param id the id to set
-     */
-    public void setId(Object id) {
-        this.id = id;
     }
 
 }

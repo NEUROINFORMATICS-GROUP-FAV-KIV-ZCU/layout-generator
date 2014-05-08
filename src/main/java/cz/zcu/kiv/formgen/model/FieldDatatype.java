@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,7 +27,7 @@ package cz.zcu.kiv.formgen.model;
 
 
 /**
- * Data types of input values of form fields.
+ * Datatypes of form fields input values.
  *
  * @author Jakub Krauz
  */
@@ -40,11 +40,18 @@ public enum FieldDatatype {
     EMAIL       ("email");
     
     
+    /** The string value used for serialization. */
     private String value;
     
+    
+    /**
+     * Creates a new instance with the given {@link #value}.
+     * @param value The value to be set.
+     */
     private FieldDatatype(String value) {
         this.value = value;
     }
+    
     
     @Override
     public String toString() {
@@ -52,6 +59,12 @@ public enum FieldDatatype {
     }
     
     
+    /**
+     * Returns FieldDatatype for the given string value.
+     * 
+     * @param value The value.
+     * @return The corresponding FieldDatatype, or null if the value is not recognized.
+     */
     public static FieldDatatype fromString(String value) {
         if (STRING.value.equals(value))
             return STRING;

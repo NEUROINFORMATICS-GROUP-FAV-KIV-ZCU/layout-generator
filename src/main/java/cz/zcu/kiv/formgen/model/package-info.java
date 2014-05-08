@@ -2,7 +2,7 @@
  * 
  * This file is part of the layout-generator project
  * 
- * ==========================================
+ * =================================================
  * 
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  * 
@@ -24,7 +24,18 @@
  **********************************************************************************************************************/
 
 /**
- * Contains the internal model which is used to represent forms and their items.
+ * Contains the internal model of forms and their data.
+ * 
+ * <p>
+ * There are two types of model used in the layout-generator library:
+ * <ul>
+ *     <li>form templates</li>
+ *     <li>form data</li>
+ * </ul>
+ * The first one, form templates, are represented by the {@link Form} objects. They describe forms with their
+ * items and layouts. The form data model is used to represent data records related to a form. It is represented
+ * by the {@link FormData} object. 
+ * </p>
  * 
  * @author Jakub Krauz
  */

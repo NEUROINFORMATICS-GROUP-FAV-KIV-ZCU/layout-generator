@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * MinLength.java, 3. 4. 2014 18:11:46 Jakub Krauz
+ * Length.java, 3. 4. 2014 18:11:46 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -27,34 +27,52 @@ package cz.zcu.kiv.formgen.model.constraints;
 
 
 /**
- *
+ * Restricts the length of a form field input.
+ * 
  * @author Jakub Krauz
  */
 public class Length implements Constraint {
     
+    /** The name of this constraint. */
     private String name;
     
+    /** The value (length). */
     private int value;
     
     
+    /**
+     * Constructs a new length constraint.
+     * @param name the name
+     * @param value the value
+     */
     private Length(String name, int value) {
         this.name = name;
         this.value = value;
     }
     
     
+    /**
+     * Creates a new maximum length constraint.
+     * @param value the maximum length
+     * @return the constraint object
+     */
     public static Length MAX(int value) {
         return new Length("maxLength", value);
     }
     
     
+    /**
+     * Creates a new minimum length constraint.
+     * @param value the minimum length
+     * @return the constraint object
+     */
     public static Length MIN(int value) {
         return new Length("minLength", value);
     }
     
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#name()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String name() {
@@ -62,8 +80,8 @@ public class Length implements Constraint {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#value()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Object value() {

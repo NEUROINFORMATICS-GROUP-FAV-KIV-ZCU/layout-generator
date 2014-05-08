@@ -2,7 +2,7 @@
  * 
  * This file is part of the layout-generator project
  * 
- * ==========================================
+ * =================================================
  * 
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  * 
@@ -24,7 +24,7 @@
  **********************************************************************************************************************/
 
 /**
- * Implements layout-generator interfaces using odML form templates.
+ * The odML module. Provides conversions between the internal model and odML.
  * 
  * @author Jakub Krauz
  */

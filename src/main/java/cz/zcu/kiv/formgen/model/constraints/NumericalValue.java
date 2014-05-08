@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * Value.java, 3. 4. 2014 18:19:08 Jakub Krauz
+ * NumericalValue.java, 3. 4. 2014 18:19:08 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -27,34 +27,52 @@ package cz.zcu.kiv.formgen.model.constraints;
 
 
 /**
- *
+ * Restricts maximum or minimum value of a numerical input.
+ * 
  * @author Jakub Krauz
  */
 public class NumericalValue implements Constraint {
     
+    /** Name of this constraint. */
     private String name;
     
+    /** The value (maximum or minumum). */
     private Number value;
     
     
+    /**
+     * Constructs a new numerical value constraint.
+     * @param name the name of the constraint
+     * @param value the value
+     */
     private NumericalValue(String name, Number value) {
         this.name = name;
         this.value = value;
     }
     
     
+    /**
+     * Creates a new maximum value restriction.
+     * @param value the maximum value
+     * @return the value constraint
+     */
     public static NumericalValue MAX(Number value) {
         return new NumericalValue("maxValue", value);
     }
     
     
+    /**
+     * Creates a new minimum value restriction.
+     * @param value the minimum value
+     * @return the value constraint
+     */
     public static NumericalValue MIN(Number value) {
         return new NumericalValue("minValue", value);
     }
     
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#name()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String name() {
@@ -62,8 +80,8 @@ public class NumericalValue implements Constraint {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#value()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Object value() {

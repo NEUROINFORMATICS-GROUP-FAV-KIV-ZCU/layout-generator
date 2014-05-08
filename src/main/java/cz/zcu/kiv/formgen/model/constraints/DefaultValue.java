@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,7 +19,7 @@
  *
  ***********************************************************************************************************************
  *
- * Value.java, 3. 4. 2014 18:24:19 Jakub Krauz
+ * DefaultValue.java, 3. 4. 2014 18:24:19 Jakub Krauz
  *
  **********************************************************************************************************************/
 
@@ -27,23 +27,30 @@ package cz.zcu.kiv.formgen.model.constraints;
 
 
 /**
- *
+ * Default value of a form field.
+ * 
  * @author Jakub Krauz
  */
 public class DefaultValue implements Constraint {
     
+    /** The name of this constraint. */
     public static final String NAME = "defaultValue";
     
+    /** The default value. */
     private Object value;
     
     
+    /**
+     * Constructs a new default value.
+     * @param value the default value
+     */
     public DefaultValue(Object value) {
         this.value = value;
     }
     
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#name()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String name() {
@@ -51,8 +58,8 @@ public class DefaultValue implements Constraint {
     }
 
 
-    /* (non-Javadoc)
-     * @see cz.zcu.kiv.formgen.model.constraints.Constraint#value()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Object value() {

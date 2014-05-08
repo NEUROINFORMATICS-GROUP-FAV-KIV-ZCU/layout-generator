@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -56,7 +56,7 @@ public interface FormItem {
     /**
      * Sets the type of the form item.
      * 
-     * @param type - the type to be set
+     * @param type The type to be set.
      */
     void setType(Type type);
     
@@ -64,7 +64,7 @@ public interface FormItem {
     /**
      * Sets the form item ID.
      * 
-     * @param id - the ID to be set
+     * @param id The ID to be set.
      */
     void setId(int id);
     
@@ -80,7 +80,7 @@ public interface FormItem {
     /**
      * Sets the name of this item.
      * 
-     * @param name the name
+     * @param name The name to be set.
      */
     public void setName(String name);
     
@@ -96,7 +96,7 @@ public interface FormItem {
     /**
      * Sets the label to this form item.
      * 
-     * @param label - label to be set
+     * @param label Label to be set.
      */
     void setLabel(String label);
     
@@ -112,7 +112,7 @@ public interface FormItem {
     /**
      * Sets the required-flag for this form item.
      * 
-     * @param required - value to be assigned to the requierd-flag
+     * @param required Value to be assigned to the requierd-flag.
      */
     void setRequired(boolean required);
 
@@ -125,9 +125,19 @@ public interface FormItem {
     boolean isRequired();
     
     
+    /**
+     * Sets the cardinality of this form item.
+     * 
+     * @param cardinality The cardinality to be set.
+     */
     void setCardinality(Cardinality cardinality);
     
     
+    /**
+     * Returns the cardinality of this form item.
+     * 
+     * @return the cardinality
+     */
     Cardinality getCardinality();
 
 }

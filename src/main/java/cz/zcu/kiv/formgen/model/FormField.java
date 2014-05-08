@@ -2,7 +2,7 @@
  * 
  * This file is part of the layout-generator project
  * 
- * ==========================================
+ * =================================================
  * 
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  * 
@@ -58,10 +58,9 @@ public class FormField extends AbstractFormItem implements FormItem {
 
 
     /**
-     * Constructor.
-     * Sets the name of the form field.
+     * Constructs a new form field with the given name.
      * 
-     * @param name - the name of the form field
+     * @param name The name of the form field.
      */
     public FormField(String name) {
         this(name, null, null);
@@ -69,12 +68,11 @@ public class FormField extends AbstractFormItem implements FormItem {
     
     
     /**
-     * Constructor.
-     * Sets the name, type and datatype.
+     * Constructs a new form field with the given name, type and datatype.
      * 
-     * @param name - the name of the form field
-     * @param type - the type of the form field
-     * @param datatype - the datatype of the input value
+     * @param name The name of the form field.
+     * @param type The type of the form field.
+     * @param datatype The datatype of the input value.
      */
     public FormField(String name, Type type, FieldDatatype datatype) {
         super(name, type);
@@ -86,7 +84,7 @@ public class FormField extends AbstractFormItem implements FormItem {
     /**
      * Sets the datatype of the input value.
      * 
-     * @param datatype - the datatype
+     * @param datatype the datatype
      */
     public void setDatatype(FieldDatatype datatype) {
         this.datatype = datatype;
@@ -94,7 +92,7 @@ public class FormField extends AbstractFormItem implements FormItem {
 
 
     /**
-     * Gets the datatype of the input value.
+     * Returns the datatype of the input value.
      * 
      * @return the datatype of the input value
      */
@@ -103,6 +101,11 @@ public class FormField extends AbstractFormItem implements FormItem {
     }
     
     
+    /**
+     * Adds a constraint to this form field.
+     * 
+     * @param constraint the constraint to add
+     */
     public void addConstraint(Constraint constraint) {
         if (constraint != null)
             constraints.add(constraint);
@@ -116,13 +119,17 @@ public class FormField extends AbstractFormItem implements FormItem {
     }
     
     
+    /**
+     * Returns all constraints of this form field.
+     * 
+     * @return constraints of this field
+     */
     public Set<Constraint> getConstraints() {
         return constraints;
     }
 
     
     
-
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */

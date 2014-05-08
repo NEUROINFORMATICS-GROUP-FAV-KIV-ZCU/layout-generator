@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -27,7 +27,12 @@ package cz.zcu.kiv.formgen.model;
 
 
 /**
- * Type of the form item.
+ * Type of a form item.
+ * 
+ * <p>
+ * The type determines the meaning and graphical representation of the item.
+ * It can be either a whole form, or some input fields like textboxes, checkboxes and so on.
+ * </p>
  *
  * @author Jakub Krauz
  */
@@ -41,12 +46,18 @@ public enum Type {
     IMAGE      ("image");
     
     
-    
+    /** The string value used for serialization. */
     private String value;
     
+    
+    /**
+     * Constructs a new Type with the given value.
+     * @param value the string value
+     */
     private Type(String value) {
         this.value = value;
     }
+    
     
     @Override
     public String toString() {
@@ -54,6 +65,12 @@ public enum Type {
     }
     
     
+    /**
+     * Returns Type instance corresponding to the given string value.
+     * 
+     * @param value The string value.
+     * @return The corresponding Type, or null if the value was not recognized. 
+     */
     public static Type fromString(String value) {
         if (FORM.toString().equals(value))
             return FORM;
