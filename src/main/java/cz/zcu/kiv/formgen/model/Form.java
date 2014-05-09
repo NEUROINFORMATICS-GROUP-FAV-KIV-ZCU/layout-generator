@@ -123,7 +123,7 @@ public class Form extends AbstractFormItem implements FormItem {
     /**
      * Returns item on the given position (indexed from 0) or null.
      * 
-     * @param index - the index of the position
+     * @param position The index of the position.
      * @return item on the specified position or null
      */
     public FormItem getItemAt(int position) {

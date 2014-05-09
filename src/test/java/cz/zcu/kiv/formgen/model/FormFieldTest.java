@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -28,15 +28,21 @@ package cz.zcu.kiv.formgen.model;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import com.gargoylesoftware.base.testing.EqualsTester;
+import cz.zcu.kiv.formgen.model.constraints.Constraint;
+import cz.zcu.kiv.formgen.model.constraints.PossibleValues;
 
 
 /**
+ * Test cases for {@link FormField}.
  *
  * @author Jakub Krauz
  */
 public class FormFieldTest {
 
     
+    /**
+     * Test the equals method.
+     */
     @Test
     public void testEquals() {
         FormField a = new FormField("name", Type.TEXTBOX, FieldDatatype.STRING);
@@ -48,17 +54,24 @@ public class FormFieldTest {
     }
     
     
-    
+    /**
+     * Test adding and removing possible values constraint.
+     */
     @Test
     public void testSetPossibleValues() {
         FormField field = new FormField("field", Type.TEXTBOX, FieldDatatype.INTEGER);
         assertEquals(Type.TEXTBOX, field.getType());
-        /*field.setPossibleValues(new Object[] {1, 2, 3});
+        
+        Constraint possibleValues = new PossibleValues(new Object[] {1, 2, 3});
+        field.addConstraint(possibleValues);
         assertEquals(Type.COMBOBOX, field.getType());
-        field.setPossibleValues(new Object[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
+        
+        possibleValues = new PossibleValues(new Object[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
+        field.addConstraint(possibleValues);
         assertEquals(Type.CHOICE, field.getType());
-        field.setPossibleValues(null);
-        assertEquals(Type.TEXTBOX, field.getType());*/
+        
+        field.removeConstraint(possibleValues);
+        assertEquals(Type.TEXTBOX, field.getType());
     }
     
 }

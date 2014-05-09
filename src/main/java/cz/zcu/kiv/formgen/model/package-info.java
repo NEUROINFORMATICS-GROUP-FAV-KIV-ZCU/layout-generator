@@ -32,9 +32,9 @@
  *     <li>form templates</li>
  *     <li>form data</li>
  * </ul>
- * The first one, form templates, are represented by the {@link Form} objects. They describe forms with their
- * items and layouts. The form data model is used to represent data records related to a form. It is represented
- * by the {@link FormData} object. 
+ * The first one, form templates, are represented by the {@link cz.zcu.kiv.formgen.model.Form Form} objects.
+ * They describe forms with their items and layouts. The form data model is used to represent data records
+ * related to a form. It is represented by the {@link cz.zcu.kiv.formgen.model.FormData FormData} object. 
  * </p>
  * 
  * @author Jakub Krauz

@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -31,12 +31,16 @@ import com.gargoylesoftware.base.testing.EqualsTester;
 
 
 /**
+ * Test cases for {@link FormData}.
  *
  * @author Jakub Krauz
  */
 public class FormDataTest {
     
     
+    /**
+     * Test the equals() method.
+     */
     @Test
     public void testEquals() {
         FormData a = new FormData("type", "name");
@@ -48,6 +52,9 @@ public class FormDataTest {
     }
     
     
+    /**
+     * Test adding items to the form data object.
+     */
     @Test
     public void testAddingItems() {
         FormData data = new FormData("type", "name");

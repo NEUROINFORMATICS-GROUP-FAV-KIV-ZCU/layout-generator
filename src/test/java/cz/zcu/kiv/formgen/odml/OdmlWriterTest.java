@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -33,14 +33,20 @@ import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
+ * Test cases for {@link OdmlWriter}.
  *
  * @author Jakub Krauz
  */
 public class OdmlWriterTest {
     
+    /** The writer object being tested. */
     private OdmlWriter writer = new OdmlWriter();
     
     
+    /**
+     * Test successfull writing {@link Form} model.
+     * @throws OdmlException
+     */
     @Test
     public void testWriteLayout_success() throws OdmlException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -49,6 +55,10 @@ public class OdmlWriterTest {
     }
     
     
+    /**
+     * Test writing null model.
+     * @throws OdmlException
+     */
     @Test
     public void testWriteLayout_nullModel() throws OdmlException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -59,6 +69,10 @@ public class OdmlWriterTest {
     }
     
     
+    /**
+     * Test writing to null stream.
+     * @throws OdmlException
+     */
     @Test(expected = NullPointerException.class)
     public void testWriteLayout_nullStream() throws OdmlException {
         // should throw NullPointerException

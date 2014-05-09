@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -29,20 +29,29 @@ import org.junit.Test;
 
 
 /**
+ * Test cases for {@link OdmlReader}.
  *
  * @author Jakub Krauz
  */
 public class OdmlReaderTest {
     
+    /** The reader object being tested. */
     private OdmlReader reader = new OdmlReader();
     
     
+    /**
+     * Test successfull reading. 
+     */
     @Test
     public void testRead_success() {
         // TODO test
     }
     
     
+    /**
+     * Test reading from null.
+     * @throws OdmlException
+     */
     @Test(expected = NullPointerException.class)
     public void testRead_null() throws OdmlException {
         reader.readLayout(null);

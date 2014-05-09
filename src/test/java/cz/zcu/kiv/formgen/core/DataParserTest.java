@@ -19,35 +19,27 @@
  *
  ***********************************************************************************************************************
  *
- * FormDataFieldTest.java, 3. 4. 2014 20:44:54 Jakub Krauz
+ * DataParserTest.java, 5. 3. 2014 16:51:41 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.model;
+package cz.zcu.kiv.formgen.core;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
-import com.gargoylesoftware.base.testing.EqualsTester;
 
 
 /**
- * Test cases for {@link FormDataField}.
+ * Test cases for {@link DataParser}.
  *
  * @author Jakub Krauz
  */
-public class FormDataFieldTest {
+public class DataParserTest extends AbstractParserTest {
+    
+    /** The data parser object. */
+    private DataParser parser = new DataParser();
     
     
-    /**
-     * Test the equals() method.
-     */
-    @Test
-    public void testEquals() {
-        FormDataField a = new FormDataField("type", "name");
-        FormDataField b = new FormDataField("type", "name");
-        FormDataField c = new FormDataField("type", "anotherName");
-        FormDataField d = new FormDataField("type", "name") { /* trivial subclass */ };
-        
-        new EqualsTester(a, b, c, d);
-    }
+    
 
 }

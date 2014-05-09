@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -30,15 +30,20 @@ import cz.zcu.kiv.formgen.model.FieldDatatype;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.Type;
+import cz.zcu.kiv.formgen.model.constraints.Cardinality;
 
 
 /**
- *
+ * Parent class for parsers test cases.
+ * 
  * @author Jakub Krauz
  */
 public class AbstractParserTest {
     
     
+    /**
+     * Test class to be parsed.
+     */
     @cz.zcu.kiv.formgen.annotation.Form(label = "Label of TestClass")
     protected class TestClass {
         @FormItem(label = "ID") int id = 2;
@@ -47,47 +52,43 @@ public class AbstractParserTest {
     }
     
     
+    /**
+     * Another test class to be parsed.
+     */
     protected static class Foo {
         @FormItem Byte fooItem = 3;
     }
     
     
+    /**
+     * Creates {@link Form} model of the TestClass.
+     * @param id ID of the form.
+     * @param root Whether the form is a root form.
+     * @return created test form
+     */
     protected Form createTestLayout(int id, boolean root) {
         Form form = new Form("TestClass");
         form.setId(id++);
         form.setLabel("Label of TestClass");
-        if (root) {
-            //form.setLayout(true);
+        form.setDataReference("TestClass");
+        form.setCardinality(Cardinality.SINGLE_VALUE);
+        if (root)
             form.setLayoutName(form.getName() + "-generated");
-        }
         FormField field = new FormField("id", Type.TEXTBOX, FieldDatatype.INTEGER);
         field.setLabel("ID");
         field.setId(id++);
+        field.setCardinality(Cardinality.SINGLE_VALUE);
         form.addItem(field);
         
         Form subform = new Form("foo");
         subform.setId(id++);
         subform.setLabel("item label");
+        subform.setDataReference("Foo");
+        subform.setCardinality(Cardinality.SINGLE_VALUE);
         field = new FormField("fooItem", Type.TEXTBOX, FieldDatatype.INTEGER);
         field.setLabel("Foo item");
         field.setId(id++);
-        subform.addItem(field);
-        form.addItem(subform);
-        
-        return form;
-    }
-    
-    
-    protected Form createTestFormData() {
-        Form form = new Form("TestClass");
-        
-        FormField field = new FormField("id", Type.TEXTBOX, FieldDatatype.INTEGER);
-        //field.setValue((Integer) 2);
-        form.addItem(field);
-        
-        Form subform = new Form("foo");
-        field = new FormField("fooItem", Type.TEXTBOX, FieldDatatype.INTEGER);
-        //field.setValue(new Byte((byte) 3));
+        field.setCardinality(Cardinality.SINGLE_VALUE);
         subform.addItem(field);
         form.addItem(subform);
         

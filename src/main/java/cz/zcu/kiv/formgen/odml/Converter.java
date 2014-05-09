@@ -184,7 +184,7 @@ public class Converter {
     /**
      * Converts odML section tree to internal {@link FormData} model.
      *  
-     * @param section The root section of odML tree.
+     * @param odmlRoot The root section of odML tree.
      * @return corresponding form-data model
      * @throws OdmlConvertException If an error occurs during the conversion.
      */

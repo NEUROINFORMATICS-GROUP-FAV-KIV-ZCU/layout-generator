@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -19,30 +19,46 @@
  *
  ***********************************************************************************************************************
  *
- * SimpleFormGeneratorTest.java, 1. 2. 2014 12:06:38 Jakub Krauz
+ * SimpleLayoutGeneratorTest.java, 1. 2. 2014 12:06:38 Jakub Krauz
  *
  **********************************************************************************************************************/
 
 package cz.zcu.kiv.formgen.core;
 
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.Test;
 import cz.zcu.kiv.formgen.FormNotFoundException;
 import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
+ * Test cases for {@link SimpleLayoutGenerator}.
  *
  * @author Jakub Krauz
  */
 public class SimpleLayoutGeneratorTest {
     
-    SimpleLayoutGenerator generator;
+    /** The generator object being tested. */
+    SimpleLayoutGenerator generator = new SimpleLayoutGenerator();
     
     
+    /**
+     * Clear the loaded model before each test case.
+     */
+    @Before
+    public void clearLoadedModel() {
+        generator.clearModel();
+    }
+    
+    
+    /**
+     * Test loading class.
+     * @throws ClassNotFoundException
+     * @throws FormNotFoundException
+     */
     @Test
     public void loadClassTest() throws ClassNotFoundException, FormNotFoundException {
-        generator = new SimpleLayoutGenerator();
         generator.loadClass("example.pojo.Person");
         
         assertNull(generator.getLoadedForm("xx"));
@@ -53,9 +69,12 @@ public class SimpleLayoutGeneratorTest {
     }
     
     
+    /**
+     * Test loading package.
+     * @throws FormNotFoundException
+     */
     @Test
     public void loadPackageTest() throws FormNotFoundException {
-        generator = new SimpleLayoutGenerator();
         generator.loadPackage("example.pojo");
         
         assertEquals(2, generator.getLoadedModel().size());

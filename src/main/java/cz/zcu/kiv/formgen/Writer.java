@@ -73,7 +73,7 @@ public interface Writer {
      * Writes the serialization of a collection of {@link FormData} objects to the output stream.
      * 
      * @param data The collection of {@link FormData} model objects.
-     * @param outputSteam The output stream to which the serialization will be written.
+     * @param outputStream The output stream to which the serialization will be written.
      * @throws TemplateGeneratorException If the serialization cannot be written to the output stream.
      */
     void writeData(Collection<FormData> data, OutputStream outputStream) throws TemplateGeneratorException;

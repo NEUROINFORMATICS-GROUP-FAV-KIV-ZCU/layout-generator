@@ -107,15 +107,40 @@ public class FormField extends AbstractFormItem implements FormItem {
      * @param constraint the constraint to add
      */
     public void addConstraint(Constraint constraint) {
-        if (constraint != null)
-            constraints.add(constraint);
-        
         if (constraint instanceof PossibleValues) {
+            
+            // remove old possible values constraint if exists
+            PossibleValues old = null;
+            for (Constraint c : constraints)
+                if (c instanceof PossibleValues) {
+                    old = (PossibleValues) c;
+                    break;
+                }
+            if (old != null)
+                constraints.remove(old);
+            
+            // determine type of this field according to the possible values constraint
             if (((PossibleValues) constraint).getValues().length <= COMBOBOX_MAX_ITEMS)
                 this.type = Type.COMBOBOX;
             else
                 this.type = Type.CHOICE;
         }
+        
+        if (constraint != null)
+            constraints.add(constraint);
+    }
+    
+    
+    /**
+     * Removes the specified constraint.
+     * 
+     * @param constraint the constraint to remove
+     */
+    public void removeConstraint(Constraint constraint) {
+        constraints.remove(constraint);
+        
+        if (constraint instanceof PossibleValues)
+            this.type = Type.TEXTBOX;
     }
     
     

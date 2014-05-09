@@ -19,33 +19,33 @@
  *
  ***********************************************************************************************************************
  *
- * FormDataFieldTest.java, 3. 4. 2014 20:44:54 Jakub Krauz
+ * CardinalityTest.java, 9. 5. 2014 9:41:46 Jakub Krauz
  *
  **********************************************************************************************************************/
 
-package cz.zcu.kiv.formgen.model;
+package cz.zcu.kiv.formgen.model.constraints;
 
 import org.junit.Test;
 import com.gargoylesoftware.base.testing.EqualsTester;
 
 
 /**
- * Test cases for {@link FormDataField}.
+ * Test cases for {@link Cardinality}.
  *
  * @author Jakub Krauz
  */
-public class FormDataFieldTest {
-    
+public class CardinalityTest {
+
     
     /**
      * Test the equals() method.
      */
     @Test
     public void testEquals() {
-        FormDataField a = new FormDataField("type", "name");
-        FormDataField b = new FormDataField("type", "name");
-        FormDataField c = new FormDataField("type", "anotherName");
-        FormDataField d = new FormDataField("type", "name") { /* trivial subclass */ };
+        Cardinality a = Cardinality.SINGLE_VALUE;
+        Cardinality b = new Cardinality(1);
+        Cardinality c = Cardinality.UNRESTRICTED;
+        Cardinality d = new Cardinality(1) { /* trivial subclass */ };
         
         new EqualsTester(a, b, c, d);
     }

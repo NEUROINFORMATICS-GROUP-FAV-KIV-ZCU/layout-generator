@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -26,14 +26,17 @@
 package cz.zcu.kiv.formgen.core;
 
 import static org.junit.Assert.*;
+import java.io.FileNotFoundException;
 import java.lang.annotation.Annotation;
 import org.junit.Test;
+import cz.zcu.kiv.formgen.TemplateGeneratorException;
 import cz.zcu.kiv.formgen.annotation.MultiForm;
 import cz.zcu.kiv.formgen.model.Form;
 
 
 /**
- *
+ * Test cases for {@link ClassParser}.
+ * 
  * @author Jakub Krauz
  */
 public class ClassParserTest extends AbstractParserTest {
@@ -42,19 +45,30 @@ public class ClassParserTest extends AbstractParserTest {
     private ClassParser parser = new ClassParser();
     
     
+    /**
+     * Successfull parsing process.
+     * @throws FileNotFoundException
+     * @throws TemplateGeneratorException
+     */
     @Test
-    public void testParse_success() {
+    public void testParse_success() throws FileNotFoundException, TemplateGeneratorException {
         Form form = parser.parse(TestClass.class);
         assertEquals(createTestLayout(0, true), form);
     }
     
     
+    /**
+     * Parsing null - NullPointerException should be thrown.
+     */
     @Test(expected = NullPointerException.class)
     public void testParse_null() {
         parser.parse(null);
     }
     
     
+    /**
+     * Adding to specified multiform. 
+     */
     @Test
     public void testParse_addToForm() {
         Form form = new Form("superForm");
@@ -63,6 +77,10 @@ public class ClassParserTest extends AbstractParserTest {
     }
     
     
+    /**
+     * Parsing null and adding to specified multiform - NullPointerException should be thrown.
+     * @throws Exception
+     */
     @Test(expected = NullPointerException.class)
     public void testParse_addToFormNull() throws Exception {
         Form form = new Form("superForm");
@@ -75,6 +93,9 @@ public class ClassParserTest extends AbstractParserTest {
     }
     
     
+    /**
+     * Create a multi-form object.
+     */
     @Test
     public void testCreateMultiform_succes() {
         
@@ -101,6 +122,9 @@ public class ClassParserTest extends AbstractParserTest {
     }
     
     
+    /**
+     * Create a multi-form object from null value - NullPointerException should be thrown.
+     */
     @Test(expected = NullPointerException.class)
     public void testCreateMultiform_null() {
         parser.createMultiform(null);

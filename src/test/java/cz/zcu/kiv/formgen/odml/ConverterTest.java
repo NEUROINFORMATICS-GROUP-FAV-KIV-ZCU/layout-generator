@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2014 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -40,14 +40,20 @@ import cz.zcu.kiv.formgen.model.Type;
 
 
 /**
+ * Test cases for {@link Converter}.
  *
  * @author Jakub Krauz
  */
 public class ConverterTest {
     
+    /** The converter object being tested. */
     private Converter converter = new Converter();
     
     
+    /**
+     * Test converting {@link Form} model to odML.
+     * @throws OdmlConvertException
+     */
     @Test
     public void testLayoutToOdml() throws OdmlConvertException {
         // single layout
@@ -63,6 +69,10 @@ public class ConverterTest {
     }
     
     
+    /**
+     * Test converting {@link FormData} model to odML.
+     * @throws OdmlConvertException
+     */
     @Test
     public void testDataToOdml() throws OdmlConvertException {
         // single formData
@@ -78,6 +88,10 @@ public class ConverterTest {
     }
     
     
+    /**
+     * Test converting null arguments.
+     * @throws OdmlConvertException
+     */
     @Test
     public void testNullArguments() throws OdmlConvertException {
         assertNull(converter.layoutToOdml((Form) null));
@@ -89,6 +103,10 @@ public class ConverterTest {
     }
     
     
+    /**
+     * Test converting odML to {@link FormData} model.
+     * @throws OdmlConvertException
+     */
     @Test
     public void testOdmlToDataModel() throws OdmlConvertException {
         Section dataRoot = new Section();
@@ -100,7 +118,10 @@ public class ConverterTest {
 
     
     
-    
+    /**
+     * Creates a test {@link Form} model.
+     * @return test form
+     */
     private Form createTestForm() {
         Form form = new Form("form");
         form.addItem(new FormField("field", Type.CHECKBOX, FieldDatatype.STRING));
@@ -111,6 +132,10 @@ public class ConverterTest {
     }
     
     
+    /**
+     * Creates a test section corresponding to the test form created by {@link #createTestForm()}.
+     * @return test section
+     */
     private Section createTestSection() {
         Section section = null;
         
@@ -139,6 +164,10 @@ public class ConverterTest {
     }
     
     
+    /**
+     * Creates test {@link FormData} model.
+     * @return test form data
+     */
     private FormData createTestFormData() {
         FormData data = new FormData("type", "name");
         
@@ -156,6 +185,10 @@ public class ConverterTest {
     }
     
     
+    /**
+     * Creates a test section corresponding to the test form data created by {@link #createTestFormData()}.
+     * @return test data section
+     */
     private Section createTestDataSection() {
         Section section = null;
         
