@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -26,7 +26,6 @@
 package example.pojo;
 
 import cz.zcu.kiv.formgen.annotation.Form;
-import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.annotation.FormItemRestriction;
@@ -34,13 +33,12 @@ import cz.zcu.kiv.formgen.annotation.PreviewLevel;
 
 
 @Form
-@FormDescription("formular pro zadavani adresy")
 public class Address {
     
     @FormId
     private int id;
     
-    @FormItem(label = "mesto", required = true, preview = PreviewLevel.MAJOR)
+    @FormItem(required = true, preview = PreviewLevel.MAJOR)
     private String town;
     
     @FormItem(required = true, preview = PreviewLevel.MINOR)
@@ -49,9 +47,6 @@ public class Address {
     @FormItem(required = true)
     @FormItemRestriction(minValue = 1)
     private int number;
-    
-    @FormItem
-    private Pokus pokus = new Pokus();
     
     
     public Address() {
@@ -99,22 +94,10 @@ public class Address {
     public void setNumber(int number) {
         this.number = number;
     }
-
-
-    
-    public Pokus getPokus() {
-        return pokus;
-    }
-
-
-    
-    public void setPokus(Pokus pokus) {
-        this.pokus = pokus;
-    }
     
     
     public String toString() {
-        return street + " " + number + ", " + town + "  (" + pokus.getShortNumber() + " - " + pokus.getBajt() + ")";
+        return street + " " + number + ", " + town;
     }
     
 

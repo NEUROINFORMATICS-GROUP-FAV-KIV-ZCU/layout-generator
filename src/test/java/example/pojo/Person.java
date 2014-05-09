@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -26,8 +26,6 @@
 package example.pojo;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import cz.zcu.kiv.formgen.annotation.Form;
 import cz.zcu.kiv.formgen.annotation.FormDescription;
 import cz.zcu.kiv.formgen.annotation.FormId;
@@ -37,22 +35,18 @@ import cz.zcu.kiv.formgen.annotation.PreviewLevel;
 
 
 @Form
-@FormDescription("Form used to add persons.")
+@FormDescription("Form to create persons.")
 public class Person {
 
     @FormId
     private int id;
     
-    @FormItem(label = "jmeno", required = true, preview = PreviewLevel.MAJOR)
-    @FormItemRestriction(minLength = 2, maxLength = 15)
+    @FormItem(label = "Full name", required = true, preview = PreviewLevel.MAJOR)
+    @FormItemRestriction(minLength = 2, maxLength = 50)
     private String name;
     
     @FormItem
     private int age;
-    
-    @FormItem
-    private Set<Address> addresses = new HashSet<Address>();
-    //private Set<Address> addresses;
     
     @FormItem
     private boolean clever;
@@ -121,33 +115,21 @@ public class Person {
         this.birth = birth;
     }
     
+    
     public Address getAddress() {
         return address;
     }
+    
     
     public void setAddress(Address address) {
         this.address = address;
     }
     
     
-    public void addAddress(Address address) {
-        if (addresses == null)
-            addresses = new HashSet<Address>();
-        this.addresses.add(address);
-    }
-    
-    
-    public Set<Address> getAddresses() {
-        return addresses;
-    }
-
-
-    
     public boolean isClever() {
         return clever;
     }
-
-
+    
     
     public void setClever(boolean clever) {
         this.clever = clever;
@@ -163,10 +145,6 @@ public class Person {
         builder.append("\nbirth: " + birth);
         if (address != null)
             builder.append("\naddress: " + address.toString());
-        builder.append("\naddresses:");
-        for (Address a : addresses)
-            builder.append("\n    " + a.toString());
-        builder.append("\n");
         return builder.toString();
     }
 

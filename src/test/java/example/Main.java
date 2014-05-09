@@ -2,7 +2,7 @@
  *
  * This file is part of the layout-generator project
  *
- * ==========================================
+ * =================================================
  *
  * Copyright (C) 2013 by University of West Bohemia (http://www.zcu.cz/en/)
  *
@@ -25,22 +25,18 @@
 
 package example;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import cz.zcu.kiv.formgen.LayoutGenerator;
-import cz.zcu.kiv.formgen.PersistentObjectException;
-import cz.zcu.kiv.formgen.PersistentObjectProvider;
+import cz.zcu.kiv.formgen.ObjectBuilder;
 import cz.zcu.kiv.formgen.Reader;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.core.SimpleObjectBuilder;
-import cz.zcu.kiv.formgen.core.PersistentObjectBuilder;
 import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.core.SimpleDataGenerator;
 import cz.zcu.kiv.formgen.model.Form;
@@ -49,127 +45,127 @@ import cz.zcu.kiv.formgen.odml.OdmlReader;
 import cz.zcu.kiv.formgen.odml.OdmlWriter;
 import example.pojo.Address;
 import example.pojo.Person;
-import example.pojo.Pokus;
 
 
+/**
+ * A sample program demonstrating basic usage of the layout-generator libarry.
+ *
+ * @author Jakub Krauz
+ */
 public class Main {
+    
+    /** The base package of data model objects. */
+    public static final String POJO_BASE = "example.pojo";
+    
+    /** Directory for sample outputs. */
+    public static final String OUT_DIR = "example";
+    
+    /** Name of the file with serialized data. */
+    public static final String DATA_FILE = "data.odml";
 
-    public static void main(String[] args) throws Exception {
+    
+    /**
+     * Runs a sample generation of form templates and a sample data transfer.
+     * @param args not used
+     */
+    public static void main(String[] args) {
+        // create the output directory
+        createOutDir();
         
-        data();
+        // example of form templates generation
+        generateFormLayouts();
         
-        LayoutGenerator gen = new SimpleLayoutGenerator();
-        //Package pack = Package.getPackage("example.pojo");
+        // example of data transfer
+        transferData();
+
+        System.out.println("Finished.");
+    }
+    
+    
+    
+    /**
+     * Demonstrates form templates generation and their serialization to odML transfer format.
+     */
+    private static void generateFormLayouts() {
+        LayoutGenerator generator = new SimpleLayoutGenerator();  // layout generator
+        Writer writer = new OdmlWriter();                         // odML writer
+        
         try {
-            gen.loadPackage("example.pojo");
-            //gen.loadClass("example.pojo.Pokus");
-            for (Form form : gen.getLoadedModel()) {
-                Writer writer = new OdmlWriter();
-                OutputStream stream = new FileOutputStream("odml/" + form.getName() + ".odml");
+            // load and parse all classes in the base package
+            generator.loadPackage(POJO_BASE);
+            
+            // write all generated templates to odml files
+            for (Form form : generator.getLoadedModel()) {
+                OutputStream stream = new FileOutputStream(OUT_DIR + "/" + form.getName() + ".odml");
                 writer.writeLayout(form, stream);
                 stream.close();
             }
+            
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
-        System.out.println("hotovo");
-
+        System.out.println("Generated form templates were written to the \"" + OUT_DIR + "\" directory.\n");
     }
     
     
-    
-    private static void data() throws Exception {
-        Person person = new Person(99, "Thomas", 31, null);
-        Address address = new Address(1, "Pilsen", "Zluticka", 26);
-        Pokus pokus = new Pokus();
-        pokus.setShortNumber((short) 20);
-        pokus.setBajt((byte) 44);
-        address.setPokus(pokus);
-        person.setAddress(address);
-        person.addAddress(address);
-        person.addAddress(new Address(2, "Prague", "Brnenska", 415));
+    /**
+     * Demonstrates data transfer using odML.
+     */
+    private static void transferData() {
+        System.out.println("Running sample data transfer...\n");
+        
+        // prepare sample data object
+        Person person = new Person(1, "Thomas", 31, null);
+        person.setAddress(new Address(1, "Pilsen", "Brewery St.", 26));
         person.setBirth(new Date());
-        
-        SimpleDataGenerator generator = new SimpleDataGenerator();
-        generator.load(person, false);
-        Collection<FormData> formData = generator.getLoadedModel();
-        
-        Writer writer = new OdmlWriter();
-        OutputStream stream = new FileOutputStream("odml/pokus.odml");
-        writer.writeData(formData, stream);
-        stream.close();
-        
-        
-        /* load back */
-        InputStream in = new FileInputStream("odml/pokus2.odml");
-        Reader reader = new OdmlReader();
-        Set<FormData> data = reader.readData(in);
-        
-        System.out.println("******* Person *********");
+        System.out.println("*************** original data ***************");
         System.out.println(person.toString());
-        System.out.println("************************");
-        
-        /* build data object */
-        //ObjectBuilder builder = new ObjectBuilder();
-        SimpleObjectBuilder builder = new PersistentObjectBuilder<Integer>(new SampleProvider());
-        Person tmp = builder.buildTyped(data.iterator().next(), Person.class);
-        
-        System.out.println("******* Person built *********");
-        System.out.println(tmp.toString());
-        System.out.println("************************");
+        System.out.println("*********************************************\n");
         
         
-        
-        /* collection of data */
-        
-        /*List<Object> list = new ArrayList<Object>(3);
-        list.add(new Address("Pilsen", "Zluticka", 26));
-        list.add(new Address("Pilsen", "Manesova", 78));
-        list.add(new Address("Pilsen", "Klatovska", 333));
-        generator = new SimpleFormDataGenerator();
-        generator.loadObjects(list);
-        Collection<Form> forms = generator.getForms();
-        System.out.println("pocet: " + forms.size());
-        stream = new FileOutputStream("odml/data.odml");
-        writer.write(forms, stream);
-        stream.close();*/
-        
-        List<Object> list = new ArrayList<Object>(3);
-        Person osoba = new Person(88, "Pepa", 18, new Date());
-        osoba.addAddress(new Address(1, "Pilsen", "Zluticka", 26));
-        osoba.addAddress(new Address(2, "Pilsen", "Manesova", 78));
-        osoba.addAddress(new Address(3, "Pilsen", "Klatovska", 333));
-        list.add(osoba);
-        
-        SimpleDataGenerator gen = new SimpleDataGenerator();
-        gen.load(list);
-        Collection<FormData> forms = gen.getLoadedModel();
-        stream = new FileOutputStream("odml/data.odml");
-        writer.writeData(forms, stream);
-        stream.close();
-    }
-    
-    
-    
-    private static class SampleProvider implements PersistentObjectProvider<Integer> {
-
-        @Override
-        public Object getById(Class<?> cls, Integer id) throws PersistentObjectException {
-            Object o = null;
-            
-            if (cls.equals(Person.class)) {
-                o = new Person(id, "jmeno-" + id, id, null);
-            } else if (cls.equals(Address.class)) {
-                o = new Address(id, "town-" + id, "street-" + id, id);
-            } else if (cls.equals(Pokus.class)) {
-                o = new Pokus();
-            }
-            
-            return o;
+        // parse the data object and write it to odML file
+        SimpleDataGenerator generator = new SimpleDataGenerator();
+        FormData data = generator.load(person, true);
+        Writer writer = new OdmlWriter();
+        try {
+            OutputStream stream = new FileOutputStream(OUT_DIR + "/" + DATA_FILE);
+            writer.writeData(data, stream);
+            stream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
         }
         
+        
+        // load the data back from the odML file and build the original data object
+        Reader reader = new OdmlReader();
+        ObjectBuilder builder = new SimpleObjectBuilder();
+        try {
+            // read the odML
+            InputStream in = new FileInputStream(OUT_DIR + "/" + DATA_FILE);
+            Set<FormData> loadedData = reader.readData(in);
+            
+            // build the original object
+            Person person2 = builder.buildTyped(loadedData.iterator().next(), Person.class);
+            System.out.println("************ data after transfer ************");
+            System.out.println(person2.toString());
+            System.out.println("*********************************************\n");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        
+    }
+    
+    
+    /**
+     * Create the output directory.
+     */
+    private static void createOutDir() {
+        File outDir = new File(OUT_DIR);
+        outDir.mkdir();
     }
     
 
