@@ -42,10 +42,10 @@ public class FormDataFieldTest {
      */
     @Test
     public void testEquals() {
-        FormDataField a = new FormDataField("type", "name");
-        FormDataField b = new FormDataField("type", "name");
-        FormDataField c = new FormDataField("type", "anotherName");
-        FormDataField d = new FormDataField("type", "name") { /* trivial subclass */ };
+        FormDataField a = new FormDataField("name");
+        FormDataField b = new FormDataField("name");
+        FormDataField c = new FormDataField("anotherName");
+        FormDataField d = new FormDataField("name") { /* trivial subclass */ };
         
         new EqualsTester(a, b, c, d);
     }

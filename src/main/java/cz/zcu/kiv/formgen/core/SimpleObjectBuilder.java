@@ -230,7 +230,7 @@ public class SimpleObjectBuilder implements ObjectBuilder {
             instance = type.newInstance();
             fill(instance, data);
         } catch (Exception e) {
-            final String message = "Cannot create instance of " + type.getName();
+            final String message = "Cannot create instance of " + ((type == null) ? "null" : type.getName());
             logger.error(message, e);
             throw new ObjectBuilderException(message, e);
         }

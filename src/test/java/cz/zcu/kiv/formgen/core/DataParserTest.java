@@ -27,6 +27,7 @@ package cz.zcu.kiv.formgen.core;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+import cz.zcu.kiv.formgen.model.FormData;
 
 
 /**
@@ -40,6 +41,30 @@ public class DataParserTest extends AbstractParserTest {
     private DataParser parser = new DataParser();
     
     
+    /**
+     * Test a successful parsing process.
+     */
+    @Test
+    public void testParse_success() {
+        TestClass obj = new TestClass();
+        
+        // include referenced data as well
+        FormData data = parser.parse(obj, true);
+        assertEquals(createTestData(true), data);
+        
+        // include only IDs of referenced data
+        data = parser.parse(obj, false);
+        assertEquals(createTestData(false), data);
+    }
+    
+    
+    /**
+     * Test parsing null value.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testParse_null() {
+        parser.parse(null, false);
+    }
     
 
 }

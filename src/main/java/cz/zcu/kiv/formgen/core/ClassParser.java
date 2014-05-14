@@ -37,6 +37,7 @@ import cz.zcu.kiv.formgen.annotation.PreviewLevel;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
+import cz.zcu.kiv.formgen.model.Type;
 import cz.zcu.kiv.formgen.model.constraints.Cardinality;
 import cz.zcu.kiv.formgen.model.constraints.DefaultValue;
 import cz.zcu.kiv.formgen.model.constraints.Length;
@@ -120,6 +121,7 @@ public class ClassParser {
         final Class<cz.zcu.kiv.formgen.annotation.FormItem> formItemClass = 
                 cz.zcu.kiv.formgen.annotation.FormItem.class;
 
+        // iterate over all fields annotated with @FormItem
         for (Field f : ReflectionUtils.annotatedFields(cls, formItemClass)) {
             if (mapper.isSimpleType(f.getType())) {
                 FormField item = createFormField(f, id++);
@@ -186,9 +188,15 @@ public class ClassParser {
      * @return The newly created form field.
      */
     private FormField createFormField(Field field, int id) {
-        FormField formField = new FormField(field.getName(), mapper.mapType(field.getType()),
-                mapper.mapDatatype(field.getType()));
-        formField.setCardinality(Cardinality.SINGLE_VALUE);
+        Type type = mapper.mapType(field.getType());
+        FormField formField;
+        if (type == Type.CHECKBOX) {
+            formField = new FormField(field.getName());
+            formField.setType(type);
+        } else {
+            formField = new FormField(field.getName(), type, mapper.mapDatatype(field.getType()));
+            formField.setCardinality(Cardinality.SINGLE_VALUE);
+        }
         formField.setId(id);
 
         cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field

@@ -81,10 +81,8 @@ public class DataParser {
         FormData form = new FormData(obj.getClass().getSimpleName(), name);
         
         Field idField = ReflectionUtils.annotatedField(obj.getClass(), FormId.class);
-        if (idField != null) {
-            idField.setAccessible(true);
+        if (idField != null)
             form.setId(ReflectionUtils.value(idField, obj));
-        }
         
         for (Field f : ReflectionUtils.annotatedFields(obj.getClass(), cz.zcu.kiv.formgen.annotation.FormItem.class)) {
             if (mapper.isSimpleType(f.getType())) {
@@ -126,7 +124,7 @@ public class DataParser {
         Class<?> type = ReflectionUtils.genericParameter((ParameterizedType) field.getGenericType());
         for (Object o : collection) {
             if (mapper.isSimpleType(o.getClass())) {
-                FormDataField formField = new FormDataField(type.getSimpleName(), name + "[" + index++ + "]");
+                FormDataField formField = new FormDataField(name + "[" + index++ + "]");
                 formField.setValue(o);
                 dataSet.addItem(formField);
             } else if (!includeReferences) {
@@ -152,7 +150,7 @@ public class DataParser {
      */
     private FormDataField createDataField(Field field, Object obj) {
         Object value = ReflectionUtils.value(field, obj);
-        FormDataField dataField = new FormDataField(field.getType().getSimpleName(), field.getName());
+        FormDataField dataField = new FormDataField(field.getName());
         dataField.setValue(value);
         return dataField;
     }

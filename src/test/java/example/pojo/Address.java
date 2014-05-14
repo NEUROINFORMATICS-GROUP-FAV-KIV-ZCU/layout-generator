@@ -99,6 +99,44 @@ public class Address {
     public String toString() {
         return street + " " + number + ", " + town;
     }
+
+    
+    
+    
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        result = prime * result + number;
+        result = prime * result + ((street == null) ? 0 : street.hashCode());
+        result = prime * result + ((town == null) ? 0 : town.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) { return true; }
+        if (obj == null) { return false; }
+        if (getClass() != obj.getClass()) { return false; }
+        Address other = (Address) obj;
+        if (id != other.id) { return false; }
+        if (number != other.number) { return false; }
+        if (street == null) {
+            if (other.street != null) { return false; }
+        } else if (!street.equals(other.street)) { return false; }
+        if (town == null) {
+            if (other.town != null) { return false; }
+        } else if (!town.equals(other.town)) { return false; }
+        return true;
+    }
     
 
 }

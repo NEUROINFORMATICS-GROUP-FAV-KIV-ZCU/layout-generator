@@ -273,13 +273,13 @@ public class Converter {
             if (property.getName().equals("id")) {
                 data.setId(property.getValue());
             } else if (property.getValues().size() == 1) {
-                FormDataField field = new FormDataField(property.getType(), property.getName());
+                FormDataField field = new FormDataField(property.getName());
                 field.setValue(property.getValue());
                 data.addItem((FormDataItem) field);
             } else {
                 FormData set = new FormData(property.getType(), FormData.SET);
                 for (Object value : property.getValues()) {
-                    FormDataField field = new FormDataField(property.getType(), property.getName());
+                    FormDataField field = new FormDataField(property.getName());
                     field.setValue(value);
                     set.addItem((FormDataItem) field);
                 }
@@ -347,7 +347,8 @@ public class Converter {
         if (field.getCardinality() != null)
             section.addProperty("cardinality", field.getCardinality().getValue());
         section.addProperty("required", field.isRequired());
-        section.addProperty("datatype", field.getDatatype().toString());
+        if (field.getDatatype() != null)
+            section.addProperty("datatype", field.getDatatype().toString());
         
         // constraints
         for (Constraint constraint : field.getConstraints()) {

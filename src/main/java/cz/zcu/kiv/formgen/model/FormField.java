@@ -43,7 +43,7 @@ import cz.zcu.kiv.formgen.model.constraints.PossibleValues;
  * 
  * @author Jakub Krauz
  */
-public class FormField extends AbstractFormItem implements FormItem {
+public class FormField extends AbstractFormItem {
     
     /** Maximal count of combobox values. If the number of values is higher,
      * choice (list) is used instead. */

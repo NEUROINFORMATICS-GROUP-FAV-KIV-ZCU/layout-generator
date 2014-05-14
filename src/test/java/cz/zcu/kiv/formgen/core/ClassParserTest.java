@@ -51,7 +51,7 @@ public class ClassParserTest extends AbstractParserTest {
      * @throws TemplateGeneratorException
      */
     @Test
-    public void testParse_success() throws FileNotFoundException, TemplateGeneratorException {
+    public void testParse_success() throws TemplateGeneratorException {
         Form form = parser.parse(TestClass.class);
         assertEquals(createTestLayout(0, true), form);
     }

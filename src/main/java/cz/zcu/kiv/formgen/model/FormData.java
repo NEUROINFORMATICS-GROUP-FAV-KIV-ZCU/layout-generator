@@ -34,7 +34,7 @@ import java.util.Set;
  *
  * @author Jakub Krauz
  */
-public class FormData extends AbstractFormDataItem implements FormDataItem {
+public class FormData extends AbstractFormDataItem {
     
     /** The type for set of values. */
     public static final String SET = "set";

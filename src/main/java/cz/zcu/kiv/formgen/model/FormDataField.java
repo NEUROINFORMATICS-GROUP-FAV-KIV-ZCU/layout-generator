@@ -31,20 +31,31 @@ package cz.zcu.kiv.formgen.model;
  *
  * @author Jakub Krauz
  */
-public class FormDataField extends AbstractFormDataItem implements FormDataItem {
+public class FormDataField extends AbstractFormDataItem {
     
     /** The value. */
     private Object value;
     
     
     /**
-     * Constructs a new data field with the given type and name.
+     * Constructs a new data field with the given name.
      * 
-     * @param type The type of the data field.
      * @param name The name of the data field.
      */
-    public FormDataField(String type, String name) {
-        super(type, name);
+    public FormDataField(String name) {
+        super(null, name);
+    }
+    
+    
+    /**
+     * Constructs a new data field with the given name and value.
+     * 
+     * @param name The name of the data field.
+     * @param value The value of the data field.
+     */
+    public FormDataField(String name, Object value) {
+        super(null, name);
+        this.value = value;
     }
 
     

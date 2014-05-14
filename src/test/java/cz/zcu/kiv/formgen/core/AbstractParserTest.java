@@ -25,9 +25,12 @@
 
 package cz.zcu.kiv.formgen.core;
 
+import cz.zcu.kiv.formgen.annotation.FormId;
 import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.model.FieldDatatype;
 import cz.zcu.kiv.formgen.model.Form;
+import cz.zcu.kiv.formgen.model.FormData;
+import cz.zcu.kiv.formgen.model.FormDataField;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.Type;
 import cz.zcu.kiv.formgen.model.constraints.Cardinality;
@@ -46,7 +49,8 @@ public class AbstractParserTest {
      */
     @cz.zcu.kiv.formgen.annotation.Form(label = "Label of TestClass")
     protected class TestClass {
-        @FormItem(label = "ID") int id = 2;
+        @FormId int id = 2;
+        @FormItem boolean bool;
         String str;
         @FormItem(label = "item label") Foo foo = new Foo();
     }
@@ -56,6 +60,7 @@ public class AbstractParserTest {
      * Another test class to be parsed.
      */
     protected static class Foo {
+        @FormId int id = 5;
         @FormItem Byte fooItem = 3;
     }
     
@@ -74,10 +79,10 @@ public class AbstractParserTest {
         form.setCardinality(Cardinality.SINGLE_VALUE);
         if (root)
             form.setLayoutName(form.getName() + "-generated");
-        FormField field = new FormField("id", Type.TEXTBOX, FieldDatatype.INTEGER);
-        field.setLabel("ID");
+        FormField field = new FormField("bool");
+        field.setType(Type.CHECKBOX);
+        field.setLabel("Bool");
         field.setId(id++);
-        field.setCardinality(Cardinality.SINGLE_VALUE);
         form.addItem(field);
         
         Form subform = new Form("foo");
@@ -93,6 +98,26 @@ public class AbstractParserTest {
         form.addItem(subform);
         
         return form;
+    }
+    
+    
+    /**
+     * Creates {@link FormData} model of the TestClass object.
+     * @param includeReferences If true, referenced data will be included as well.
+     * @return created test form data
+     */
+    protected FormData createTestData(boolean includeReferences) {
+        FormData data = new FormData("TestClass", "TestClass_2");
+        data.setId(2);
+        data.addItem(new FormDataField("bool", false));
+        
+        FormData inner = new FormData("Foo", "foo");
+        inner.setId(5);
+        if (includeReferences)
+            inner.addItem(new FormDataField("fooItem", (byte) 3));
+        data.addItem(inner);
+        
+        return data;
     }
 
 

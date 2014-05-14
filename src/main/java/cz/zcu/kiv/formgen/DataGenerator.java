@@ -35,7 +35,15 @@ import cz.zcu.kiv.formgen.model.FormData;
  * @author Jakub Krauz
  */
 public interface DataGenerator extends Generator<Object, FormData> {
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    FormData load(Object dataEntity);
 
+    
     /**
      * Converts the given data object to {@link FormData}. If the <code>includeReferences</code>
      * argument is true then all referenced data objects are parsed as well. Otherwise, only
@@ -47,7 +55,14 @@ public interface DataGenerator extends Generator<Object, FormData> {
      */
     FormData load(Object dataEntity, boolean includeReferences);
 
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    Collection<FormData> load(Collection<Object> data);
 
+    
     /**
      * Converts the given collection of data objects to {@link FormData}.
      * If the <code>includeReferences</code> argument is true then all referenced data

@@ -172,12 +172,12 @@ public class ConverterTest {
         FormData data = new FormData("type", "name");
         
         FormData inner = new FormData("innerType", "innerName");
-        FormDataField field = new FormDataField("string", "textbox");
+        FormDataField field = new FormDataField("textbox");
         field.setValue("text");
         inner.addItem(field);
         data.addItem(inner);
         
-        field = new FormDataField("boolean", "checkbox");
+        field = new FormDataField("checkbox");
         field.setValue(Boolean.TRUE);
         data.addItem(field);
         

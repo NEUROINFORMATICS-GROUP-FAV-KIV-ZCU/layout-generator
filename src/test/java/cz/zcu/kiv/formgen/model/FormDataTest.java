@@ -59,7 +59,7 @@ public class FormDataTest {
     public void testAddingItems() {
         FormData data = new FormData("type", "name");
         assertEquals(0, data.getItems().size());
-        data.addItem(new FormDataField("type1", "name1"));
+        data.addItem(new FormDataField("name1"));
         assertEquals(1, data.getItems().size());
         data.addItem(new FormData("type2", "name2"));
         assertEquals(2, data.getItems().size());

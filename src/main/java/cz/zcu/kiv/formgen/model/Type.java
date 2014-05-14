@@ -42,8 +42,7 @@ public enum Type {
     TEXTBOX    ("textbox"), 
     CHECKBOX   ("checkbox"),
     COMBOBOX   ("combobox"),
-    CHOICE     ("choice"),
-    IMAGE      ("image");
+    CHOICE     ("choice");
     
     
     /** The string value used for serialization. */
@@ -82,8 +81,6 @@ public enum Type {
             return COMBOBOX;
         if (CHOICE.toString().equals(value))
             return CHOICE;
-        if (IMAGE.toString().equals(value))
-            return IMAGE;
         return null;
     }
 

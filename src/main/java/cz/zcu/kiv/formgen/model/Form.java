@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jakub Krauz
  */
-public class Form extends AbstractFormItem implements FormItem {
+public class Form extends AbstractFormItem {
     
     /** Logger. */
     final Logger logger = LoggerFactory.getLogger(Form.class);
