@@ -42,11 +42,17 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface MultiForm {
     
-    /** Name of the form. It identifies the form, i.e. it must have exactly the same
-     * value for all classes that will be included in the same form. */
+    /**
+     * Name of the form. It identifies the form, i.e. it must have exactly the same
+     * value for all classes that will be included in the same form.
+     * @return the name
+     */
     String value();
     
-    /** Label of the form. */
+    /**
+     * Label of the form.
+     * @return the label 
+     */
     String label() default "";
 
 }

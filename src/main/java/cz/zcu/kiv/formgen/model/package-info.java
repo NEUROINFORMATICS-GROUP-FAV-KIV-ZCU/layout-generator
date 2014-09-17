@@ -28,10 +28,12 @@
  * 
  * <p>
  * There are two types of model used in the layout-generator library:
+ * </p>
  * <ul>
  *     <li>form templates</li>
  *     <li>form data</li>
  * </ul>
+ * <p>
  * The first one, form templates, are represented by the {@link cz.zcu.kiv.formgen.model.Form Form} objects.
  * They describe forms with their items and layouts. The form data model is used to represent data records
  * related to a form. It is represented by the {@link cz.zcu.kiv.formgen.model.FormData FormData} object. 

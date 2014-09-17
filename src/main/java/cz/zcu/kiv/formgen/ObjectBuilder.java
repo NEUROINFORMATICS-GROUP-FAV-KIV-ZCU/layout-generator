@@ -55,6 +55,7 @@ public interface ObjectBuilder {
      * requires the class to be known at compile time.
      * </p>
      * 
+     * @param <T> The type of the object to be built.
      * @param data The FormData model object.
      * @param type The runtime class of the data object to be built.
      * @return The built data object.

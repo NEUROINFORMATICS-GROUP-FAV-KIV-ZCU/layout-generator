@@ -186,6 +186,7 @@ public class SimpleLayoutGenerator implements LayoutGenerator {
      * 
      * @param cls The class to be loaded.
      * @param multiForm If true, the class is a part of a multi-form.
+     * @return the created form
      */
     protected Form load(Class<?> cls, boolean multiForm) {
         Form form;

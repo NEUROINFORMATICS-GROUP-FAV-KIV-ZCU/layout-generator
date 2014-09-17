@@ -41,16 +41,23 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface FormItem {
     
-    /** Label of the form item. */
+    /**
+     * Label of the form item. 
+     * @return the label 
+     */
     String label() default "";
     
-    /** Whether the item must be filled, or can be left blank. */
+    /**
+     * Whether the item must be filled, or can be left blank.
+     * @return true if the item is required, false otherwise
+     */
     boolean required() default false;
     
     /**
      * Sets the preview of a data record. Every form can have
      * one {@link PreviewLevel#MAJOR MAJOR} preview item and
      * one {@link PreviewLevel#MINOR MINOR} preview item.
+     * @return the preview level of this item
      */
     PreviewLevel preview() default PreviewLevel.NONE;
 

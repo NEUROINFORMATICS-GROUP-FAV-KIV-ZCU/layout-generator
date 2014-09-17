@@ -42,7 +42,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Form {
     
-    /** Label of the form. */
+    /**
+     * Label of the form.
+     * @return the label 
+     */
     String label() default "";
     
 }

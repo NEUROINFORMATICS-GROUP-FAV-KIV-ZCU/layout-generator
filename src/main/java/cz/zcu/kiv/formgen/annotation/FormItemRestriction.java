@@ -40,22 +40,40 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface FormItemRestriction {
     
-    /** The minimum length of the input value. */
+    /**
+     * The minimum length of the input value.
+     * @return the minimum length
+     */
     int minLength() default -1;
     
-    /** The maximum length of the input value. */
+    /**
+     * The maximum length of the input value.
+     * @return the maximum length
+     */
     int maxLength() default -1;
     
-    /** The minimum numeric value (for numbers only). */
+    /**
+     * The minimum numeric value (for numbers only).
+     * @return the minimum value 
+     */
     double minValue() default Double.NaN;
     
-    /** The maximum numeric value (for numbers only). */
+    /** 
+     * The maximum numeric value (for numbers only).
+     * @return the maximum value 
+     */
     double maxValue() default Double.NaN;
     
-    /** Default value (for text items only). */
+    /** 
+     * Default value (for text items only).
+     * @return the default value 
+     */
     String defaultValue() default "";
     
-    /** Enumeration of possible values (text). */
+    /**
+     * Enumeration of possible values (text).
+     * @return the enumeration of possible values 
+     */
     String[] values() default "";
     
 }

@@ -40,7 +40,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface FormDescription {
     
-    /** Description of the form. */
+    /**
+     * Description of the form. 
+     * @return the description 
+     */
     String value();
     
 }
