@@ -27,8 +27,10 @@ package cz.zcu.kiv.formgen.odml;
 
 import java.io.InputStream;
 import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import odml.core.Section;
 import cz.zcu.kiv.formgen.TemplateGeneratorException;
 import cz.zcu.kiv.formgen.Reader;
@@ -58,11 +60,15 @@ public class OdmlReader implements Reader {
      */
     @Override
     public Form readLayout(InputStream stream) throws OdmlException {
-        odml.core.Reader reader = new odml.core.Reader();
+        try {
+			odml.core.Reader reader = new odml.core.Reader();
+		} catch (Exception e1) {
+			throw new OdmlException("cannot instantiate reader", e1);
+		}
         Section root = null;
         
         try {
-            root = reader.load(stream);
+            //root = reader.load(stream);
         } catch (Exception e) {
             logger.error("Unable to load the odML document!", e);
             throw new OdmlException("Unable to load the odML document.", e);
@@ -83,11 +89,15 @@ public class OdmlReader implements Reader {
      */
     @Override
     public Set<FormData> readData(InputStream stream) throws TemplateGeneratorException {
-        odml.core.Reader reader = new odml.core.Reader();
+        try {
+			odml.core.Reader reader = new odml.core.Reader();
+		} catch (Exception e1) {
+			throw new OdmlException("cannot instantiate reader", e1);
+		}
         Section root = null;
         
         try {
-            root = reader.load(stream);
+            //root = reader.load(stream);
         } catch (Exception e) {
             logger.error("Unable to load the odML document!", e);
             throw new OdmlException("Unable to load the odML document.", e);

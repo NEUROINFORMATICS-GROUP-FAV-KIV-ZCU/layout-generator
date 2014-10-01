@@ -27,11 +27,13 @@ package example;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Set;
+
 import cz.zcu.kiv.formgen.LayoutGenerator;
 import cz.zcu.kiv.formgen.ObjectBuilder;
 import cz.zcu.kiv.formgen.Reader;
@@ -41,6 +43,8 @@ import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.core.SimpleDataGenerator;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormData;
+import cz.zcu.kiv.formgen.model.FormField;
+import cz.zcu.kiv.formgen.model.constraints.Length;
 import cz.zcu.kiv.formgen.odml.OdmlReader;
 import cz.zcu.kiv.formgen.odml.OdmlWriter;
 import example.pojo.Address;
@@ -76,7 +80,9 @@ public class Main {
         generateFormLayouts();
         
         // example of data transfer
-        transferData();
+        /*transferData();*/
+        
+        //pokus();
 
         System.out.println("Finished.");
     }
@@ -168,5 +174,26 @@ public class Main {
         outDir.mkdir();
     }
     
+    
+    public static void pokus() {
+    	Form form = new Form("Osoba");
+    	FormField field = new FormField("jmeno");
+    	field.setRequired(true);
+    	field.addConstraint(Length.MAX(30));
+    	field.addConstraint(Length.MIN(5));
+    	form.addItem(field);
+    	
+    	Writer writer = new OdmlWriter();
+    	OutputStream stream;
+		try {
+			stream = new FileOutputStream(OUT_DIR + "/" + form.getName() + ".odml");
+			writer.writeLayout(form, stream);
+			stream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+    	System.out.println("hotovo");
+    }
 
 }
