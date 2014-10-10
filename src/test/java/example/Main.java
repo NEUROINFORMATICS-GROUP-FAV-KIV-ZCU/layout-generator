@@ -27,7 +27,6 @@ package example;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,10 +42,9 @@ import cz.zcu.kiv.formgen.core.SimpleLayoutGenerator;
 import cz.zcu.kiv.formgen.core.SimpleDataGenerator;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormData;
-import cz.zcu.kiv.formgen.model.FormField;
-import cz.zcu.kiv.formgen.model.constraints.Length;
 import cz.zcu.kiv.formgen.odml.OdmlReader;
 import cz.zcu.kiv.formgen.odml.OdmlWriter;
+import cz.zcu.kiv.formgen.odml.TemplateStyle;
 import example.pojo.Address;
 import example.pojo.Person;
 
@@ -94,7 +92,7 @@ public class Main {
      */
     private static void generateFormLayouts() {
         LayoutGenerator generator = new SimpleLayoutGenerator();  // layout generator
-        Writer writer = new OdmlWriter();                         // odML writer
+        Writer writer = new OdmlWriter(TemplateStyle.GUI_NAMESPACE);                         // odML writer
         
         try {
             // load and parse all classes in the base package
@@ -133,7 +131,7 @@ public class Main {
         // parse the data object and write it to odML file
         SimpleDataGenerator generator = new SimpleDataGenerator();
         FormData data = generator.load(person, true);
-        Writer writer = new OdmlWriter();
+        Writer writer = new OdmlWriter(TemplateStyle.EEGBASE);
         try {
             OutputStream stream = new FileOutputStream(OUT_DIR + "/" + DATA_FILE);
             writer.writeData(data, stream);
@@ -172,28 +170,6 @@ public class Main {
     private static void createOutDir() {
         File outDir = new File(OUT_DIR);
         outDir.mkdir();
-    }
-    
-    
-    public static void pokus() {
-    	Form form = new Form("Osoba");
-    	FormField field = new FormField("jmeno");
-    	field.setRequired(true);
-    	field.addConstraint(Length.MAX(30));
-    	field.addConstraint(Length.MIN(5));
-    	form.addItem(field);
-    	
-    	Writer writer = new OdmlWriter();
-    	OutputStream stream;
-		try {
-			stream = new FileOutputStream(OUT_DIR + "/" + form.getName() + ".odml");
-			writer.writeLayout(form, stream);
-			stream.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-    	System.out.println("hotovo");
     }
 
 }

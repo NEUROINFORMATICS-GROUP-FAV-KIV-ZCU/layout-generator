@@ -74,7 +74,7 @@ public class OdmlReader implements Reader {
             throw new OdmlException("Unable to load the odML document.", e);
         }
         
-        Converter converter = new Converter();
+        OdmlConverter converter = new OdmlConverter();
         Section formSection = root.getSection(0);
         if (formSection == null)
             throw new OdmlException("The odML document does not contain any form.");
@@ -103,7 +103,7 @@ public class OdmlReader implements Reader {
             throw new OdmlException("Unable to load the odML document.", e);
         }
         
-        Converter converter = new Converter();
+        OdmlConverter converter = new OdmlConverter();
         return converter.odmlToDataModel(root);
     }
 

@@ -40,14 +40,14 @@ import cz.zcu.kiv.formgen.model.Type;
 
 
 /**
- * Test cases for {@link Converter}.
+ * Test cases for {@link OdmlConverter}.
  *
  * @author Jakub Krauz
  */
 public class ConverterTest {
     
     /** The converter object being tested. */
-    private Converter converter = new Converter();
+    private OdmlConverter converter = new OdmlConverter();
     
     
     /**

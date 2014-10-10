@@ -36,6 +36,7 @@ public enum FieldDatatype {
     STRING      ("string"),
     INTEGER     ("integer"),
     NUMBER      ("number"),
+    BOOLEAN     ("boolean"),
     DATE        ("date"),
     EMAIL       ("email");
     
@@ -72,6 +73,8 @@ public enum FieldDatatype {
             return INTEGER;
         if (NUMBER.value.equals(value))
             return NUMBER;
+        if (BOOLEAN.value.equals(value))
+            return BOOLEAN;
         if (DATE.value.equals(value))
             return DATE;
         if (EMAIL.value.equals(value))

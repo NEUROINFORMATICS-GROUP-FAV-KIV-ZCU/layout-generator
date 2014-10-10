@@ -40,7 +40,7 @@ import cz.zcu.kiv.formgen.model.Form;
 public class OdmlWriterTest {
     
     /** The writer object being tested. */
-    private OdmlWriter writer = new OdmlWriter();
+    private OdmlWriter writer = new OdmlWriter(TemplateStyle.EEGBASE);
     
     
     /**

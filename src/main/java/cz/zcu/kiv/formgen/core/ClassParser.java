@@ -157,7 +157,8 @@ public class ClassParser {
      */
     private Form createForm(String name, Class<?> cls) {
         Form form = new Form(name);
-        form.setDataReference(cls.getSimpleName());
+        //form.setDataReference(cls.getSimpleName());
+        form.setDataReference(cls.getName());
         form.setCardinality(Cardinality.SINGLE_VALUE);
 
         // determine label of the form
@@ -189,14 +190,7 @@ public class ClassParser {
      */
     private FormField createFormField(Field field, int id) {
         Type type = mapper.mapType(field.getType());
-        FormField formField;
-        if (type == Type.CHECKBOX) {
-            formField = new FormField(field.getName());
-            formField.setType(type);
-        } else {
-            formField = new FormField(field.getName(), type, mapper.mapDatatype(field.getType()));
-            formField.setCardinality(Cardinality.SINGLE_VALUE);
-        }
+        FormField formField = new FormField(field.getName(), type, mapper.mapDatatype(field.getType()));
         formField.setId(id);
 
         cz.zcu.kiv.formgen.annotation.FormItem formItemAnnot = field

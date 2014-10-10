@@ -147,6 +147,7 @@ public class TypeMapper {
     
     // fill the DATATYPES map
     static {
+        DATATYPES.put(Boolean.TYPE, FieldDatatype.BOOLEAN);
         DATATYPES.put(Byte.TYPE, FieldDatatype.INTEGER);
         DATATYPES.put(Character.TYPE, FieldDatatype.STRING);
         DATATYPES.put(Short.TYPE, FieldDatatype.INTEGER);

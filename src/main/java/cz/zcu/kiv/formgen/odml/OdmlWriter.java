@@ -27,6 +27,10 @@ package cz.zcu.kiv.formgen.odml;
 
 import java.io.OutputStream;
 import java.util.Collection;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import odml.core.Section;
 import cz.zcu.kiv.formgen.Writer;
 import cz.zcu.kiv.formgen.model.Form;
@@ -45,9 +49,26 @@ import cz.zcu.kiv.formgen.model.FormData;
  */
 public class OdmlWriter implements Writer {
     
+    /** Logger. */
+    final Logger logger = LoggerFactory.getLogger(OdmlWriter.class);
+    
     /** The converter between odML and internal model. */
-    //private Converter converter = new Converter();
-	private OdmlGuiConverter converter = new OdmlGuiConverter();
+	private Converter converter;
+	
+	
+	public OdmlWriter(TemplateStyle style) {
+        switch (style) {
+            case EEGBASE:
+                converter = new OdmlConverter();
+                break;
+            case GUI_NAMESPACE:
+                converter = new OdmlGuiConverter();
+                break;
+            default:
+                logger.error("Unknown odml-template style required.");
+                converter = new OdmlConverter();
+        }
+    }
 
     
     /**
