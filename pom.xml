@@ -77,7 +77,7 @@
         <dependency>
             <groupId>org.gnode</groupId>
             <artifactId>odml-java-lib</artifactId>
-            <version>TMP-2</version>
+            <version>TMP-4</version>
         </dependency>
 
         <!-- =============== logging (slf4j + log4j) =============== -->

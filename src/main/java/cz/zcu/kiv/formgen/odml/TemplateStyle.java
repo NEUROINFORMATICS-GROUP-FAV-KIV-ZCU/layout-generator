@@ -27,6 +27,7 @@ package cz.zcu.kiv.formgen.odml;
 
 
 /**
+ * Enumeration of supported styles for odml templates.
  * 
  * @author Jakub Krauz
  */

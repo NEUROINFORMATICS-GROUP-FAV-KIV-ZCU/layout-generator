@@ -78,9 +78,7 @@ public class Main {
         generateFormLayouts();
         
         // example of data transfer
-        /*transferData();*/
-        
-        //pokus();
+        transferData();
 
         System.out.println("Finished.");
     }
@@ -118,6 +116,7 @@ public class Main {
      */
     private static void transferData() {
         System.out.println("Running sample data transfer...\n");
+        TemplateStyle style = TemplateStyle.EEGBASE;
         
         // prepare sample data object
         Person person = new Person(1, "Thomas", 31, null);
@@ -131,7 +130,7 @@ public class Main {
         // parse the data object and write it to odML file
         SimpleDataGenerator generator = new SimpleDataGenerator();
         FormData data = generator.load(person, true);
-        Writer writer = new OdmlWriter(TemplateStyle.EEGBASE);
+        Writer writer = new OdmlWriter(style);
         try {
             OutputStream stream = new FileOutputStream(OUT_DIR + "/" + DATA_FILE);
             writer.writeData(data, stream);
@@ -143,7 +142,7 @@ public class Main {
         
         
         // load the data back from the odML file and build the original data object
-        Reader reader = new OdmlReader();
+        Reader reader = new OdmlReader(style);
         ObjectBuilder builder = new SimpleObjectBuilder();
         try {
             // read the odML

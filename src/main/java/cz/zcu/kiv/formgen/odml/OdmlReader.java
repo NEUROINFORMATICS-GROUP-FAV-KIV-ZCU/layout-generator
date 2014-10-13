@@ -53,6 +53,30 @@ public class OdmlReader implements Reader {
     /** Logger. */
     final Logger logger = LoggerFactory.getLogger(OdmlReader.class);
 
+    /** The converter between odML and internal model. */
+    private Converter converter;
+    
+    
+    /**
+     * Creates a new OdmlReader, which provides the ability to read
+     * odml templates of the specified style to an internal model.
+     * 
+     * @param style The style of odml templates.
+     */
+    public OdmlReader(TemplateStyle style) {
+        switch (style) {
+            case EEGBASE:
+                converter = new OdmlConverter();
+                break;
+            case GUI_NAMESPACE:
+                converter = new OdmlGuiConverter();
+                break;
+            default:
+                logger.error("Unknown odml-template style required.");
+                converter = new OdmlConverter();
+        }
+    }
+    
     
     /**
      * {@inheritDoc} The serialization must be in the odML format, otherwise
@@ -60,21 +84,16 @@ public class OdmlReader implements Reader {
      */
     @Override
     public Form readLayout(InputStream stream) throws OdmlException {
-        try {
-			odml.core.Reader reader = new odml.core.Reader();
-		} catch (Exception e1) {
-			throw new OdmlException("cannot instantiate reader", e1);
-		}
+        odml.core.Reader reader = new odml.core.Reader();
         Section root = null;
         
         try {
-            //root = reader.load(stream);
+            root = reader.load(stream);
         } catch (Exception e) {
             logger.error("Unable to load the odML document!", e);
             throw new OdmlException("Unable to load the odML document.", e);
         }
         
-        OdmlConverter converter = new OdmlConverter();
         Section formSection = root.getSection(0);
         if (formSection == null)
             throw new OdmlException("The odML document does not contain any form.");
@@ -89,21 +108,16 @@ public class OdmlReader implements Reader {
      */
     @Override
     public Set<FormData> readData(InputStream stream) throws TemplateGeneratorException {
-        try {
-			odml.core.Reader reader = new odml.core.Reader();
-		} catch (Exception e1) {
-			throw new OdmlException("cannot instantiate reader", e1);
-		}
+        odml.core.Reader reader = new odml.core.Reader();
         Section root = null;
         
         try {
-            //root = reader.load(stream);
+        	root = reader.load(stream);
         } catch (Exception e) {
             logger.error("Unable to load the odML document!", e);
             throw new OdmlException("Unable to load the odML document.", e);
         }
         
-        OdmlConverter converter = new OdmlConverter();
         return converter.odmlToDataModel(root);
     }
 

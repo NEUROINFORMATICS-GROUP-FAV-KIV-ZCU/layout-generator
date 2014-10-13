@@ -36,7 +36,7 @@ import org.junit.Test;
 public class OdmlReaderTest {
     
     /** The reader object being tested. */
-    private OdmlReader reader = new OdmlReader();
+    private OdmlReader reader = new OdmlReader(TemplateStyle.EEGBASE);
     
     
     /**

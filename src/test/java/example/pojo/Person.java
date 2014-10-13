@@ -43,7 +43,7 @@ public class Person {
     
     @FormItem(label = "Full name", required = true, preview = PreviewLevel.MAJOR)
     @FormItemRestriction(minLength = 2, maxLength = 50)
-    private String name;
+    private String fullName;
     
     @FormItem
     private int age;
@@ -69,7 +69,7 @@ public class Person {
     
     public Person(int id, String name, int age, Date birth) {
         this.id = id;
-        this.name = name;
+        this.fullName = name;
         this.age = age;
         this.birth = birth;
     }
@@ -87,12 +87,12 @@ public class Person {
 
 
     public String getName() {
-        return name;
+        return fullName;
     }
 
     
     public void setName(String name) {
-        this.name = name;
+        this.fullName = name;
     }
 
     
@@ -139,7 +139,7 @@ public class Person {
     
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("name: " + name);
+        builder.append("name: " + fullName);
         builder.append("\nage: " + age);
         builder.append("\nclever: " + clever);
         builder.append("\nbirth: " + birth);
@@ -164,7 +164,7 @@ public class Person {
         result = prime * result + ((birth == null) ? 0 : birth.hashCode());
         result = prime * result + (clever ? 1231 : 1237);
         result = prime * result + id;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((fullName == null) ? 0 : fullName.hashCode());
         return result;
     }
 
@@ -186,9 +186,9 @@ public class Person {
         } else if (!birth.equals(other.birth)) { return false; }
         if (clever != other.clever) { return false; }
         if (id != other.id) { return false; }
-        if (name == null) {
-            if (other.name != null) { return false; }
-        } else if (!name.equals(other.name)) { return false; }
+        if (fullName == null) {
+            if (other.fullName != null) { return false; }
+        } else if (!fullName.equals(other.fullName)) { return false; }
         return true;
     }
 

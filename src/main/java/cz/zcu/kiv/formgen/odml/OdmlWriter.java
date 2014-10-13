@@ -51,11 +51,17 @@ public class OdmlWriter implements Writer {
     
     /** Logger. */
     final Logger logger = LoggerFactory.getLogger(OdmlWriter.class);
-    
+   
     /** The converter between odML and internal model. */
 	private Converter converter;
 	
 	
+	/**
+	 * Creates a new OdmlWriter, which provides the ability to write
+	 * model objects to a stream using required style (see {@link TemplateStyle}.
+	 * 
+	 * @param style The style of odml templates.
+	 */
 	public OdmlWriter(TemplateStyle style) {
         switch (style) {
             case EEGBASE:
@@ -84,7 +90,7 @@ public class OdmlWriter implements Writer {
         try {
             Section root = new Section();
             root.add(converter.layoutToOdml(form));
-            //odml.core.Writer writer = new odml.core.Writer(root);
+            //odml.core.Writer writer = new odml.core.Writer(root);  // does not write empty properties
             odml.core.Writer writer = new odml.core.Writer(root, true);
             writer.write(outputStream);
         } catch (OdmlConvertException e) {

@@ -34,14 +34,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cz.zcu.kiv.formgen.core.TypeMapper;
-import cz.zcu.kiv.formgen.model.FieldDatatype;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormData;
 import cz.zcu.kiv.formgen.model.FormDataField;
 import cz.zcu.kiv.formgen.model.FormDataItem;
 import cz.zcu.kiv.formgen.model.FormField;
 import cz.zcu.kiv.formgen.model.FormItem;
-import cz.zcu.kiv.formgen.model.Type;
 import cz.zcu.kiv.formgen.model.constraints.Constraint;
 import cz.zcu.kiv.formgen.model.constraints.DefaultValue;
 import cz.zcu.kiv.formgen.model.constraints.Length;
@@ -63,6 +61,9 @@ public class OdmlGuiConverter implements Converter {
     final Logger logger = LoggerFactory.getLogger(OdmlGuiConverter.class);
     
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Section layoutToOdml(Form form) throws OdmlConvertException {
         if (form == null)
@@ -71,12 +72,16 @@ public class OdmlGuiConverter implements Converter {
         try {
         	return convert(form);
         } catch (Exception e) {
-            logger.error("Cannot create odML section.", e);
-            throw new OdmlConvertException("Cannot create odML section.", e);
+            String desc = "Cannot create odML section.";
+            logger.error(desc, e);
+            throw new OdmlConvertException(desc, e);
         }
     }
     
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Section layoutToOdml(Collection<Form> forms) throws OdmlConvertException {
         if (forms == null)
@@ -89,7 +94,9 @@ public class OdmlGuiConverter implements Converter {
     }
     
     
-    // TODO uprava pro gui-namespace
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Section dataToOdml(FormData data) throws OdmlConvertException {
         if (data == null)
@@ -108,7 +115,9 @@ public class OdmlGuiConverter implements Converter {
     }
     
 
-    // TODO uprava pro gui-namespace
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Section dataToOdml(Collection<FormData> data) throws OdmlConvertException {
         if (data == null)
@@ -121,7 +130,9 @@ public class OdmlGuiConverter implements Converter {
     }
     
     
-    // TODO uprava pro gui-namespace
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Form odmlToLayoutModel(Section section) throws OdmlConvertException {
         if (section == null)
@@ -137,7 +148,9 @@ public class OdmlGuiConverter implements Converter {
     }
     
 
-    // TODO uprava pro gui-namespace
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<FormData> odmlToDataModel(Section odmlRoot) throws OdmlConvertException {
         if (odmlRoot == null)
@@ -162,54 +175,63 @@ public class OdmlGuiConverter implements Converter {
 
     
     /**
-     * Converts the given section to a form item object.
+     * Converts the given section to a form object.
      * 
      * @param section The section to be converted.
      * @return corresponding form item
      */
-    // TODO uprava pro gui-namespace
-    private FormItem convertLayout(Section section) {
+    private Form convertLayout(Section section) {
         logger.trace("Converting section \"{}\"", section.getName());
-        FormItem item = null;
+        Form form = new Form(section.getName());
+        
         Property p;
-        
-        if (Type.FORM.toString().equals(section.getType())) {
-            item = new Form(section.getName());
-        } else {
-            FormField field = new FormField(section.getName(), Type.fromString(section.getType()), 
-                    FieldDatatype.fromString(section.getProperty("datatype").getText()));
-            if ((p = section.getProperty("minLength")) != null)
-                field.addConstraint(Length.MIN((Integer) p.getValue()));
-            if ((p = section.getProperty("maxLength")) != null)
-                field.addConstraint(Length.MAX((Integer) p.getValue()));
-            if ((p = section.getProperty("minValue")) != null)
-                field.addConstraint(NumericalValue.MIN((Number) p.getValue()));
-            if ((p = section.getProperty("maxValue")) != null)
-                field.addConstraint(NumericalValue.MAX((Number) p.getValue()));
-            if ((p = section.getProperty("defaultValue")) != null)
-                field.addConstraint(new DefaultValue(p.getValue()));
-            if ((p = section.getProperty("values")) != null)
-                field.addConstraint(new PossibleValues(p.getValues().toArray()));
-            item = field;
-        }
-        
         if ((p = section.getProperty("id")) != null)
-            item.setId((Integer) p.getValue());
-        if ((p = section.getProperty("label")) != null)
-            item.setLabel(p.getText());
-        if ((p = section.getProperty("required")) != null)
-            item.setRequired((Boolean) p.getValue());
+            form.setId((Integer) p.getValue());
 
-        
         // subsections
-        if (item instanceof Form) {
-            if (section.getSections() != null) {
-                for (Section s : section.getSections())
-                    ((Form) item).addItem(convertLayout(s));
-            }
+        if (section.getSections() != null) {
+            for (Section s : section.getSections())
+                form.addItem(convertLayout(s));
         }
         
-        return item;
+        // properties
+        if (section.getProperties() != null) {
+        	for (Property prop : section.getProperties())
+        		form.addItem(convertLayout(prop));
+        }
+        
+        return form;
+    }
+    
+    
+    /**
+     * Converts the given property to a corresponding field object.
+     * 
+     * @param property The property to be converted.
+     * @return corresponding form field
+     */
+    private FormField convertLayout(Property property) {
+        logger.trace("Converting property \"{}\"", property.getName());
+        FormField field = new FormField(property.getValueReference(0));
+        field.setLabel(property.getName());
+        
+        GUIHelper gui = property.getGuiHelper();
+        field.setRequired(gui.getRequired());
+        field.setLabel(property.getName());
+    	if (gui.getMinLength() != null)
+            field.addConstraint(Length.MIN(gui.getMinLength()));
+        if (gui.getMaxLength() != null)
+            field.addConstraint(Length.MAX((Integer) gui.getMaxLength()));
+        if (gui.getMinValue() != null)
+            field.addConstraint(NumericalValue.MIN((Number) gui.getMinValue()));
+        if (gui.getMaxValue() != null)
+            field.addConstraint(NumericalValue.MAX((Number) gui.getMaxValue()));
+        if (gui.getDefaultValue() != null)
+            field.addConstraint(new DefaultValue(gui.getDefaultValue()));
+        if (gui.getList() != null)
+            field.addConstraint(new PossibleValues(gui.getList().split(";")));
+
+        return field;
     }
     
     
@@ -218,7 +240,6 @@ public class OdmlGuiConverter implements Converter {
      * @param section The section to be converted.
      * @return corresponding form data object
      */
-    // TODO uprava pro gui-namespace
     private FormData convertData(Section section) {
         FormData data = new FormData(section.getType(), section.getName());
         
@@ -281,8 +302,12 @@ public class OdmlGuiConverter implements Converter {
      * @throws Exception If there was error creating the section.
      */
     private Property convert(FormField field) throws Exception {
-    	Property property = new Property(field.getLabel(), null, field.getDatatype().toString());
-    	property.setReference(field.getName());
+    	Property property = new Property(field.getName(), null, field.getDatatype().toString());
+    	
+    	// should we use user-friendly property names?
+    	/*Property property = new Property(field.getLabel(), null, field.getDatatype().toString());
+    	property.setReference(field.getName());*/
+    	
     	GUIHelper gui = property.getGuiHelper();
     	gui.setRequired(field.isRequired());
     	
@@ -343,13 +368,13 @@ public class OdmlGuiConverter implements Converter {
     
     
     /**
-     * Converts the given collection of data items to odML objects and adds them to the section.
+     * Converts the given collection of data items to odML objects
+     * and adds them to the section.
      * 
      * @param section The section.
      * @param items Collection of data items.
      * @throws Exception If there was error creating an odML section.
      */
-    // TODO uprava pro gui-namespace
     private void addItems(Section section, Collection<FormDataItem> items) throws Exception {
         for (FormDataItem item : items) {
             if (item instanceof FormDataField) {
