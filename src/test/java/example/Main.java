@@ -116,7 +116,7 @@ public class Main {
      */
     private static void transferData() {
         System.out.println("Running sample data transfer...\n");
-        TemplateStyle style = TemplateStyle.EEGBASE;
+        TemplateStyle style = TemplateStyle.GUI_NAMESPACE;
         
         // prepare sample data object
         Person person = new Person(1, "Thomas", 31, null);
