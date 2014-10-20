@@ -279,11 +279,13 @@ public class OdmlGuiConverter implements Converter {
      * @throws Exception If there was error creating the section.
      */
     private Section convert(Form form) throws Exception {
-    	String label = (form.getLabel() == null) ? form.getName() : form.getLabel();
-        Section section = new Section(label, form.getName());
+    	String ref = form.getDataReference();
+    	String type = ref.substring(ref.lastIndexOf('.') + 1);
+        Section section = new Section(form.getName(), type);
+        section.setReference(ref);
 
-        if (form.getDataReference() != null)
-            section.setReference(form.getDataReference());
+        // TODO nastavit label pro sekci? JAK?
+
         if (form.getDescription() != null)
             section.setDefinition(form.getDescription());
         
@@ -310,6 +312,8 @@ public class OdmlGuiConverter implements Converter {
     	
     	GUIHelper gui = property.getGuiHelper();
     	gui.setRequired(field.isRequired());
+    	gui.setLabel(field.getLabel());
+    	gui.setDatatype(field.getDatatype().toString());
     	
     	for (Constraint constraint : field.getConstraints()) {
             if (constraint instanceof Length) {
@@ -349,15 +353,16 @@ public class OdmlGuiConverter implements Converter {
      * @throws Exception If there was error creating an odML section.
      */
     private void addItems(Section section, Vector<FormItem> items) throws Exception {
-        int order = 1;
+        //int order = 1;  // order is now added automatically by the odml-java-lib
         
         for (FormItem item : items) {
             if (item instanceof Form) {
             	Section subSection = convert((Form) item);
+            	//subSection.getGuiHelper().setOrder(order++);
                 section.add(subSection);
             } else if (item instanceof FormField) {
             	Property property = convert((FormField) item);
-            	property.getGuiHelper().setOrder(order++);
+            	//property.getGuiHelper().setOrder(Integer.valueOf(order++));
             	section.add(property);
             } else {
                 logger.warn("Unknown form item type!");
