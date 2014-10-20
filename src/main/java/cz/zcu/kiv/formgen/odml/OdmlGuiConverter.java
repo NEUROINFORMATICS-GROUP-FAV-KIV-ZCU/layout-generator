@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cz.zcu.kiv.formgen.core.TypeMapper;
+import cz.zcu.kiv.formgen.model.FieldDatatype;
 import cz.zcu.kiv.formgen.model.Form;
 import cz.zcu.kiv.formgen.model.FormData;
 import cz.zcu.kiv.formgen.model.FormDataField;
@@ -180,9 +181,16 @@ public class OdmlGuiConverter implements Converter {
      * @param section The section to be converted.
      * @return corresponding form item
      */
-    private Form convertLayout(Section section) {
+    private Form convertLayout(Section section) throws OdmlConvertException {
         logger.trace("Converting section \"{}\"", section.getName());
-        Form form = new Form(section.getName());
+        if (section.getReference() == null || section.getReference().isEmpty())
+        	throw new OdmlConvertException("Cannot convert section, missing reference to data entity.");
+        String[] ref = section.getReference().split(":");
+        if (ref.length != 2)
+        	throw new OdmlConvertException("Cannot convert section, the reference to data entity is invalid.");
+        Form form = new Form(ref[0]);
+        form.setDataReference(ref[1]);
+        form.setLabel(section.getName());
         
         Property p;
         if ((p = section.getProperty("id")) != null)
@@ -212,12 +220,12 @@ public class OdmlGuiConverter implements Converter {
      */
     private FormField convertLayout(Property property) {
         logger.trace("Converting property \"{}\"", property.getName());
-        FormField field = new FormField(property.getValueReference(0));
-        field.setLabel(property.getName());
-        
         GUIHelper gui = property.getGuiHelper();
-        field.setRequired(gui.getRequired());
+        FormField field = new FormField(gui.getReference());
         field.setLabel(property.getName());
+        field.setRequired(gui.getRequired());
+        if (gui.getDatatype() != null)
+        	field.setDatatype(FieldDatatype.fromString(gui.getDatatype()));
     	if (gui.getMinLength() != null)
             field.addConstraint(Length.MIN(gui.getMinLength()));
         if (gui.getMaxLength() != null)
@@ -281,10 +289,8 @@ public class OdmlGuiConverter implements Converter {
     private Section convert(Form form) throws Exception {
     	String ref = form.getDataReference();
     	String type = ref.substring(ref.lastIndexOf('.') + 1);
-        Section section = new Section(form.getName(), type);
-        section.setReference(ref);
-
-        // TODO nastavit label pro sekci? JAK?
+        Section section = new Section(form.getLabel(), type);
+        section.setReference(form.getName() + ":" + ref);
 
         if (form.getDescription() != null)
             section.setDefinition(form.getDescription());
@@ -304,15 +310,10 @@ public class OdmlGuiConverter implements Converter {
      * @throws Exception If there was error creating the section.
      */
     private Property convert(FormField field) throws Exception {
-    	Property property = new Property(field.getName(), null, field.getDatatype().toString());
-    	
-    	// should we use user-friendly property names?
-    	/*Property property = new Property(field.getLabel(), null, field.getDatatype().toString());
-    	property.setReference(field.getName());*/
-    	
+    	Property property = new Property(field.getLabel(), null, field.getDatatype().toString());
     	GUIHelper gui = property.getGuiHelper();
+    	gui.setReference(field.getName());
     	gui.setRequired(field.isRequired());
-    	gui.setLabel(field.getLabel());
     	gui.setDatatype(field.getDatatype().toString());
     	
     	for (Constraint constraint : field.getConstraints()) {
