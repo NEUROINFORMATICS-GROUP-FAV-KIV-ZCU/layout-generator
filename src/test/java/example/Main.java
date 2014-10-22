@@ -64,6 +64,9 @@ public class Main {
     
     /** Name of the file with serialized data. */
     public static final String DATA_FILE = "data.odml";
+    
+    /** Type of generated templates. */
+    public static final TemplateStyle STYLE = TemplateStyle.GUI_NAMESPACE;
 
     
     /**
@@ -90,7 +93,7 @@ public class Main {
      */
     private static void generateFormLayouts() {
         LayoutGenerator generator = new SimpleLayoutGenerator();  // layout generator
-        Writer writer = new OdmlWriter(TemplateStyle.GUI_NAMESPACE);                         // odML writer
+        Writer writer = new OdmlWriter(STYLE);                    // odML writer
         
         try {
             // load and parse all classes in the base package
@@ -116,7 +119,6 @@ public class Main {
      */
     private static void transferData() {
         System.out.println("Running sample data transfer...\n");
-        TemplateStyle style = TemplateStyle.GUI_NAMESPACE;
         
         // prepare sample data object
         Person person = new Person(1, "Thomas", 31, null);
@@ -130,7 +132,7 @@ public class Main {
         // parse the data object and write it to odML file
         SimpleDataGenerator generator = new SimpleDataGenerator();
         FormData data = generator.load(person, true);
-        Writer writer = new OdmlWriter(style);
+        Writer writer = new OdmlWriter(STYLE);
         try {
             OutputStream stream = new FileOutputStream(OUT_DIR + "/" + DATA_FILE);
             writer.writeData(data, stream);
@@ -142,7 +144,7 @@ public class Main {
         
         
         // load the data back from the odML file and build the original data object
-        Reader reader = new OdmlReader(style);
+        Reader reader = new OdmlReader(STYLE);
         ObjectBuilder builder = new SimpleObjectBuilder();
         try {
             // read the odML

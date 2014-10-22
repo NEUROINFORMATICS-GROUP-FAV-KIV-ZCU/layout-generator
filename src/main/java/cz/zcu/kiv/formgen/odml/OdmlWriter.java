@@ -51,6 +51,9 @@ public class OdmlWriter implements Writer {
     
     /** Logger. */
     final Logger logger = LoggerFactory.getLogger(OdmlWriter.class);
+    
+    /** The style of odml templates. */
+    private final TemplateStyle style;
    
     /** The converter between odML and internal model. */
 	private Converter converter;
@@ -63,6 +66,7 @@ public class OdmlWriter implements Writer {
 	 * @param style The style of odml templates.
 	 */
 	public OdmlWriter(TemplateStyle style) {
+		this.style = style;
         switch (style) {
             case EEGBASE:
                 converter = new OdmlConverter();
@@ -91,7 +95,8 @@ public class OdmlWriter implements Writer {
             Section root = new Section();
             root.add(converter.layoutToOdml(form));
             //odml.core.Writer writer = new odml.core.Writer(root);  // does not write empty properties
-            odml.core.Writer writer = new odml.core.Writer(root, true);
+            odml.core.Writer writer = new odml.core.Writer(root, true, 
+            		(style == TemplateStyle.GUI_NAMESPACE));
             writer.write(outputStream);
         } catch (OdmlConvertException e) {
             throw new OdmlException("Could not convert the internal model to odML.", e);
