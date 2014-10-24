@@ -104,10 +104,14 @@ public class SimpleObjectBuilder implements ObjectBuilder {
             if (item instanceof FormDataField) {
                 Object value = ((FormDataField) item).getValue();
                 
-                // convert to appropriate number type
+                // convert to appropriate number type if needed
                 if (TypeMapper.isNumberType(field.getType()))
                     value = toNumber(value, field.getType());
                 
+                // get character value if needed
+                if (field.getType() == Character.TYPE)
+                	value = value.toString().charAt(0);
+
                 field.set(obj, value);
                 
             } else if (item instanceof FormData) {

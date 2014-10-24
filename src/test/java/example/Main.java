@@ -121,7 +121,7 @@ public class Main {
         System.out.println("Running sample data transfer...\n");
         
         // prepare sample data object
-        Person person = new Person(1, "Thomas", 31, null);
+        Person person = new Person(1, "Thomas", 31, null, 'M');
         person.setAddress(new Address(1, "Pilsen", "Brewery St.", 26));
         person.setBirth(new Date());
         System.out.println("*************** original data ***************");

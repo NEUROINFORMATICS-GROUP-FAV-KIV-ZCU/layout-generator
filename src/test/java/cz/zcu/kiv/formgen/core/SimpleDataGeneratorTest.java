@@ -63,7 +63,7 @@ public class SimpleDataGeneratorTest {
     @Test
     public void testLoad_single() {
         // prepare test object
-        Person person = new Person(2, "Ian", 35, new Date());
+        Person person = new Person(2, "Ian", 35, new Date(), 'M');
 
         FormData data = generator.load(person);
         assertNotNull(data);
@@ -79,8 +79,8 @@ public class SimpleDataGeneratorTest {
     public void testLoad_collection() {
         // prepare test collection
         Collection<Object> persons = new ArrayList<Object>(2);
-        persons.add(new Person(2, "Ian", 35, new Date()));
-        persons.add(new Person(3, "Thomas", 18, null));
+        persons.add(new Person(2, "Ian", 35, new Date(), 'M'));
+        persons.add(new Person(3, "Thomas", 18, null, 'M'));
 
         Collection<FormData> data2 = generator.load(persons);
         assertNotNull(data2);
@@ -96,7 +96,7 @@ public class SimpleDataGeneratorTest {
     @Test
     public void testLoad_reference() {
         // prepare test object
-        Person person = new Person(2, "Ian", 35, new Date());
+        Person person = new Person(2, "Ian", 35, new Date(), 'M');
         person.setAddress(new Address(1, "Pilsen", "Brewery St.", 33));
         Collection<Object> persons = new ArrayList<Object>(1);
         persons.add(person);

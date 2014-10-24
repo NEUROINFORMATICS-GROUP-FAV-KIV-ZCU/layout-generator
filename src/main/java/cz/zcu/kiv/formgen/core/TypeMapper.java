@@ -156,8 +156,10 @@ public class TypeMapper {
         DATATYPES.put(Float.TYPE, FieldDatatype.NUMBER);
         DATATYPES.put(Double.TYPE, FieldDatatype.NUMBER);
         DATATYPES.put(String.class, FieldDatatype.STRING);
-        DATATYPES.put(java.util.Date.class, FieldDatatype.DATE);
         DATATYPES.put(java.sql.Date.class, FieldDatatype.DATE);
+        DATATYPES.put(java.sql.Time.class, FieldDatatype.TIME);
+        DATATYPES.put(java.sql.Timestamp.class, FieldDatatype.DATE_TIME);
+        DATATYPES.put(java.util.Date.class, FieldDatatype.DATE_TIME);
     }
 
     

@@ -136,7 +136,7 @@ public class SimpleObjectBuilderTest {
      * @return test object
      */
     private Object createTestObject() {
-        Person person = new Person(0, "Ian", 21, null);
+        Person person = new Person(0, "Ian", 21, null, 'M');
         person.setAddress(new Address(0, "Pilsen", "Brewery st.", 321));
         return (Object) person;
     }

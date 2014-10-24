@@ -78,7 +78,7 @@ public class PersistentObjectBuilderTest {
      * @return test person
      */
     private Person createTestPerson() {
-        Person person = new Person(0, "Thomas", 25, null);
+        Person person = new Person(0, "Thomas", 25, null, 'M');
         person.setAddress(createTestAddress());
         return person;
     }
