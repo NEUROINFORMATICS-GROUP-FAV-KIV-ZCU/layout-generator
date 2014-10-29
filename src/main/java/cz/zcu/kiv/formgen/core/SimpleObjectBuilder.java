@@ -109,6 +109,8 @@ public class SimpleObjectBuilder implements ObjectBuilder {
             
             if (item instanceof FormDataField) {
                 Object value = ((FormDataField) item).getValue();
+                if (value == null)
+                	continue;
                 
                 // convert to appropriate number type if needed
                 if (TypeMapper.isNumberType(field.getType()))
@@ -167,7 +169,10 @@ public class SimpleObjectBuilder implements ObjectBuilder {
     
     // TODO add support for various date/time types conversion
     protected Object toProperDateType(Object obj, Class<?> type) throws ObjectBuilderException {
-        if (Date.class.equals(type)) {
+        if (obj == null)
+        	return null;
+        
+    	if (Date.class.equals(type)) {
         	if (obj instanceof Date)
         		return obj;
         	else if (obj instanceof LocalDate)
