@@ -28,9 +28,12 @@ package cz.zcu.kiv.formgen.core;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import cz.zcu.kiv.formgen.annotation.FormId;
+import cz.zcu.kiv.formgen.annotation.FormItem;
 import cz.zcu.kiv.formgen.model.FormData;
 import cz.zcu.kiv.formgen.model.FormDataField;
 import cz.zcu.kiv.formgen.model.FormDataItem;
@@ -63,7 +66,9 @@ public class DataParser {
      */
     public FormData parse(Object obj, boolean includeReferences) {
         this.includeReferences = includeReferences;
-        return _parse(obj, obj.getClass().getSimpleName() + "_" + getId(obj).toString());
+        FormData data = _parse(obj, obj.getClass().getSimpleName() + "_" + getId(obj).toString());
+        data.setLabel(data.getName());
+        return data;
     }
     
     
@@ -85,19 +90,24 @@ public class DataParser {
             form.setId(ReflectionUtils.value(idField, obj));
         
         for (Field f : ReflectionUtils.annotatedFields(obj.getClass(), cz.zcu.kiv.formgen.annotation.FormItem.class)) {
-            if (mapper.isSimpleType(f.getType())) {
-                FormDataItem item = createDataField(f, obj);
-                form.addItem(item);
+            FormDataItem item;
+        	
+        	if (mapper.isSimpleType(f.getType())) {
+                item = createDataField(f, obj);
             } else if (Collection.class.isAssignableFrom(f.getType())) {
-                FormDataItem set = createDataSet(f, obj);
-                form.addItem(set);
+                item = createDataSet(f, obj);
             } else if (!includeReferences) {
-                FormData reference = createDataReference(f, obj);
-                form.addItem(reference);
+                item = createDataReference(f, obj);
             } else {
-                FormData subform = _parse(ReflectionUtils.value(f, obj), f.getName());
-                form.addItem(subform);
+                item = _parse(ReflectionUtils.value(f, obj), f.getName());
             }
+            
+            // label
+            FormItem formItemAnnot = f.getAnnotation(FormItem.class);
+            String label = formItemAnnot.label();
+            item.setLabel(label.isEmpty() ? StringUtils.beautifyString(f.getName()) : label);
+            
+            form.addItem(item);
         }
         
         return form;

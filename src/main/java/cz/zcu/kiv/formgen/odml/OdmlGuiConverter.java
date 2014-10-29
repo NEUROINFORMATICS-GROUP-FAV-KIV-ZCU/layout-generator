@@ -104,7 +104,8 @@ public class OdmlGuiConverter implements Converter {
             return null;
         
         try {
-            Section section = new Section(data.getName(), data.getType());
+            Section section = new Section(data.getLabel(), data.getType());
+            section.setReference(data.getName());
             if (data.getId() != null)
                 section.addProperty("id", data.getId().toString());
             addItems(section, data.getItems());
@@ -249,19 +250,22 @@ public class OdmlGuiConverter implements Converter {
      * @return corresponding form data object
      */
     private FormData convertData(Section section) {
-        FormData data = new FormData(section.getType(), section.getName());
+        FormData data = new FormData(section.getType(), section.getReference().split(":")[0]);
+        data.setLabel(section.getName());
         
         for (Property property : section.getProperties()) {
             if (property.getName().equals("id")) {
                 data.setId(property.getValue());
             } else if (property.getValues().size() == 1) {
-                FormDataField field = new FormDataField(property.getName());
+                FormDataField field = new FormDataField(property.getGuiHelper().getReference());
+                field.setLabel(property.getName());
                 field.setValue(property.getValue());
                 data.addItem((FormDataItem) field);
             } else {
                 FormData set = new FormData(property.getType(), FormData.SET);
                 for (Object value : property.getValues()) {
-                    FormDataField field = new FormDataField(property.getName());
+                    FormDataField field = new FormDataField(property.getGuiHelper().getReference());
+                    field.setLabel(property.getName());
                     field.setValue(value);
                     set.addItem((FormDataItem) field);
                 }
@@ -390,10 +394,13 @@ public class OdmlGuiConverter implements Converter {
                     continue;
                 if (TypeMapper.isIntegerType(value.getClass()))
                     value = (Integer) ((Number) value).intValue();
-                section.addProperty(field.getName(), value);
+                Property property = new Property(field.getLabel(), value);
+                property.getGuiHelper().setReference(field.getName());
+                section.add(property);
             } else if (item instanceof FormData) {
                 FormData form = (FormData) item;
-                Section subsection = new Section(form.getName(), form.getType());
+                Section subsection = new Section(form.getLabel(), form.getType());
+                subsection.setReference(form.getName());
                 if (form.getId() != null)
                     subsection.addProperty("id", form.getId().toString());
                 addItems(subsection, form.getItems());

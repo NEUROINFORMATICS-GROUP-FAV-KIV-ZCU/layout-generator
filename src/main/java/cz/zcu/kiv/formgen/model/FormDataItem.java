@@ -73,5 +73,9 @@ public interface FormDataItem {
      * @return True if this item represents a simple type, false otherwise.
      */
     boolean isSimpleType();
+    
+    void setLabel(String label);
+    
+    String getLabel();
 
 }

@@ -116,7 +116,9 @@ public class OdmlWriter implements Writer {
         
         try {
             Section root = converter.layoutToOdml(forms);
-            odml.core.Writer writer = new odml.core.Writer(root);
+            //odml.core.Writer writer = new odml.core.Writer(root);  // does not write empty properties
+            odml.core.Writer writer = new odml.core.Writer(root, true, 
+            		(style == TemplateStyle.GUI_NAMESPACE));
             writer.write(outputStream);
         } catch (OdmlConvertException e) {
             throw new OdmlException("Could not convert the internal model to odML.", e);
@@ -137,7 +139,9 @@ public class OdmlWriter implements Writer {
         try {
             Section root = new Section();
             root.add(converter.dataToOdml(data));
-            odml.core.Writer writer = new odml.core.Writer(root);
+            //odml.core.Writer writer = new odml.core.Writer(root);  // does not write empty properties
+            odml.core.Writer writer = new odml.core.Writer(root, false, 
+            		(style == TemplateStyle.GUI_NAMESPACE));
             writer.write(outputStream);
         } catch (OdmlConvertException e) {
             throw new OdmlException("Could not convert the internal model to odML.", e);
@@ -157,7 +161,9 @@ public class OdmlWriter implements Writer {
         
         try {
             Section root = converter.dataToOdml(data);
-            odml.core.Writer writer = new odml.core.Writer(root);
+            //odml.core.Writer writer = new odml.core.Writer(root);  // does not write empty properties
+            odml.core.Writer writer = new odml.core.Writer(root, false, 
+            		(style == TemplateStyle.GUI_NAMESPACE));
             writer.write(outputStream);
         } catch (OdmlConvertException e) {
             throw new OdmlException("Could not convert the internal model to odML.", e);

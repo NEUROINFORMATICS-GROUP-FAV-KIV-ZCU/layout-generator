@@ -39,6 +39,9 @@ public abstract class AbstractFormDataItem implements FormDataItem {
     /** Name of the data item. */
     protected String name;
     
+    /** Label of the item. */
+    protected String label;
+    
     
     /**
      * Creates a new data item with the given type and name.
@@ -85,6 +88,24 @@ public abstract class AbstractFormDataItem implements FormDataItem {
     @Override
     public String getName() {
         return name;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getLabel() {
+        return label;
     }
 
     
