@@ -30,11 +30,17 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import cz.zcu.kiv.formgen.ObjectBuilder;
 import cz.zcu.kiv.formgen.ObjectBuilderException;
 import cz.zcu.kiv.formgen.model.FormData;
@@ -111,6 +117,10 @@ public class SimpleObjectBuilder implements ObjectBuilder {
                 // get character value if needed
                 if (field.getType() == Character.TYPE)
                 	value = value.toString().charAt(0);
+                
+                // convert date/time values to appropriate type if needed
+                if (TypeMapper.isDateOrTimeType(field.getType()))
+                	value = toProperDateType(value, field.getType());
 
                 field.set(obj, value);
                 
@@ -153,6 +163,64 @@ public class SimpleObjectBuilder implements ObjectBuilder {
         }  // end for
 
     }
+    
+    
+    // TODO add support for various date/time types conversion
+    protected Object toProperDateType(Object obj, Class<?> type) throws ObjectBuilderException {
+        if (Date.class.equals(type)) {
+        	if (obj instanceof Date)
+        		return obj;
+        	else if (obj instanceof LocalDate)
+            	return ((LocalDate) obj).toDate();
+        }
+        
+        else if (java.sql.Date.class.equals(type)) {
+        	if (obj instanceof java.sql.Date)
+        		return obj;
+        	else if (obj instanceof Date)
+        		return new java.sql.Date(((Date) obj).getTime());
+        	else if (obj instanceof LocalDate)
+        		return new java.sql.Date(((LocalDate) obj).toDate().getTime());
+        }
+        
+        else if (java.sql.Time.class.equals(type)) {
+        	if (obj instanceof java.sql.Time)
+        		return obj;
+        	else if (obj instanceof LocalTime)
+        		return java.sql.Time.valueOf(((LocalTime) obj).toString());
+        }
+        
+        else if (java.sql.Timestamp.class.equals(type)) {
+        	if (obj instanceof java.sql.Timestamp)
+        		return obj;
+        	else if (obj instanceof Date)
+        		return new java.sql.Timestamp(((Date) obj).getTime());
+        	else if (obj instanceof LocalDate)
+            	return new java.sql.Timestamp(((LocalDate) obj).toDate().getTime());
+        }
+        
+        else if (LocalDate.class.equals(type)) {
+        	if (obj instanceof LocalDate)
+        		return obj;
+        	else if (obj instanceof Date)
+        		return new LocalDate(obj);
+        }
+        
+        else if (LocalTime.class.equals(type)) {
+        	if (obj instanceof LocalTime)
+        		return obj;
+        }
+        
+        else if (LocalDateTime.class.equals(type)) {
+        	if (obj instanceof LocalDateTime)
+        		return obj;
+        	else if (obj instanceof Date)
+        		return new LocalDateTime(obj);
+        }
+        
+        throw new ObjectBuilderException("Unsupported date/time conversion from " 
+        				+ obj.getClass().getName() + " to " + type.getName());
+	}
     
     
     /**

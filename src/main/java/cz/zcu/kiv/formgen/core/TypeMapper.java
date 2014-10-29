@@ -44,9 +44,6 @@ public class TypeMapper {
     /** Bi-directional map of primitive types and their wrapper types. */
     private static final BidiMap WRAPPER_TYPES = new DualHashBidiMap();
 
-    /** Map of Java types and their mappings to form item type. */
-    private static final Map<Class<?>, Type> TYPES = new HashMap<Class<?>, Type>();
-    
     /** Map of Java types and their mappings to textbox datatypes. */
     private static final Map<Class<?>, FieldDatatype> DATATYPES = new HashMap<Class<?>, FieldDatatype>();
   
@@ -127,22 +124,7 @@ public class TypeMapper {
     public static boolean isNumberType(Class<?> type) {
         return Number.class.isAssignableFrom(toWrapperType(type));
     }
-
     
-    // fill the TYPES map
-    static {
-        TYPES.put(Boolean.TYPE, Type.CHECKBOX);
-        TYPES.put(Byte.TYPE, Type.TEXTBOX);
-        TYPES.put(Character.TYPE, Type.TEXTBOX);
-        TYPES.put(Short.TYPE, Type.TEXTBOX);
-        TYPES.put(Integer.TYPE, Type.TEXTBOX);
-        TYPES.put(Long.TYPE, Type.TEXTBOX);
-        TYPES.put(Float.TYPE, Type.TEXTBOX);
-        TYPES.put(Double.TYPE, Type.TEXTBOX);
-        TYPES.put(String.class, Type.TEXTBOX);
-        TYPES.put(java.util.Date.class, Type.TEXTBOX);
-        TYPES.put(java.sql.Date.class, Type.TEXTBOX);
-    }
     
     
     // fill the DATATYPES map
@@ -160,6 +142,9 @@ public class TypeMapper {
         DATATYPES.put(java.sql.Time.class, FieldDatatype.TIME);
         DATATYPES.put(java.sql.Timestamp.class, FieldDatatype.DATE_TIME);
         DATATYPES.put(java.util.Date.class, FieldDatatype.DATE_TIME);
+        DATATYPES.put(org.joda.time.LocalDate.class, FieldDatatype.DATE);
+        DATATYPES.put(org.joda.time.LocalTime.class, FieldDatatype.TIME);
+        DATATYPES.put(org.joda.time.LocalDateTime.class, FieldDatatype.DATE_TIME);
     }
 
     
@@ -172,7 +157,25 @@ public class TypeMapper {
      * @return True if the given type is considered simple, false otherwise.
      */
     public boolean isSimpleType(Class<?> type) {        
-        return type.isPrimitive() || isWrapperType(type) || TYPES.containsKey(type) || TYPES.containsKey(type.getSuperclass());
+        return type.isPrimitive() || isWrapperType(type) || DATATYPES.containsKey(type) || DATATYPES.containsKey(type.getSuperclass());
+    }
+    
+    
+    /**
+     * Determines whether the given type represents a date/time value.
+     * 
+     * @param type The tested type.
+     * @return True if the given type represents a date/time value, false otherwise.
+     */
+    public static boolean isDateOrTimeType(Class<?> type) {
+        if (DATATYPES.containsKey(type)) {
+        	FieldDatatype datatype = DATATYPES.get(type);
+        	return (datatype == FieldDatatype.DATE) 
+        			|| (datatype == FieldDatatype.DATE_TIME) 
+        			|| (datatype == FieldDatatype.TIME);
+        }
+        
+        return false;
     }
 
 
@@ -187,14 +190,18 @@ public class TypeMapper {
         if (isWrapperType(type))
             type = toPrimitiveType(type);
         
-        if (TYPES.containsKey(type))
-            return TYPES.get(type);
+        if (Boolean.TYPE.equals(type))
+        	return Type.CHECKBOX;
+        else if (DATATYPES.containsKey(type))
+        	return Type.TEXTBOX;
+        else {
+        	for (Class<?> cls : DATATYPES.keySet()) {
+        		if (cls.isAssignableFrom(type))
+        			return Type.TEXTBOX;
+        	}
         
-        for (Class<?> cls : TYPES.keySet()) {
-            if (cls.isAssignableFrom(type))
-                return TYPES.get(cls);
         }
-            
+         
         // default
         return Type.FORM;
     }
