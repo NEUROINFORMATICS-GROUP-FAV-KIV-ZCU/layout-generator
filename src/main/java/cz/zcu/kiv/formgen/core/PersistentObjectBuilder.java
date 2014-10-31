@@ -25,7 +25,11 @@
 
 package cz.zcu.kiv.formgen.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cz.zcu.kiv.formgen.ObjectBuilderException;
+import cz.zcu.kiv.formgen.PersistentObjectException;
 import cz.zcu.kiv.formgen.PersistentObjectProvider;
 import cz.zcu.kiv.formgen.model.FormData;
 
@@ -43,9 +47,14 @@ import cz.zcu.kiv.formgen.model.FormData;
  * @author Jakub Krauz
  */
 public class PersistentObjectBuilder<PK> extends SimpleObjectBuilder {
+	
+	/** Logger. */
+    private final Logger logger = LoggerFactory.getLogger(PersistentObjectBuilder.class);
     
     /** Provider of persistent objects. */
     private PersistentObjectProvider<PK> provider;
+    
+    private boolean saveNewInstance = false;
 
     
     /**
@@ -61,7 +70,9 @@ public class PersistentObjectBuilder<PK> extends SimpleObjectBuilder {
     /**
      * Creates a new instance of the given type. If the <code>data</code> item contains ID,
      * the instance is obtained using the persistent object {@link #provider}. Otherwise,
-     * it is instantiated and filled with data using {@link SimpleObjectBuilder#createInstance(Class, FormData)}.
+     * it is instantiated and filled with data using
+     * {@link SimpleObjectBuilder#createInstance(Class, FormData)} and then persisted. Only
+     * the root object itself (i.e. the object returned by this ObjectBuilder) is not persisted.
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -75,7 +86,21 @@ public class PersistentObjectBuilder<PK> extends SimpleObjectBuilder {
                 throw new ObjectBuilderException(message, e);
             }
         } else {
-            return super.createInstance(type, data);
+        	boolean oldSaveNewInstance = saveNewInstance;
+        	saveNewInstance = true;
+            Object obj = super.createInstance(type, data);
+            saveNewInstance = oldSaveNewInstance;
+            if (saveNewInstance) {  	
+            	// try to persist the new object
+            	try {
+            		provider.create(obj);
+            	} catch (PersistentObjectException e) {
+            		final String message = "Cannot create persistent object " + type.getName();
+            		logger.error(message, e);
+            		throw new ObjectBuilderException(message, e);
+            	}
+            }
+            return obj;
         }
     }
 

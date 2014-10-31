@@ -62,7 +62,7 @@ import cz.zcu.kiv.formgen.model.FormDataItem;
 public class SimpleObjectBuilder implements ObjectBuilder {
     
     /** Logger. */
-    final Logger logger = LoggerFactory.getLogger(SimpleObjectBuilder.class);
+    private final Logger logger = LoggerFactory.getLogger(SimpleObjectBuilder.class);
     
     
     /**

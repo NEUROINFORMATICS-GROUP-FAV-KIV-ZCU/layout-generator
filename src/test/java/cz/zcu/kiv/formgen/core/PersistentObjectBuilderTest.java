@@ -26,7 +26,9 @@
 package cz.zcu.kiv.formgen.core;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
 import cz.zcu.kiv.formgen.DataGenerator;
 import cz.zcu.kiv.formgen.ObjectBuilder;
 import cz.zcu.kiv.formgen.ObjectBuilderException;
@@ -108,6 +110,12 @@ public class PersistentObjectBuilderTest {
             else
                 return null;
         }
+
+		@Override
+		public Integer create(Object obj) throws PersistentObjectException {
+			// not implemented
+			return null;
+		}
         
     }
 

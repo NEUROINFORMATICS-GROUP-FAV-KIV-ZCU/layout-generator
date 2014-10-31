@@ -42,5 +42,14 @@ public interface PersistentObjectProvider<PK> {
      * @throws PersistentObjectException If the required persistent object cannot be retrieved.
      */
     Object getById(Class<?> cls, PK id) throws PersistentObjectException;
+    
+    /**
+     * Creates a persistent object.
+     * 
+     * @param obj The new object to be persisted.
+     * @return ID of the new persistent object.
+     * @throws PersistentObjectException If the new object cannot be persisted.
+     */
+    PK create(Object obj) throws PersistentObjectException;
 
 }
