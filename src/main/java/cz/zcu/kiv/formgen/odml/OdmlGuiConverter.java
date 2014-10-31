@@ -400,7 +400,7 @@ public class OdmlGuiConverter implements Converter {
             } else if (item instanceof FormData) {
                 FormData form = (FormData) item;
                 Section subsection = new Section(form.getLabel(), form.getType());
-                subsection.setReference(form.getName());
+                subsection.setReference(form.getName() + ":" + form.getType());
                 if (form.getId() != null)
                     subsection.addProperty("id", form.getId().toString());
                 addItems(subsection, form.getItems());
