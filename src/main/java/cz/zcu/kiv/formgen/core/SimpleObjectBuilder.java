@@ -114,17 +114,18 @@ public class SimpleObjectBuilder implements ObjectBuilder {
                 
                 // convert to appropriate number type if needed
                 if (TypeMapper.isNumberType(field.getType()))
-                    value = toNumber(value, field.getType());
+                	value = toNumber(value, field.getType());
                 
                 // get character value if needed
                 if (field.getType() == Character.TYPE)
-                	value = value.toString().charAt(0);
+                	value = toChar(value);
                 
                 // convert date/time values to appropriate type if needed
                 if (TypeMapper.isDateOrTimeType(field.getType()))
                 	value = toProperDateType(value, field.getType());
-
-                field.set(obj, value);
+                
+                if (value != null)
+                	field.set(obj, value);
                 
             } else if (item instanceof FormData) {
                 
@@ -237,7 +238,7 @@ public class SimpleObjectBuilder implements ObjectBuilder {
      * @return The value of required number type.
      * @throws NumberFormatException If the number cannot be parsed from the passed object.
      */
-    protected Number toNumber(Object obj, Class<?> numberType) throws NumberFormatException {
+    protected Number toNumber(Object obj, Class<?> numberType) {
         Number value = null;
         Class<?> type = TypeMapper.toPrimitiveType(numberType);
         
@@ -254,23 +255,46 @@ public class SimpleObjectBuilder implements ObjectBuilder {
                 value = ((Number) obj).floatValue();
             else if (type.equals(Double.TYPE))
                 value = ((Number) obj).doubleValue();
-        } else {
+        } else try {
             // try to parse the value from string
+        	String stringValue = obj.toString();
             if (type.equals(Byte.TYPE))
-                value = Byte.parseByte(obj.toString());
+                value = Byte.parseByte(stringValue);
             else if (type.equals(Short.TYPE))
-                value = Short.parseShort(obj.toString());
+                value = Short.parseShort(stringValue);
             else if (type.equals(Integer.TYPE))
-                value = Integer.parseInt(obj.toString());
+                value = Integer.parseInt(stringValue);
             else if (type.equals(Long.TYPE))
-                value = Long.parseLong(obj.toString());
+                value = Long.parseLong(stringValue);
             else if (type.equals(Float.TYPE))
-                value = Float.parseFloat(obj.toString());
+                value = Float.parseFloat(stringValue.replace(',', '.'));
             else if (type.equals(Double.TYPE))
-                value = Double.parseDouble(obj.toString());
-        }
+                value = Double.parseDouble(stringValue.replace(',', '.'));
+        } catch (NumberFormatException e) {
+    		logger.error("Unable to convert value '" + obj.toString() + "' to number.");
+    	}
         
         return value;
+    }
+    
+    
+    /**
+     * Converts the given object to an instance of <code>java.lang.Character</code>.
+     * @param obj The object to be converted to character.
+     * @return the character
+     */
+    protected Character toChar(Object obj) {
+    	Character value = null;
+    	
+    	if (obj.toString() != null && !obj.toString().isEmpty()) {
+    		value = obj.toString().charAt(0);
+    		if (obj.toString().length() > 1)
+    			logger.warn("Value '" + obj.toString() + "' truncated to '" + value + "'");
+    	} else {
+    		logger.error("Cannot convert empty value to character.");
+    	}
+    	
+    	return value;
     }
     
     

@@ -90,22 +90,27 @@ public class DataParser {
             form.setId(ReflectionUtils.value(idField, obj));
         
         for (Field f : ReflectionUtils.annotatedFields(obj.getClass(), cz.zcu.kiv.formgen.annotation.FormItem.class)) {
-            FormDataItem item;
+            Object value = ReflectionUtils.value(f, obj);
+            if (value == null)
+            	continue;
         	
+        	FormDataItem item;
         	if (mapper.isSimpleType(f.getType())) {
-                item = createDataField(f, obj);
+                item = createDataField(f, value);
             } else if (Collection.class.isAssignableFrom(f.getType())) {
-                item = createDataSet(f, obj);
+                item = createDataSet(f, value);
             } else if (!includeReferences) {
-                item = createDataReference(f, obj);
+                item = createDataReference(f, value);
             } else {
-                item = _parse(ReflectionUtils.value(f, obj), f.getName());
+                item = _parse(value, f.getName());
             }
             
             // label
-            FormItem formItemAnnot = f.getAnnotation(FormItem.class);
-            String label = formItemAnnot.label();
-            item.setLabel(label.isEmpty() ? StringUtils.beautifyString(f.getName()) : label);
+        	if (item != null) {
+	            FormItem formItemAnnot = f.getAnnotation(FormItem.class);
+	            String label = formItemAnnot.label();
+	            item.setLabel(label.isEmpty() ? StringUtils.beautifyString(f.getName()) : label);
+        	}
             
             form.addItem(item);
         }
@@ -118,13 +123,13 @@ public class DataParser {
      * Creates a data set, i.e. data item with multiple records of the same type.
      * 
      * @param field The field representing the set.
-     * @param obj The data object.
+     * @param value The referenced data object.
      * @return The newly created data set.
      */
-    private FormDataItem createDataSet(Field field, Object obj) {
+    private FormDataItem createDataSet(Field field, Object value) {
         String name = field.getName();
         
-        Collection<?> collection = (Collection<?>) ReflectionUtils.value(field, obj);
+        Collection<?> collection = (Collection<?>) value;
         if (collection == null || collection.isEmpty())
             return null;
         
@@ -155,11 +160,10 @@ public class DataParser {
      * Creates a new data field representing the given class <code>field</code>.
      * 
      * @param field The class field.
-     * @param obj The data object.
+     * @param value The referenced data object.
      * @return The newly created data field.
      */
-    private FormDataField createDataField(Field field, Object obj) {
-        Object value = ReflectionUtils.value(field, obj);
+    private FormDataField createDataField(Field field, Object value) {
         FormDataField dataField = new FormDataField(field.getName());
         dataField.setValue(value);
         return dataField;
@@ -170,11 +174,10 @@ public class DataParser {
      * Creates a new data reference, i.e. a form data item with the only ID property set.
      * 
      * @param field The class field.
-     * @param obj The data object.
+     * @param value The referenced data object.
      * @return The newly created data reference.
      */
-    private FormData createDataReference(Field field, Object obj) {
-        Object value = ReflectionUtils.value(field, obj);
+    private FormData createDataReference(Field field, Object value) {
         if (value != null) {
             FormData reference = new FormData(field.getType().getSimpleName(), field.getName());
             reference.setId(getId(value));
